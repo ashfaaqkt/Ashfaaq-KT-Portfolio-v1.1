@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ashfaaq KT | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Great+Vibes&family=Allura&family=Sacramento&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Reem+Kufi:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://db.onlinewebfonts.com/c/05e968b76ef45c6b92ca43899f59ed48?family=Aref+Ruqaa" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Animated Background Elements -->
+  <div class="bg-canvas">
+    <canvas id="particle-canvas"></canvas>
+    <div class="bg-gradient-orb orb-1"></div>
+    <div class="bg-gradient-orb orb-2"></div>
+    <div class="bg-gradient-orb orb-3"></div>
+  </div>
+
+  <!-- Navigation System -->
+  <nav class="main-nav" id="main-nav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="#home" class="brand-logo-link">
+          <img src="PP/akl.svg" alt="Ashfaaq KT Logo" class="brand-logo" />
+        </a>
+        <div class="brand-info">
+          <a href="#home" class="brand-name-link">
+            <span class="brand-name" data-en="ASHFAAQ KT" data-ar="اشفاق كي تي">ASHFAAQ KT</span>
+          </a>
+          <span class="brand-title" data-en="AI-Assisted Developer" data-ar="مطور برمجيات">AI-Assisted Developer</span>
+        </div>
+      </div>
+
+      <div class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link active" data-page="home">
+          <span class="nav-link-text">Home</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+        <a href="#about" class="nav-link" data-page="about">
+          <span class="nav-link-text">About</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+        <a href="#education" class="nav-link" data-page="education">
+          <span class="nav-link-text">Education</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+        <a href="#projects" class="nav-link" data-page="projects">
+          <span class="nav-link-text">Projects</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+        <a href="#expertise" class="nav-link" data-page="expertise">
+          <span class="nav-link-text">Expertise</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+        <a href="#connect" class="nav-link" data-page="connect">
+          <span class="nav-link-text">Connect</span>
+          <span class="nav-link-indicator"></span>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <div class="cv-dropdown-container">
+          <button class="nav-cta-btn" id="cv-dropdown-toggle" aria-label="CV Options" aria-expanded="false">
+            <span data-en="Menu" data-ar="قائمة">Menu</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <div class="cv-dropdown-menu" id="cv-dropdown-menu">
+            
+            <!-- Auth Group (Sign in) -->
+            <div class="cv-dropdown-group" style="padding-bottom: 0;">
+              <button class="cv-dropdown-item auth-btn" id="auth-btn" aria-label="Sign In" style="justify-content: center; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); font-size: 1.1rem; font-weight: 600;">
+                <span data-en="Sign in" data-ar="تسجيل الدخول">Sign in</span>
+              </button>
+              <button class="cv-dropdown-item logout-btn" id="logout-btn" style="justify-content: center; display: none; margin-top: 5px; background: rgba(255, 59, 59, 0.1); border-color: rgba(255, 59, 59, 0.3); color: #ff5555; font-size: 0.9rem;">
+                <span data-en="Logout" data-ar="تسجيل الخروج">Logout</span>
+              </button>
+            </div>
+
+            <div class="cv-dropdown-group">
+              <div class="cv-dropdown-category" data-en="Normal Resume" data-ar="السيرة الذاتية العادية">Normal Resume
+              </div>
+              <a href="CV/Ashfaaq KT CV in AR.pdf" target="_blank" rel="noopener noreferrer" class="cv-dropdown-item"
+                data-lang="ar">
+                <span class="cv-dropdown-text" data-en="CV" data-ar="السيرة الذاتية">CV</span>
+                <span class="cv-dropdown-label" data-en="AR" data-ar="AR"></span>
+                <svg class="cv-dropdown-pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+              <a href="CV/Ashfaaq KT CV in EN.pdf" target="_blank" rel="noopener noreferrer" class="cv-dropdown-item"
+                data-lang="en">
+                <span class="cv-dropdown-text" data-en="CV" data-ar="السيرة الذاتية">CV</span>
+                <span class="cv-dropdown-label" data-en="EN" data-ar="EN"></span>
+                <svg class="cv-dropdown-pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+            </div>
+            <div class="cv-dropdown-group">
+              <div class="cv-dropdown-category" data-en="ATS Resume" data-ar="السيرة الذاتية ATS">ATS Resume</div>
+              <a href="CV/ASHFAAQ KT ATS CV in Ar.pdf" target="_blank" rel="noopener noreferrer"
+                class="cv-dropdown-item" data-lang="ar">
+                <span class="cv-dropdown-text" data-en="CV (ATS)" data-ar="السيرة الذاتية (ATS)">CV (ATS)</span>
+                <span class="cv-dropdown-label" data-en="AR" data-ar="AR"></span>
+                <svg class="cv-dropdown-pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+              <a href="CV/ASHFAAQ KT ATS CV in En.pdf" target="_blank" rel="noopener noreferrer"
+                class="cv-dropdown-item" data-lang="en">
+                <span class="cv-dropdown-text" data-en="CV (ATS)" data-ar="السيرة الذاتية (ATS)">CV (ATS)</span>
+                <span class="cv-dropdown-label" data-en="EN" data-ar="EN"></span>
+                <svg class="cv-dropdown-pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+            </div>
+            
+            <!-- Admin Group -->
+            <div class="cv-dropdown-group" style="padding-bottom: 0;">
+              <a href="#" class="cv-dropdown-item admin-login-btn" id="admin-login-link" style="justify-content: center; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
+                <span data-en="Admin" data-ar="المشرف">Admin</span>
+              </a>
+            </div>
+
+            <div class="cv-dropdown-group cv-lang-group">
+              <button class="nav-icon-btn lang-toggle" id="lang-toggle" aria-label="Toggle Language"
+                title="Switch to Arabic / التبديل إلى العربية" type="button">
+                <svg class="lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path
+                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+                <span class="lang-toggle-label" data-en="العربية" data-ar="English">العربية</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content" id="main-content">
+    <!-- Page: Home -->
+    <section class="page active" id="page-home" data-page="home">
+      <div class="page-inner">
+        <div class="hero-section">
+          <div class="hero-content">
+            <p class="hero-greeting" data-animate="fade-up" data-delay="0">Hello I Am</p>
+
+            <h1 class="hero-title">
+              <span class="title-line cursor-highlight-target" data-animate="fade-up" data-delay="100">ASHFAAQ FEROZ
+                MUHAMMAD</span>
+            </h1>
+
+            <p class="hero-degree" data-animate="fade-up" data-delay="200">BSc. CS - BITS PILANI</p>
+
+            <p class="hero-description" data-animate="fade-up" data-delay="300">
+              Tech-driven developer with expertise in MERN full-stack development, cloud integration, UI/UX design,
+              DevOps workflows, and data analysis. Passionate about building fast, scalable, and visually appealing
+              digital experiences.
+              I combine AI-assisted workflows with hands-on development to create efficient, modern software solutions.
+            </p>
+
+            <div class="hero-stats" data-animate="fade-up" data-delay="400">
+              <div class="stat-item">
+                <div class="stat-value">7.81</div>
+                <div class="stat-label">CGPA</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value">2026</div>
+                <div class="stat-label">Graduation</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value">3+</div>
+                <div class="stat-label">Languages</div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <div class="stat-value">20+</div>
+                <div class="stat-label">Projects</div>
+              </div>
+            </div>
+
+            <div class="hero-actions" data-animate="fade-up" data-delay="500">
+              <button type="button" class="btn btn-primary" id="portfolio-summary-btn">
+                <span>View Summary</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+              <a href="#projects" class="btn btn-secondary">
+                <span>View Projects</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-visual" data-animate="fade-in" data-delay="500">
+            <div class="profile-container">
+              <div class="profile-glow"></div>
+              <div class="profile-frame">
+                <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq KT" class="profile-image" id="profile-image" />
+              </div>
+              <div class="profile-decoration decoration-1"></div>
+              <div class="profile-decoration decoration-2"></div>
+            </div>
+          </div>
+
+          <blockquote class="hero-quote" data-animate="fade-up" data-delay="600">
+            <p> So Give Me Coffee And Codes... </p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: About -->
+    <section class="page" id="page-about" data-page="about">
+      <div class="page-inner">
+        <div class="page-header">
+          <span class="page-label" data-animate="fade-up">Profile</span>
+          <h2 class="page-title cursor-highlight-target" data-animate="fade-up" data-delay="100">
+            Engineering thoughtful software experiences
+          </h2>
+          <p class="page-subtitle" data-animate="fade-up" data-delay="200">
+            Blending clean architecture, secure backend logic, and AI-enhanced workflows
+            to deliver solutions that scale with confidence.
+          </p>
+        </div>
+
+        <div class="content-grid">
+          <div class="content-card" data-animate="slide-up" data-delay="0">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <h3>
+              Software Engineering & AI
+              <br>
+              <span style="font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 400;">BITS PILANI</span>
+            </h3>
+            <p>
+              Experienced across diverse product domains, from cloud infrastructure to enterprise software solutions.
+              Comfortable collaborating with international clients and working seamlessly within multilingual
+              development teams.
+              I focus on writing clean, maintainable code that stands the test of time.
+            </p>
+          </div>
+
+          <div class="content-card" data-animate="slide-up" data-delay="100">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+              </svg>
+            </div>
+            <h3>
+              MERN Full-Stack Development
+              <br>
+              <span style="font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 400;">Entri Elevate -
+                Kochi</span>
+            </h3>
+            <p>
+              Building end-to-end applications with modern frameworks. From responsive UIs that delight users
+              to robust APIs that handle scale. Every layer is crafted with attention to performance, security,
+              and user experience.
+            </p>
+          </div>
+
+          <div class="content-card" data-animate="slide-up" data-delay="200">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+                <circle cx="12" cy="7" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                <circle cx="12" cy="17" r="1.5" fill="currentColor" />
+                <circle cx="7" cy="9.5" r="1.5" fill="currentColor" />
+                <circle cx="17" cy="9.5" r="1.5" fill="currentColor" />
+                <circle cx="7" cy="14.5" r="1.5" fill="currentColor" />
+                <circle cx="17" cy="14.5" r="1.5" fill="currentColor" />
+              </svg>
+            </div>
+            <h3>
+              AI-Assisted Workflows
+              <br>
+              <span style="font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 400;">Prompt
+                Engineering</span>
+            </h3>
+            <p>
+              Leveraging cutting-edge AI tools to accelerate development without compromising quality.
+              Mastering prompt engineering and AI-assisted coding to build faster, smarter, and more efficiently.
+              The future of development is collaborative.
+            </p>
+          </div>
+        </div>
+
+        <div class="tech-stack" data-animate="fade-up" data-delay="300">
+          <div class="tech-stack-header">
+            <span class="tech-label">Technology Stack</span>
+          </div>
+          <div class="tech-list" id="tech-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Education -->
+    <section class="page" id="page-education" data-page="education">
+      <div class="page-inner">
+        <div class="page-header">
+          <span class="page-label" data-animate="fade-up">Timeline</span>
+          <h2 class="page-title cursor-highlight-target" data-animate="fade-up" data-delay="100">
+            Academic journey & milestones
+          </h2>
+        </div>
+
+        <div class="timeline" id="timeline">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Projects -->
+    <section class="page" id="page-projects" data-page="projects">
+      <div class="page-inner">
+        <div class="page-header">
+          <span class="page-label" data-animate="fade-up">Portfolio</span>
+          <h2 class="page-title cursor-highlight-target" data-animate="fade-up" data-delay="100">
+            Selected projects & experiments
+          </h2>
+          <p class="page-subtitle" data-animate="fade-up" data-delay="200">
+            From production-ready systems to experimental builds, each project represents
+            a step forward in technical excellence.
+          </p>
+        </div>
+
+        <div class="projects-controls" id="projects-controls" data-animate="fade-up" data-delay="300">
+          <div class="projects-search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="projects-search-input" placeholder="Search projects..." data-en="Search projects..." data-ar="البحث في المشاريع..." />
+          </div>
+          <div class="projects-filters" id="projects-filters">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="projects-grid" id="projects-grid">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div class="projects-cta" data-animate="fade-up" data-delay="400">
+          <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            <span>Explore All Projects</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Expertise -->
+    <section class="page" id="page-expertise" data-page="expertise">
+      <div class="page-inner">
+        <div class="page-header">
+          <span class="page-label" data-animate="fade-up">Capabilities</span>
+          <h2 class="page-title cursor-highlight-target" data-animate="fade-up" data-delay="100">
+            Skills, languages & hobbies
+          </h2>
+        </div>
+
+        <div class="skills-section">
+          <div class="skills-filters" id="skills-filters">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="skills-grid" id="skills-grid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="languages-section" data-animate="fade-up" data-delay="300">
+          <h3 class="section-subtitle">Languages & Communication</h3>
+          <div class="languages-list" id="languages-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="hobbies-section" data-animate="fade-up" data-delay="400">
+          <h3 class="section-subtitle">Hobbies</h3>
+          <div class="hobbies-list" id="hobbies-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page: Connect -->
+    <section class="page" id="page-connect" data-page="connect">
+      <div class="page-inner">
+        <div class="page-header">
+          <span class="page-label" data-animate="fade-up">Contact</span>
+          <h2 class="page-title cursor-highlight-target" data-animate="fade-up" data-delay="100">
+            Let's build something together
+          </h2>
+          <p class="page-subtitle" data-animate="fade-up" data-delay="200">
+            Open to remote and hybrid opportunities. Comfortable working across time zones
+            in India and Saudi Arabia.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info-card" data-animate="slide-up" data-delay="0">
+            <h3>Get in Touch</h3>
+
+            <!-- Full details (desktop / large screens) -->
+            <div class="contact-list">
+              <a href="mailto:ashfaaqktmail@gmail.com" class="contact-item">
+                <div class="contact-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <path d="M22 6l-10 7L2 6" />
+                  </svg>
+                </div>
+                <div class="contact-details">
+                  <span class="contact-label">Email</span>
+                  <span class="contact-value">ashfaaqktmail@gmail.com</span>
+                </div>
+              </a>
+
+              <div class="contact-item contact-has-whatsapp">
+                <div class="contact-main">
+                  <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </div>
+                  <div class="contact-details">
+                    <span class="contact-label">Phone (IN)</span>
+                    <a href="tel:+919995032407" class="contact-value contact-phone-link">
+                      +91 99950 32407
+                    </a>
+                  </div>
+                </div>
+                <div class="contact-side">
+                  <div class="contact-divider"></div>
+                  <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" class="contact-whatsapp" target="_blank"
+                    rel="noopener noreferrer" aria-label="WhatsApp (IN)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12c0 1.77.46 3.42 1.27 4.87L2 22l5.25-1.23A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Z"
+                        fill="#25D366" />
+                      <path
+                        d="M17.2 14.3c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.74-1.65-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.22 5.08 4.51.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"
+                        fill="#fff" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              </div>
+
+            <!-- Compact quick actions: Phone and WhatsApp (mobile only) -->
+            <div class="contact-quick-actions">
+              <div class="mobile-contact-group">
+                <button class="mobile-contact-btn" id="mobile-call-btn" type="button" title="Call me / اتصل بي"
+                  aria-haspopup="true" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                  <span class="mobile-contact-btn-label" data-en="Call me" data-ar="اتصل بي">Call me</span>
+                </button>
+                <div class="mobile-contact-menu" id="mobile-call-menu">
+                  <a href="tel:+919995032407">IN: +91 99950 32407</a>
+                </div>
+              </div>
+
+              <div class="mobile-contact-group">
+                <button class="mobile-contact-btn mobile-contact-btn--whatsapp" id="mobile-whatsapp-btn" type="button"
+                  title="WhatsApp me / راسلني على واتساب" aria-haspopup="true" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12c0 1.77.46 3.42 1.27 4.87L2 22l5.25-1.23A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Z"
+                      fill="#25D366" />
+                    <path
+                      d="M17.2 14.3c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.74-1.65-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.22 5.08 4.51.71.31 1.26.5 1.69.64.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"
+                      fill="#fff" />
+                  </svg>
+                  <span class="mobile-contact-btn-label" data-en="WhatsApp me" data-ar="راسلني على واتساب">WhatsApp
+                    me</span>
+                </button>
+                <div class="mobile-contact-menu" id="mobile-whatsapp-menu">
+                  <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank" rel="noopener noreferrer">IN
+                    WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-card" data-animate="slide-up" data-delay="100">
+            <h3>Send a Message</h3>
+            <form id="contact-form" class="contact-form">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required placeholder="Your name" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="category" value="individual" required />
+                    <span>Individual</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="category" value="company" required />
+                    <span>Company</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="category" value="other" required />
+                    <div class="radio-text-block">
+                      <span>Other</span>
+                      <div class="other-detail-wrapper" id="other-input-group" style="display: none;">
+                        <label for="other-detail">Please specify</label>
+                        <input type="text" id="other-detail" name="other-detail" placeholder="Specify your category" />
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <span>Send Message</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Navigation</h4>
+        <nav class="footer-nav">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#education">Education</a>
+          <a href="#projects">Projects</a>
+          <a href="#expertise">Expertise</a>
+          <a href="#connect">Connect</a>
+        </nav>
+      </div>
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <div class="footer-social">
+          <a href="https://ashfaaqkt.com" target="_blank" rel="noopener noreferrer"
+            class="social-link social-link--website">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path
+                d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+            <span>Website</span>
+          </a>
+          <a href="https://www.linkedin.com/in/ashfaaq-kt-109342177/" target="_blank" rel="noopener noreferrer"
+            class="social-link social-link--linkedin">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M6 9h3v12H6zM7.5 5.5A2 2 0 1 1 7.5 9a2 2 0 0 1 0-3.5ZM13 9h3v2h.05c.42-.8 1.45-1.65 3-1.65 3.2 0 3.95 2.1 3.95 4.8V21h-3v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.57-2.3 3.17V21h-3z" />
+            </svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer"
+            class="social-link social-link--github">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.5 2 12a10 10 0 0 0 6.84 9.49c.5.1.68-.21.68-.48v-1.7c-2.78.6-3.37-1.2-3.37-1.2-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.05 1.53 1.05.9 1.54 2.36 1.1 2.94.84.1-.66.36-1.1.65-1.35-2.22-.26-4.56-1.12-4.56-5 0-1.1.39-2 .99-2.7-.1-.26-.43-1.3.1-2.7 0 0 .83-.26 2.75 1.02a9.3 9.3 0 0 1 5 0c1.92-1.28 2.75-1.02 2.75-1.02.53 1.4.2 2.44.1 2.7.6.7.99 1.6.99 2.7 0 3.9-2.34 4.74-4.57 5 .37.32.69.94.69 1.9v2.8c0 .27.18.59.69.48A10 10 0 0 0 22 12c0-5.5-4.48-10-10-10Z" />
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Social Media</h4>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/ashfaaq_kt?igsh=eXl4YmgxdXdjdTNq&utm_source=qr" target="_blank"
+            rel="noopener noreferrer" class="social-link social-link--instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 3.5A4.5 4.5 0 1 0 16.5 12 4.51 4.51 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5zM17.75 6a1.25 1.25 0 1 0 1.25 1.25A1.25 1.25 0 0 0 17.75 6z" />
+            </svg>
+            <span>Instagram</span>
+          </a>
+          <a href="https://x.com/ashfaaq_kt?s=21" target="_blank" rel="noopener noreferrer"
+            class="social-link social-link--x">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 3l6.5 8.4L4.2 21h2.3l5-6.4L15.8 21H20l-6.7-8.8L19.6 3h-2.3l-4.6 5.9L8.2 3H4z" />
+            </svg>
+            <span>X</span>
+          </a>
+          <a href="https://www.facebook.com/ishfm" target="_blank" rel="noopener noreferrer"
+            class="social-link social-link--facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M13.5 21v-7.2H16l.4-3h-2.9V8.4c0-.9.3-1.5 1.6-1.5H16.5V4.2C16.2 4.1 15.3 4 14.3 4c-2.4 0-4 1.3-4 3.8V10H8v3h2.3V21h3.2z" />
+            </svg>
+            <span>Facebook</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Status</h4>
+        <p>AI-Assisted SWE | Open to Remote, Hybrid & Onsite roles in India & GCC.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Ashfaaq KT © 2026 | v 1.1</p>
+      <div class="footer-signature">
+        <img src="PP/ashfaaq-sign.jpg" alt="Signature of Ashfaaq KT" />
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- Chatbot -->
+  <div class="chatbot-container" id="chatbot-container" aria-hidden="true">
+    <div class="chatbot-header">
+      <div class="chatbot-header-info">
+        <div class="chatbot-avatar">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+          </svg>
+        </div>
+        <div>
+          <h4 data-en="FAQs" data-ar="الأسئلة الشائعة">
+            FAQs
+          </h4>
+          <span class="chatbot-status" data-en="" data-ar=""></span>
+        </div>
+      </div>
+      <button class="chatbot-minimize" id="chatbot-minimize" aria-label="Minimize chatbot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages">
+      <div class="chatbot-message chatbot-message-bot">
+        <div class="message-content">
+          <p data-en="Hello! I'm here to help you learn about Ashfaaq KT's portfolio. Select a question below or contact directly!"
+            data-ar="مرحباً! أنا هنا لمساعدتك في التعرف على محفظة اشفاق كي تي. اختر سؤالاً أدناه أو تواصل مباشرة!">
+            Hello! I'm here to help you learn about Ashfaaq KT's portfolio. Select a question below or contact directly!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="chatbot-faq-container" id="chatbot-faq-container">
+      <button class="chatbot-faq-btn" data-faq="about">
+        <span data-en="About Ashfaaq" data-ar="نبذة عن اشفاق">About Ashfaaq</span>
+      </button>
+      <button class="chatbot-faq-btn" data-faq="education">
+        <span data-en="Education & Background" data-ar="التعليم والخلفية">Education & Background</span>
+      </button>
+      <button class="chatbot-faq-btn" data-faq="projects">
+        <span data-en="Projects & Portfolio" data-ar="المشاريع والمحفظة">Projects & Portfolio</span>
+      </button>
+      <button class="chatbot-faq-btn" data-faq="skills">
+        <span data-en="Skills & Expertise" data-ar="المهارات والخبرات">Skills & Expertise</span>
+      </button>
+      <button class="chatbot-faq-btn" data-faq="contact">
+        <span data-en="Contact Directly" data-ar="تواصل مباشر">Contact Directly</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chatbot Toggle Button -->
+  <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open chatbot">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+    <span class="chatbot-notification" id="chatbot-notification"></span>
+  </button>
+
+  <!-- Portfolio Summary Modal -->
+  <div class="portfolio-summary-modal" id="portfolio-summary-modal" aria-hidden="true">
+    <div class="portfolio-summary-modal-overlay" id="portfolio-summary-modal-overlay"></div>
+    <div class="portfolio-summary-modal-content">
+      <button class="portfolio-summary-modal-close" id="portfolio-summary-modal-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="portfolio-summary-modal-inner">
+        <h2 class="portfolio-summary-title" data-en="Portfolio in a nutshell" data-ar="نبذة سريعة عن المحفظة">
+          Portfolio in a nutshell
+        </h2>
+        <p class="portfolio-summary-text"
+          data-en="A MERN full‑stack and AI‑assisted developer with a strong academic base, shipped projects, and a balanced skill set across backend, frontend, cloud, and collaboration."
+          data-ar="مطور MERN متكامل ومدعوم بالذكاء الاصطناعي مع أساس أكاديمي قوي، ومشاريع منجزة، ومجموعة مهارات متوازنة بين الخلفية والواجهة والسحابة والعمل التعاوني.">
+          A MERN full‑stack and AI‑assisted developer with a strong academic base, shipped projects, and a balanced
+          skill set across backend, frontend, cloud, and collaboration.
+        </p>
+        <ul class="portfolio-summary-list">
+          <li
+            data-en="Education: B.Sc. Computer Science at BITS Pilani with solid performance and clear graduation roadmap."
+            data-ar="التعليم: بكالوريوس علوم الحاسوب من معهد بتس بيلاني بأداء قوي وخطة تخرج واضحة.">
+            Education: B.Sc. Computer Science at BITS Pilani with solid performance and clear graduation roadmap.
+          </li>
+          <li
+            data-en="Projects: Selected real‑world and experimental builds showcasing clean architecture, performance, and UI/UX focus."
+            data-ar="المشاريع: أعمال حقيقية وتجريبية مختارة تُظهر بنية نظيفة، وأداءً عالياً، وتركيزاً على تجربة المستخدم وواجهة المستخدم.">
+            Projects: Selected real‑world and experimental builds showcasing clean architecture, performance, and UI/UX
+            focus.
+          </li>
+          <li
+            data-en="Expertise: MERN stack, cloud tooling, AI‑assisted workflows, and strong communication in multiple languages."
+            data-ar="الخبرات: مكدس MERN، وأدوات السحابة، وسير عمل مدعومة بالذكاء الاصطناعي، وقدرات تواصل قوية بعدة لغات.">
+            Expertise: MERN stack, cloud tooling, AI‑assisted workflows, and strong communication in multiple languages.
+          </li>
+        </ul>
+        <div class="portfolio-summary-actions">
+          <a href="#education" class="btn btn-outline portfolio-summary-link">
+            <span data-en="Read more about Education" data-ar="اقرأ المزيد عن التعليم">Read more about Education</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#projects" class="btn btn-outline portfolio-summary-link">
+            <span data-en="Read more about Projects" data-ar="اقرأ المزيد عن المشاريع">Read more about Projects</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#expertise" class="btn btn-outline portfolio-summary-link">
+            <span data-en="Read more about Expertise" data-ar="اقرأ المزيد عن الخبرات">Read more about Expertise</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal (Sign In / Sign Up) -->
+  <div class="auth-modal" id="auth-modal" aria-hidden="true">
+    <div class="auth-modal-overlay" id="auth-modal-overlay"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" id="auth-modal-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" data-en="Sign In" data-ar="تسجيل الدخول">Sign In</button>
+        <button class="auth-tab" id="tab-register" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form active">
+        <div class="form-group">
+          <label for="login-email" data-en="Email" data-ar="البريد الإلكتروني">Email</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <input type="email" id="login-email" required placeholder="your.email@example.com" data-placeholder-en="your.email@example.com" data-placeholder-ar="your.email@example.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="login-password" data-en="Password" data-ar="كلمة المرور">Password</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <input type="password" id="login-password" required placeholder="••••••••" data-placeholder-en="••••••••" data-placeholder-ar="••••••••" />
+            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div id="login-error" class="auth-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span data-en="Sign In" data-ar="تسجيل الدخول">Sign In</span>
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form" style="display: none;">
+        <div class="auth-scroll-container">
+          <div class="auth-form-grid single-column">
+            <div class="form-group">
+              <label for="reg-name" data-en="Name" data-ar="الاسم">Name</label>
+              <div class="input-with-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <input type="text" id="reg-name" required placeholder="Enter Your Name" data-placeholder-en="Enter Your Name" data-placeholder-ar="أدخل اسمك" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-email" data-en="Email" data-ar="البريد الإلكتروني">Email</label>
+              <div class="input-with-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <input type="email" id="reg-email" required placeholder="your@email.com" data-placeholder-en="your@email.com" data-placeholder-ar="your@email.com" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-phone" data-en="Phone" data-ar="رقم الهاتف">Phone</label>
+              <div class="phone-input-group">
+                <div class="custom-select country-code-custom" id="reg-phone-code-custom">
+                  <div class="custom-select-trigger">
+                    <span>🇮🇳 +91</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="select-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  <div class="custom-options">
+                    <div class="custom-option selected" data-value="+91">🇮🇳 +91</div>
+                    <div class="custom-option" data-value="+966">🇸🇦 +966</div>
+                    <div class="custom-option" data-value="+1">🇺🇸 +1</div>
+                    <div class="custom-option" data-value="+44">🇬🇧 +44</div>
+                    <div class="custom-option" data-value="+971">🇦🇪 +971</div>
+                  </div>
+                  <input type="hidden" id="reg-phone-code" value="+91" />
+                </div>
+                <div class="input-with-icon phone-number-wrapper">
+                  <input type="text" id="reg-phone" required placeholder="10 digits only" data-placeholder-en="10 digits only" data-placeholder-ar="10 أرقام فقط" maxlength="10" pattern="\d{10}" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-en="Category" data-ar="الفئة">Category</label>
+              <div class="custom-select" id="reg-category-custom">
+                <div class="custom-select-trigger">
+                  <span id="reg-category-trigger-text" data-en="Select Category" data-ar="اختر الفئة">Select Category</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="select-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="custom-options">
+                  <div class="custom-option" data-value="HR" data-en="HR" data-ar="الموارد البشرية">HR</div>
+                  <div class="custom-option" data-value="Founder" data-en="Founder" data-ar="مؤسس">Founder</div>
+                  <div class="custom-option" data-value="Recruiter" data-en="Recruiter" data-ar="مسؤول توظيف">Recruiter</div>
+                  <div class="custom-option" data-value="Viewer" data-en="Viewer" data-ar="مشاهد">Viewer</div>
+                  <div class="custom-option" data-value="Other" data-en="Other" data-ar="أخرى">Other</div>
+                </div>
+                <input type="hidden" id="reg-category" name="category" required />
+              </div>
+            </div>
+            <div class="form-group" id="other-category-group" style="display: none;">
+              <label for="reg-category-other" data-en="Specify Category" data-ar="حدد الفئة">Specify Category</label>
+              <input type="text" id="reg-category-other" placeholder="Enter your category" data-placeholder-en="Enter your category" data-placeholder-ar="أدخل الفئة الخاصة بك" />
+            </div>
+            <div class="form-group">
+              <label for="reg-company" data-en="Firm (optional)" data-ar="الشركة (اختياري)">Firm (optional)</label>
+              <div class="input-with-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                <input type="text" id="reg-company" placeholder="Firm Name" data-placeholder-en="Firm Name" data-placeholder-ar="اسم الشركة" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-password" data-en="Password" data-ar="كلمة المرور">Password</label>
+              <div class="input-with-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <input type="password" id="reg-password" required placeholder="••••••••" data-placeholder-en="••••••••" data-placeholder-ar="••••••••" />
+                <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="reg-error" class="auth-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span data-en="Create Account" data-ar="إنشاء حساب">Create Account</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div class="auth-modal" id="admin-login-modal" aria-hidden="true">
+    <div class="auth-modal-overlay" id="admin-login-overlay"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" id="admin-login-close" aria-label="Close modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <h2 style="color:var(--color-text-primary); margin-bottom: 20px;" data-en="Admin Access" data-ar="وصول المشرف">Admin Access</h2>
+      <form id="form-admin-login">
+        <div class="form-group">
+          <label for="admin-password" data-en="Admin Password" data-ar="كلمة مرور المشرف">Admin Password</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="field-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <input type="password" id="admin-password" required placeholder="Authorized personnel only" data-placeholder-en="Authorized personnel only" data-placeholder-ar="للموظفين المصرح لهم فقط" />
+            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div id="admin-login-error" class="auth-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <span data-en="Login" data-ar="تسجيل الدخول">Login</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard Modal -->
+  <div class="admin-dashboard-modal" id="admin-dashboard-modal" aria-hidden="true">
+    <div class="admin-dashboard-overlay" id="admin-dashboard-overlay"></div>
+    <div class="admin-dashboard-content">
+      <button class="admin-dashboard-close" id="admin-dashboard-close" aria-label="Close dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <h2 class="admin-dashboard-title" data-en="Users Dashboard" data-ar="لوحة تحكم المستخدمين">Users Dashboard</h2>
+      
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th data-en="Date" data-ar="التاريخ">Date</th>
+              <th data-en="Name" data-ar="الاسم">Name</th>
+              <th data-en="Email" data-ar="البريد الإلكتروني">Email</th>
+              <th data-en="Phone" data-ar="رقم الهاتف">Phone</th>
+              <th data-en="Category" data-ar="الفئة">Category</th>
+              <th data-en="Company" data-ar="الشركة">Company</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6" />
+    </svg>
+  </button>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>
