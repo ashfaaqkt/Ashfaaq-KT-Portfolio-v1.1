@@ -115,4 +115,8 @@ app.get('/api/admin/users', verifyAdmin, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
+
+module.exports = app;
