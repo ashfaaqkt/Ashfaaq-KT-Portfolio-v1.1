@@ -862,7 +862,7 @@
                   <input type="hidden" id="reg-phone-code" value="+91" />
                 </div>
                 <div class="input-with-icon phone-number-wrapper">
-                  <input type="text" id="reg-phone" required placeholder="10 digits only" data-placeholder-en="10 digits only" data-placeholder-ar="10 أرقام فقط" maxlength="10" pattern="\d{10}" />
+                  <input type="text" id="reg-phone" placeholder="10 digits only" data-placeholder-en="10 digits only" data-placeholder-ar="10 أرقام فقط" maxlength="10" pattern="\d{10}" />
                 </div>
               </div>
             </div>
@@ -953,6 +953,23 @@
         </svg>
       </button>
       <h2 class="admin-dashboard-title" data-en="Users Dashboard" data-ar="لوحة تحكم المستخدمين">Users Dashboard</h2>
+      
+      <div class="admin-controls">
+        <div class="admin-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="admin-search-input" placeholder="Search by name or email..." data-en="Search by name or email..." data-ar="البحث بالاسم أو البريد...">
+        </div>
+        <div class="admin-filter">
+          <select id="admin-category-filter">
+            <option value="all" data-en="All Categories" data-ar="جميع الفئات">All Categories</option>
+            <option value="HR">HR</option>
+            <option value="Founder" data-en="Founder" data-ar="مؤسس">Founder</option>
+            <option value="Recruiter" data-en="Recruiter" data-ar="مسؤول توظيف">Recruiter</option>
+            <option value="Viewer" data-en="Viewer" data-ar="مشاهد">Viewer</option>
+            <option value="Other" data-en="Other" data-ar="أخرى">Other</option>
+          </select>
+        </div>
+      </div>
       
       <div class="admin-table-container">
         <table class="admin-table">

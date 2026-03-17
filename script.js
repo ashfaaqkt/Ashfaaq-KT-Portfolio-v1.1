@@ -3213,22 +3213,13 @@ function initAuth() {
       const name = document.getElementById('reg-name').value;
       const email = document.getElementById('reg-email').value;
       const phoneNumber = document.getElementById('reg-phone').value;
-      const phoneCode = document.getElementById('reg-phone-code').value || '+91';
-      const phone = `${phoneCode}${phoneNumber}`;
-      
-      let category = document.getElementById('reg-category').value;
-      if (category === 'Other') {
-        category = document.getElementById('reg-category-other').value || 'Other';
-      }
-      
-      const company = document.getElementById('reg-company').value;
-      const pw = document.getElementById('reg-password').value;
-      const errorEl = document.getElementById('reg-error');
-      
-      if (phoneNumber.length !== 10) {
+      if (phoneNumber && phoneNumber.length !== 10) {
         errorEl.textContent = 'Phone number must be exactly 10 digits.';
         return;
       }
+      
+      const phoneCode = document.getElementById('reg-phone-code').value || '+91';
+      const phone = phoneNumber ? `${phoneCode}${phoneNumber}` : '';
       
       errorEl.textContent = 'Registering...';
       try {
@@ -3283,6 +3274,7 @@ function initAuth() {
   }
   
   // Fetch Admin Users
+  let allAdminUsers = [];
   async function fetchAdminDashboard(token) {
     try {
       const res = await fetch(`${API_BASE_URL}/admin/users`, {
@@ -3290,21 +3282,8 @@ function initAuth() {
       });
       const users = await res.json();
       if (res.ok) {
-        const tbody = document.getElementById('admin-users-tbody');
-        tbody.innerHTML = '';
-        users.forEach(u => {
-          const row = document.createElement('tr');
-          const d = new Date(u.createdAt);
-          row.innerHTML = `
-            <td>${d.toLocaleDateString()} ${d.toLocaleTimeString()}</td>
-            <td>${u.name}</td>
-            <td>${u.email}</td>
-            <td>${u.phone || '-'}</td>
-            <td>${u.category}</td>
-            <td>${u.company || '-'}</td>
-          `;
-          tbody.appendChild(row);
-        });
+        allAdminUsers = users;
+        renderAdminUsers(users);
         openModal(dashboardModal);
       } else {
         alert('Failed to load users: ' + users.message);
@@ -3314,6 +3293,44 @@ function initAuth() {
       alert('Error fetching admin dashboard');
     }
   }
+
+  function renderAdminUsers(users) {
+    const tbody = document.getElementById('admin-users-tbody');
+    tbody.innerHTML = '';
+    users.forEach(u => {
+      const row = document.createElement('tr');
+      const d = new Date(u.createdAt);
+      row.innerHTML = `
+        <td>${d.toLocaleDateString()} ${d.toLocaleTimeString()}</td>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.phone || '-'}</td>
+        <td>${u.category}</td>
+        <td>${u.company || '-'}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Admin Search and Filter
+  const adminSearch = document.getElementById('admin-search-input');
+  const adminFilter = document.getElementById('admin-category-filter');
+
+  function applyAdminFilters() {
+    const searchTerm = adminSearch.value.toLowerCase();
+    const filterValue = adminFilter.value;
+
+    const filtered = allAdminUsers.filter(u => {
+      const matchesSearch = u.name.toLowerCase().includes(searchTerm) || 
+                            u.email.toLowerCase().includes(searchTerm);
+      const matchesFilter = filterValue === 'all' || u.category === filterValue;
+      return matchesSearch && matchesFilter;
+    });
+    renderAdminUsers(filtered);
+  }
+
+  if (adminSearch) adminSearch.addEventListener('input', applyAdminFilters);
+  if (adminFilter) adminFilter.addEventListener('change', applyAdminFilters);
 
   // PDF interception moved to global DOMContentLoaded for better reliability
 }
