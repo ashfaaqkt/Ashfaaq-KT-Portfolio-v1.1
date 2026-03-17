@@ -5529,4 +5529,4 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     width: 100%;
     justify-content: center;
   }
-}
+}\n/* Mobile Responsiveness Fine-tuning */\n@media (max-width: 480px) {\n  .auth-modal-content {\n    padding: var(--spacing-lg) var(--spacing-md) !important;\n    width: 95% !important;\n  }\n}
