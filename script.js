@@ -3213,6 +3213,7 @@ function initAuth() {
       const name = document.getElementById('reg-name').value;
       const email = document.getElementById('reg-email').value;
       const phoneNumber = document.getElementById('reg-phone').value;
+      const phoneCode = document.getElementById('reg-phone-code').value || '+91';
       const phone = `${phoneCode}${phoneNumber}`;
       
       let category = document.getElementById('reg-category').value;

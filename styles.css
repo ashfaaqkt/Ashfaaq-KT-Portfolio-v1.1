@@ -3904,11 +3904,17 @@ html[dir="rtl"] .admin-dashboard-close {
 }
 
 .auth-scroll-container {
-  max-height: 400px; /* Fixed height for scrolling */
+  max-height: 450px; /* Increased for better visibility */
   overflow-y: auto;
-  padding-right: 10px; /* Space for scrollbar */
-  padding-bottom: 30px; /* Extra gap after the last field */
+  padding-right: 10px;
+  padding-bottom: 20px;
   margin-bottom: var(--spacing-md);
+}
+
+@media (max-height: 700px) {
+  .auth-scroll-container {
+    max-height: 350px;
+  }
 }
 
 html[dir="rtl"] .auth-scroll-container {
