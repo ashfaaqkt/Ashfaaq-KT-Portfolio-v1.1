@@ -5631,18 +5631,34 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
 }
 
 .auth-modal-content {
-  max-height: 85vh;
+  max-height: 90vh; /* Increased slightly */
   display: flex;
   flex-direction: column;
+}
+
+.auth-form.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Allow shrinking */
 }
 
 .auth-scroll-container {
   overflow-y: auto;
   flex: 1;
   padding-right: 8px;
-  margin: 10px 0;
+  margin: 5px 0; /* Reduced margin */
   scrollbar-width: thin;
   scrollbar-color: var(--color-accent-primary) transparent;
+}
+
+.auth-form-grid {
+  display: grid;
+  gap: var(--spacing-sm); /* Reduced gap */
+}
+
+.auth-form .form-group {
+  margin-bottom: var(--spacing-sm); /* Ensure consistent spacing */
 }
 
 .auth-scroll-container::-webkit-scrollbar {
@@ -5654,22 +5670,14 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   border-radius: 10px;
 }
 
-.auth-form-grid {
-  display: grid;
-  gap: var(--spacing-md);
-}
-
-.auth-form-grid.single-column {
-  grid-template-columns: 1fr;
-}
-
 .auth-error {
-  min-height: 20px;
-  margin-bottom: var(--spacing-md);
+  min-height: 15px; /* Reduced */
+  margin-bottom: var(--spacing-xs); /* Reduced */
+  font-size: 0.85rem;
   flex-shrink: 0;
 }
 
 .auth-modal-content .btn-block {
   flex-shrink: 0;
-  margin-top: auto;
+  margin-top: 5px; /* Minimal margin */
 }
