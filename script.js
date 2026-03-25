@@ -3284,7 +3284,11 @@ function initAuth() {
       const email = document.getElementById('login-email').value;
       const pw = document.getElementById('login-password').value;
       const errorEl = document.getElementById('login-error');
-      errorEl.textContent = 'Logging in...';
+      const submitBtn = formLogin.querySelector('button[type="submit"]');
+      
+      errorEl.textContent = '';
+      submitBtn.classList.add('btn-loading');
+      
       try {
         const res = await fetch(`${API_BASE_URL}/auth/login`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -3305,6 +3309,8 @@ function initAuth() {
         }
       } catch (err) {
         errorEl.textContent = 'Server error. Is the backend running?';
+      } finally {
+        submitBtn.classList.remove('btn-loading');
       }
     });
   }
@@ -3324,7 +3330,10 @@ function initAuth() {
       const phoneCode = document.getElementById('reg-phone-code').value || '+91';
       const phone = phoneNumber ? `${phoneCode}${phoneNumber}` : '';
       
-      errorEl.textContent = 'Registering...';
+      const submitBtn = formRegister.querySelector('button[type="submit"]');
+      errorEl.textContent = '';
+      submitBtn.classList.add('btn-loading');
+      
       try {
         const res = await fetch(`${API_BASE_URL}/auth/register`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -3345,6 +3354,8 @@ function initAuth() {
         }
       } catch (err) {
         errorEl.textContent = 'Server error. Is the backend running?';
+      } finally {
+        submitBtn.classList.remove('btn-loading');
       }
     });
   }
@@ -3356,7 +3367,11 @@ function initAuth() {
       e.preventDefault();
       const pw = document.getElementById('admin-password').value;
       const errorEl = document.getElementById('admin-login-error');
-      errorEl.textContent = 'Authenticating...';
+      const submitBtn = formAdmin.querySelector('button[type="submit"]');
+      
+      errorEl.textContent = '';
+      submitBtn.classList.add('btn-loading');
+      
       try {
         const res = await fetch(`${API_BASE_URL}/admin/login`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -3372,6 +3387,8 @@ function initAuth() {
         }
       } catch (err) {
         errorEl.textContent = 'Server error.';
+      } finally {
+        submitBtn.classList.remove('btn-loading');
       }
     });
   }
