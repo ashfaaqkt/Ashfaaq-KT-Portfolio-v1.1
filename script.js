@@ -3319,6 +3319,7 @@ function initAuth() {
   if (formRegister) {
     formRegister.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const errorEl = document.getElementById('reg-error');
       const name = document.getElementById('reg-name').value;
       const email = document.getElementById('reg-email').value;
       const phoneNumber = document.getElementById('reg-phone').value;
