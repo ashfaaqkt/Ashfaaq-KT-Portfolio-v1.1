@@ -55,10 +55,12 @@
 })();
 
 // ============================================
-// LANGUAGE & TRANSLATIONS SYSTEM
+// LANGUAGE & TRANSLATIONS & THEME
 // ============================================
 
 let currentLanguage = localStorage.getItem('portfolio-language') || 'en';
+const currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
+document.documentElement.setAttribute('data-theme', currentTheme);
 
 // API configuration
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
@@ -528,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize language system
   safeInit('language', initLanguageSystem);
+  safeInit('themeToggle', initThemeToggle);
   safeInit('customCursor', initCustomCursor);
 
   // Initialize in proper order to prevent flicker
@@ -607,6 +610,22 @@ function initCustomCursor() {
     el.addEventListener('mouseleave', () => {
       cursorEl.classList.remove('is-large');
     });
+  });
+}
+
+// ============================================
+// THEME SYSTEM
+// ============================================
+
+function initThemeToggle() {
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  if (!themeToggleBtn) return;
+
+  themeToggleBtn.addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const newTheme = isLight ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('portfolio-theme', newTheme);
   });
 }
 
@@ -2012,6 +2031,48 @@ function populateProjects() {
     });
   }
 
+  // Filter Scroll Buttons Logic
+  const scrollLeftBtn = document.getElementById('filter-scroll-left');
+  const scrollRightBtn = document.getElementById('filter-scroll-right');
+
+  if (projectsFilters && scrollLeftBtn && scrollRightBtn) {
+    const scrollAmount = 200;
+
+    const updateScrollButtons = () => {
+      const maxScroll = projectsFilters.scrollWidth - projectsFilters.clientWidth;
+      if (maxScroll <= 0) {
+        scrollLeftBtn.classList.remove('active');
+        scrollRightBtn.classList.remove('active');
+        return;
+      }
+      
+      const scrollL = projectsFilters.scrollLeft;
+      const isRTLDir = window.getComputedStyle(projectsFilters).direction === 'rtl';
+      
+      if (isRTLDir) {
+        scrollRightBtn.classList.toggle('active', scrollL < 0);
+        scrollLeftBtn.classList.toggle('active', Math.abs(scrollL) < maxScroll - 1);
+      } else {
+        scrollLeftBtn.classList.toggle('active', scrollL > 0);
+        scrollRightBtn.classList.toggle('active', Math.ceil(scrollL) < maxScroll);
+      }
+    };
+
+    scrollLeftBtn.addEventListener('click', () => {
+      projectsFilters.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    scrollRightBtn.addEventListener('click', () => {
+      projectsFilters.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    projectsFilters.addEventListener('scroll', updateScrollButtons);
+    window.addEventListener('resize', updateScrollButtons);
+    
+    // Initial check after categories populate
+    setTimeout(updateScrollButtons, 100);
+  }
+
   if (projectsSearchInput) {
     const placeholderText = isRTL ? projectsSearchInput.getAttribute('data-ar') : projectsSearchInput.getAttribute('data-en');
     if (placeholderText) projectsSearchInput.placeholder = placeholderText;
@@ -2278,6 +2339,48 @@ function populateSkills() {
     });
     skillsFilters.appendChild(filterBtn);
   });
+
+  // Skills Scroll Buttons Logic
+  const scrollLeftBtn = document.getElementById('skills-scroll-left');
+  const scrollRightBtn = document.getElementById('skills-scroll-right');
+
+  if (skillsFilters && scrollLeftBtn && scrollRightBtn) {
+    const scrollAmount = 200;
+
+    const updateScrollButtons = () => {
+      const maxScroll = skillsFilters.scrollWidth - skillsFilters.clientWidth;
+      if (maxScroll <= 0) {
+        scrollLeftBtn.classList.remove('active');
+        scrollRightBtn.classList.remove('active');
+        return;
+      }
+      
+      const scrollL = skillsFilters.scrollLeft;
+      const isRTLDir = window.getComputedStyle(skillsFilters).direction === 'rtl';
+      
+      if (isRTLDir) {
+        scrollRightBtn.classList.toggle('active', scrollL < 0);
+        scrollLeftBtn.classList.toggle('active', Math.abs(scrollL) < maxScroll - 1);
+      } else {
+        scrollLeftBtn.classList.toggle('active', scrollL > 0);
+        scrollRightBtn.classList.toggle('active', Math.ceil(scrollL) < maxScroll);
+      }
+    };
+
+    scrollLeftBtn.addEventListener('click', () => {
+      skillsFilters.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    scrollRightBtn.addEventListener('click', () => {
+      skillsFilters.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    skillsFilters.addEventListener('scroll', updateScrollButtons);
+    window.addEventListener('resize', updateScrollButtons);
+    
+    // Initial check after categories populate
+    setTimeout(updateScrollButtons, 100);
+  }
 
   // Create skill cards
   skillsData.all.forEach((skillGroup, index) => {

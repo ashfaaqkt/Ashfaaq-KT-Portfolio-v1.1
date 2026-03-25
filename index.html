@@ -66,6 +66,22 @@
       </div>
 
       <div class="nav-actions">
+        <button class="theme-toggle nav-icon-btn" id="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
         <div class="cv-dropdown-container">
           <button class="nav-cta-btn" id="cv-dropdown-toggle" aria-label="CV Options" aria-expanded="false">
             <span data-en="Menu" data-ar="قائمة">Menu</span>
@@ -367,8 +383,16 @@
             </svg>
             <input type="text" id="projects-search-input" placeholder="Search projects..." data-en="Search projects..." data-ar="البحث في المشاريع..." />
           </div>
-          <div class="projects-filters" id="projects-filters">
-            <!-- Dynamically populated -->
+          <div class="projects-filters-wrapper" id="projects-filters-wrapper">
+            <button class="filter-scroll-btn filter-scroll-left" id="filter-scroll-left" aria-label="Scroll left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="projects-filters" id="projects-filters">
+              <!-- Dynamically populated -->
+            </div>
+            <button class="filter-scroll-btn filter-scroll-right" id="filter-scroll-right" aria-label="Scroll right">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
           </div>
         </div>
 
@@ -398,8 +422,16 @@
         </div>
 
         <div class="skills-section">
-          <div class="skills-filters" id="skills-filters">
-            <!-- Dynamically populated -->
+          <div class="skills-filters-wrapper" id="skills-filters-wrapper">
+            <button class="filter-scroll-btn filter-scroll-left" id="skills-scroll-left" aria-label="Scroll left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="skills-filters" id="skills-filters">
+              <!-- Dynamically populated -->
+            </div>
+            <button class="filter-scroll-btn filter-scroll-right" id="skills-scroll-right" aria-label="Scroll right">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
           </div>
           <div class="skills-grid" id="skills-grid">
             <!-- Dynamically populated -->
