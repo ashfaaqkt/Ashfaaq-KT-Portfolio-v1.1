@@ -3330,6 +3330,13 @@ function initAuth() {
       const phoneCode = document.getElementById('reg-phone-code').value || '+91';
       const phone = phoneNumber ? `${phoneCode}${phoneNumber}` : '';
       
+      const categoryVal = document.getElementById('reg-category').value;
+      const categoryOther = document.getElementById('reg-category-other').value;
+      const category = categoryVal === 'Other' ? categoryOther : categoryVal;
+      
+      const company = document.getElementById('reg-company').value;
+      const pw = document.getElementById('reg-password').value;
+      
       const submitBtn = formRegister.querySelector('button[type="submit"]');
       errorEl.textContent = '';
       submitBtn.classList.add('btn-loading');
