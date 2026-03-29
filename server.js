@@ -5,10 +5,26 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
+const connectDB = require('./lib/db');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Database connection middleware (Ensures connection before processing any API route)
+app.use(async (req, res, next) => {
+  if (req.url.startsWith('/api')) {
+    try {
+      await connectDB();
+      next();
+    } catch (err) {
+      console.error('Database connection failed:', err);
+      return res.status(500).json({ message: 'Database connection failed' });
+    }
+  } else {
+    next();
+  }
+});
 const path = require('path');
 
 // Serve static files from the current directory (the portfolio root)
@@ -18,10 +34,9 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db')
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+
+// Connect to MongoDB (initial connection for non-API routes if needed)
+// Inline mongoose.connect removed in favor of connectDB middleware
 
 // --- Auth Routes ---
 
