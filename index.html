@@ -214,15 +214,33 @@
     <section class="page active" id="page-home" data-page="home">
       <div class="page-inner">
         <div class="hero-section">
-          <div class="hero-content">
-            <p class="hero-greeting" data-animate="fade-up" data-delay="0">Hello I Am</p>
 
-            <h1 class="hero-title">
-              <span class="title-line cursor-highlight-target" data-animate="fade-up" data-delay="100">ASHFAAQ FEROZ
-                MUHAMMAD</span>
+          <!-- ── Left: Content ── -->
+          <div class="hero-content">
+
+            <!-- Status badge -->
+            <div class="hero-badge" data-animate="fade-up" data-delay="0">
+              <span class="hero-badge-dot"></span>
+              <span data-en="Open to opportunities" data-ar="متاح للفرص">Open to opportunities</span>
+            </div>
+
+            <p class="hero-greeting" data-animate="fade-up" data-delay="60">Hello I Am</p>
+
+            <h1 class="hero-title" data-animate="fade-up" data-delay="120">
+              <span class="title-line cursor-highlight-target">ASHFAAQ FEROZ MUHAMMAD</span>
             </h1>
 
-            <p class="hero-degree" data-animate="fade-up" data-delay="200">BSc. CS - BITS PILANI</p>
+            <!-- Role pills -->
+            <div class="hero-roles" data-animate="fade-up" data-delay="180">
+              <span class="hero-role-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                AI Developer
+              </span>
+              <span class="hero-role-pill">Full-Stack</span>
+              <span class="hero-role-pill">UI / UX</span>
+            </div>
+
+            <p class="hero-degree" data-animate="fade-up" data-delay="230">BSc. CS - BITS PILANI</p>
 
             <p class="hero-description" data-animate="fade-up" data-delay="300">
               Tech-driven developer with expertise in MERN full-stack development, cloud integration, UI/UX design,
@@ -231,29 +249,40 @@
               I combine AI-assisted workflows with hands-on development to create efficient, modern software solutions.
             </p>
 
-            <div class="hero-stats" data-animate="fade-up" data-delay="400">
+            <!-- Stats: 2 × 2 card grid -->
+            <div class="hero-stats" data-animate="fade-up" data-delay="380">
               <div class="stat-item">
+                <div class="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+                </div>
                 <div class="stat-value">7.81</div>
                 <div class="stat-label">CGPA</div>
               </div>
-              <div class="stat-divider"></div>
               <div class="stat-item">
+                <div class="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
                 <div class="stat-value">2026</div>
                 <div class="stat-label">Graduation</div>
               </div>
-              <div class="stat-divider"></div>
               <div class="stat-item">
+                <div class="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
                 <div class="stat-value">3+</div>
                 <div class="stat-label">Languages</div>
               </div>
-              <div class="stat-divider"></div>
               <div class="stat-item">
+                <div class="stat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
                 <div class="stat-value">20+</div>
                 <div class="stat-label">Projects</div>
               </div>
             </div>
 
-            <div class="hero-actions" data-animate="fade-up" data-delay="500">
+            <!-- CTA buttons -->
+            <div class="hero-actions" data-animate="fade-up" data-delay="460">
               <button type="button" class="btn btn-primary" id="portfolio-summary-btn">
                 <span>View Summary</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -263,23 +292,47 @@
               <a href="#projects" class="btn btn-secondary">
                 <span>View Projects</span>
               </a>
+              <a href="#connect" class="btn btn-ghost" onclick="navigateToPage('connect'); return false;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span data-en="Hire Me" data-ar="وظفني">Hire Me</span>
+              </a>
             </div>
+
           </div>
 
-          <div class="hero-visual" data-animate="fade-in" data-delay="500">
+          <!-- ── Right: Visual ── -->
+          <div class="hero-visual" data-animate="fade-in" data-delay="300">
             <div class="profile-container">
               <div class="profile-glow"></div>
+              <div class="profile-ring ring-1"></div>
+              <div class="profile-ring ring-2"></div>
               <div class="profile-frame">
                 <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq KT" class="profile-image" id="profile-image" />
               </div>
-              <div class="profile-decoration decoration-1"></div>
-              <div class="profile-decoration decoration-2"></div>
+              <!-- Floating skill chips -->
+              <div class="profile-chip chip-1">
+                <span class="chip-dot" style="background:#61dafb"></span>React
+              </div>
+              <div class="profile-chip chip-2">
+                <span class="chip-dot" style="background:#68a063"></span>Node.js
+              </div>
+              <div class="profile-chip chip-3">
+                <span class="chip-dot" style="background:#8b5cf6"></span>AI Dev
+              </div>
+              <div class="profile-chip chip-4">
+                <span class="chip-dot" style="background:#f59e0b"></span>UI / UX
+              </div>
             </div>
           </div>
 
+          <!-- Quote -->
           <blockquote class="hero-quote" data-animate="fade-up" data-delay="600">
             <p> So Give Me Coffee And Codes... </p>
           </blockquote>
+
         </div>
       </div>
     </section>
