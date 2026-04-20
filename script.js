@@ -5,34 +5,62 @@
 // ============================================
 // PDF SHIELD (CRITICAL - ATTACHED IMMEDIATELY)
 // ============================================
+
+// Fetches a protected PDF via Authorization header and opens it as a blob URL.
+// Defined on window so the IIFE shield and post-login handlers can both call it.
+window.openProtectedPDF = async function(pdfUrl, token) {
+  try {
+    const response = await fetch(pdfUrl, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (response.status === 401) {
+      // Token expired — clear auth state and prompt re-login
+      localStorage.removeItem('portfolio_token');
+      localStorage.removeItem('portfolio_user');
+      window.pendingPdfLink = pdfUrl;
+      if (typeof window.openAuthModal === 'function') window.openAuthModal('login');
+      return;
+    }
+    if (!response.ok) {
+      console.error('PDF Shield: server rejected request', response.status);
+      return;
+    }
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+  } catch (err) {
+    console.error('PDF Shield: failed to load PDF', err);
+  }
+};
+
 (function() {
   const handleGlobalClick = (e) => {
     const link = e.target.closest('a');
     if (!link || !link.href) return;
-    
+
     const url = link.href.toLowerCase();
     const isPDF = url.includes('.pdf');
-    
+
     if (isPDF) {
       // LOCKED if it's NOT in /OCC/ or explicitly whitelisted
       // EXCEPT for specific high school/AIU certificates which should ALWAYS be locked
-      const isCertificate = (url.includes('/occ/') || link.classList.contains('certificate-link')) && 
-                            !url.includes('hscertificate') && 
+      const isCertificate = (url.includes('/occ/') || link.classList.contains('certificate-link')) &&
+                            !url.includes('hscertificate') &&
                             !url.includes('high%20school') &&
                             !url.includes('aiu%20certificate');
-      
+
       if (!isCertificate) {
+        // Always intercept — authenticated users also go through the secure fetch path
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
         const token = localStorage.getItem('portfolio_token');
         const isValid = token && token !== 'null' && token !== 'undefined' && token.length > 20;
-        
+
         if (!isValid) {
           console.warn('PDF Shield: Blocked unauthenticated access to', url);
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          
           window.pendingPdfLink = link.href;
-          
           if (typeof window.openAuthModal === 'function') {
             window.openAuthModal('signup');
           } else {
@@ -44,7 +72,9 @@
               document.documentElement.classList.add('no-scroll');
             }
           }
-          return false;
+        } else {
+          // Authenticated — open via secure backend route (sends JWT, gets blob)
+          window.openProtectedPDF(link.href, token);
         }
       }
     }
@@ -3300,9 +3330,11 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
-          if (pendingPdfLink) {
-            window.open(pendingPdfLink, '_blank');
+          const pdfToOpen = pendingPdfLink || window.pendingPdfLink;
+          if (pdfToOpen) {
+            window.openProtectedPDF(pdfToOpen, data.token);
             pendingPdfLink = null;
+            window.pendingPdfLink = null;
           }
         } else {
           errorEl.textContent = data.message;
@@ -3353,9 +3385,11 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
-          if (pendingPdfLink) {
-            window.open(pendingPdfLink, '_blank');
+          const pdfToOpen = pendingPdfLink || window.pendingPdfLink;
+          if (pdfToOpen) {
+            window.openProtectedPDF(pdfToOpen, data.token);
             pendingPdfLink = null;
+            window.pendingPdfLink = null;
           }
         } else {
           errorEl.textContent = data.message;
@@ -3367,7 +3401,7 @@ function initAuth() {
       }
     });
   }
-  
+
   // Form Submit Admin Login
   const formAdmin = document.getElementById('form-admin-login');
   if (formAdmin) {

@@ -4,12 +4,17 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const User = require('./models/User');
 const connectDB = require('./lib/db');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const PORT = process.env.PORT || 5000;
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 
 // Database connection middleware (Ensures connection before processing any API route)
 app.use(async (req, res, next) => {
@@ -25,18 +30,53 @@ app.use(async (req, res, next) => {
     next();
   }
 });
-const path = require('path');
 
-// Serve static files from the current directory (the portfolio root)
+// --- Token verification middleware ---
+
+const verifyToken = (req, res, next) => {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied. Please log in.' });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Session expired. Please log in again.' });
+  }
+};
+
+// --- Protected PDF routes (MUST be before express.static) ---
+
+const PROTECTED_FOLDERS = ['BITS', 'CV', 'HSCertificate'];
+
+app.get('/:folder/:filename', (req, res, next) => {
+  const { folder } = req.params;
+  // Only intercept protected folders; let everything else fall through to static
+  if (!PROTECTED_FOLDERS.includes(folder)) return next();
+
+  verifyToken(req, res, () => {
+    // Sanitize filename to prevent path traversal
+    const safeFilename = path.basename(req.params.filename);
+    const folderPath = path.join(__dirname, folder);
+    const filePath = path.join(folderPath, safeFilename);
+
+    // Double-check the resolved path stays inside the intended folder
+    if (!filePath.startsWith(folderPath + path.sep) && filePath !== folderPath) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error('File send error:', err);
+        res.status(404).json({ message: 'File not found' });
+      }
+    });
+  });
+});
+
+// Serve all other static files (HTML, CSS, JS, images, OCC PDFs, etc.)
 app.use(express.static(__dirname));
-
-const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
-
-
-// Connect to MongoDB (initial connection for non-API routes if needed)
-// Inline mongoose.connect removed in favor of connectDB middleware
 
 // --- Auth Routes ---
 
@@ -44,7 +84,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, phone, category, company, password } = req.body;
-    
+
     // Check if user already exists
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'User already exists' });
@@ -73,7 +113,7 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
@@ -93,7 +133,6 @@ app.post('/api/auth/login', async (req, res) => {
 app.post('/api/admin/login', (req, res) => {
   const { password } = req.body;
   if (password === ADMIN_PASSWORD) {
-    // Return an admin token
     const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
     return res.json({ token });
   } else {
