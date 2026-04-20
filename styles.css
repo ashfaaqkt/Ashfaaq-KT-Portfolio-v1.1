@@ -38,6 +38,11 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
+  /* Nav heights */
+  --nav-top-height: 80px;
+  --sub-nav-height: 44px;
+  --nav-total-height: calc(var(--nav-top-height) + var(--sub-nav-height));
+
   /* Effects */
   --blur-sm: blur(8px);
   --blur-md: blur(16px);
@@ -88,13 +93,43 @@
 
 [data-theme="light"] .main-nav {
   background: rgba(226, 232, 240, 0.85); /* Darker background in light mode */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .sub-nav {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .nav-toggle {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="light"] .nav-toggle:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.06);
 }
 
 [data-theme="light"] .main-nav.scrolled {
   background: rgba(226, 232, 240, 0.95);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 1167px) {
+  [data-theme="light"] .sub-nav {
+    background: rgba(240, 245, 252, 0.98);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+  }
+
+  [data-theme="light"] .sub-nav .nav-link {
+    border-color: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  [data-theme="light"] .sub-nav .nav-link.active,
+  [data-theme="light"] .sub-nav .nav-link:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.07);
+  }
 }
 
 [data-theme="light"] .main-footer {
@@ -377,17 +412,16 @@ html[dir="rtl"] .nav-brand {
   flex-direction: row;
 }
 
-html[dir="rtl"] .nav-menu {
+html[dir="rtl"] .sub-nav {
   /* Reverse nav links order for RTL: Connect, Expertise, Projects, Education, About, Home */
   flex-direction: row-reverse;
   direction: rtl;
-  display: flex;
 }
 
-html[dir="rtl"] .nav-menu .nav-link {
+html[dir="rtl"] .sub-nav .nav-link {
   /* Ensure individual links maintain RTL text direction */
   direction: rtl;
-  text-align: center;
+  flex-direction: row-reverse;
 }
 
 /* Explicitly reverse order of nav links in RTL using order property */
@@ -1358,9 +1392,7 @@ html[dir="rtl"] .profile-container:hover .profile-image {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 0 20px 20px;
-  /* slightly more rounded */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(0);
 }
@@ -1475,14 +1507,25 @@ html[dir="rtl"] .profile-container:hover .profile-image {
   }
 }
 
-.nav-menu {
+/* ============================================
+   SUB-NAVBAR (Desktop: horizontal bar below brand row)
+   ============================================ */
+
+.sub-nav {
   display: flex;
-  gap: var(--spacing-sm);
+  justify-content: center;
   align-items: center;
+  gap: 4px;
+  padding: 6px var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ---- Nav link: icon + text row ---- */
 .nav-link {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
   padding: var(--spacing-xs) var(--spacing-md);
   text-decoration: none;
   color: var(--color-text-secondary);
@@ -1491,6 +1534,13 @@ html[dir="rtl"] .profile-container:hover .profile-image {
   transition: all 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
+}
+
+.nav-link-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
 }
 
 .nav-link::before {
@@ -1892,20 +1942,44 @@ html[dir="rtl"] .cv-dropdown-pdf-icon {
 
 .nav-toggle {
   display: none;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
   background: transparent;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   cursor: pointer;
-  padding: var(--spacing-xs);
+  padding: 7px;
+  width: 38px;
+  height: 38px;
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
 }
 
-.nav-toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--gradient-blue-black);
-  border-radius: 2px;
-  transition: all 0.3s ease;
+.nav-toggle:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  color: var(--color-text-primary);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.nav-toggle .icon-grid,
+.nav-toggle .icon-close {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Default: show grid, hide X */
+.nav-toggle .icon-close {
+  display: none;
+}
+
+/* Active: hide grid, show X */
+.nav-toggle.active .icon-grid {
+  display: none;
+}
+
+.nav-toggle.active .icon-close {
+  display: block;
 }
 
 /* ============================================
@@ -1915,14 +1989,14 @@ html[dir="rtl"] .cv-dropdown-pdf-icon {
 .main-content {
   position: relative;
   z-index: 1;
-  padding-top: 80px;
-  min-height: calc(100vh - 80px);
+  padding-top: var(--nav-total-height);
+  min-height: calc(100vh - var(--nav-total-height));
 }
 
 .page {
   /* Show all sections so the site is a single long-scrolling page */
   display: block;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - var(--nav-total-height));
   padding: var(--spacing-2xl) var(--spacing-lg);
 }
 
@@ -5185,18 +5259,14 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   /* Site-wide Tablet/Mobile styles consolidated */
 
   /* Navigation Mobile */
-  html[dir="rtl"] .nav-menu {
-    flex-direction: column-reverse !important;
+  html[dir="rtl"] .sub-nav {
     direction: rtl;
-    text-align: center;
-    align-items: center;
   }
 
-  html[dir="rtl"] .nav-link {
-    text-align: center;
+  html[dir="rtl"] .sub-nav .nav-link {
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: auto;
-    display: inline-flex;
   }
 
   /* Hero Section Mobile */
@@ -5242,30 +5312,92 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     left: calc(var(--spacing-lg) + 4px);
   }
 
-  .nav-menu {
-    position: absolute; /* Changed from fixed */
-    top: 100%; /* Changed to align perfectly with navbar bottom */
+  /* Sub-nav: hidden by default, slides down on open */
+  .sub-nav {
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     background: rgba(10, 14, 26, 0.98);
     backdrop-filter: var(--blur-lg);
-    flex-direction: column;
-    padding: var(--spacing-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border-top: none;
     border-bottom: 1px solid var(--color-border);
-    transform: translateY(-100%);
+    border-radius: 0 0 20px 20px;
+    padding: var(--spacing-md);
+    /* 2×3 grid layout */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: -1;
   }
 
-  .nav-menu.open {
+  .sub-nav.open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+    z-index: 999;
+  }
+
+  /* Nav links become card-style boxes in the 2×3 grid */
+  .sub-nav .nav-link {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 18px 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    text-align: center;
+    min-height: 88px;
+    overflow: hidden;
+  }
+
+  .sub-nav .nav-link::before {
+    border-radius: 12px;
+  }
+
+  .sub-nav .nav-link-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .sub-nav .nav-link-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  /* Active / hover box styles */
+  .sub-nav .nav-link.active,
+  .sub-nav .nav-link:hover {
+    border-color: rgba(59, 130, 246, 0.35);
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--color-text-primary);
+  }
+
+  /* Hide the bottom indicator line inside grid boxes */
+  .sub-nav .nav-link-indicator {
+    display: none;
   }
 
   .nav-toggle {
     display: flex;
+  }
+
+  /* On mobile, sub-nav is absolute so main-content only needs top-nav height */
+  .main-content {
+    padding-top: var(--nav-top-height);
+    min-height: calc(100vh - var(--nav-top-height));
+  }
+
+  .page {
+    min-height: calc(100vh - var(--nav-top-height));
   }
 
   .nav-actions {

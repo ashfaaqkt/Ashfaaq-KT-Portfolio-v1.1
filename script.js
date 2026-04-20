@@ -689,7 +689,7 @@ function initNavigation() {
         }
 
         // Scrollspy: update active nav item based on current section in view
-        const navHeight = 80; // keep in sync with navigateToPage
+        const navHeight = nav?.offsetHeight || 80;
         const scrollPosition = currentScroll + navHeight + 1;
         let newActiveId = activeSectionId;
 
@@ -778,7 +778,7 @@ function navigateToPage(pageId) {
   }
 
   // Smooth scroll to the corresponding section instead of hiding/showing pages
-  const navHeight = 80; // approximate fixed nav height
+  const navHeight = document.getElementById('main-nav')?.offsetHeight || 80;
   const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
 
   window.scrollTo({
