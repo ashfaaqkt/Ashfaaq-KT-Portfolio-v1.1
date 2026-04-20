@@ -159,7 +159,8 @@ const translations = {
             { text: 'SEM 1 Grades', href: 'BITS/SEM1.pdf' },
             { text: 'SEM 2 Grades', href: 'BITS/SEM2.pdf' },
             { text: 'SEM 3 Grades', href: 'BITS/SEM3.pdf' },
-            { text: 'SEM 4 Grades', href: 'BITS/SEM4.pdf' }
+            { text: 'SEM 4 Grades', href: 'BITS/SEM4.pdf' },
+            { text: 'SEM 5 Grades', href: 'BITS/SEM5.pdf' }
           ]
         },
         {
@@ -378,7 +379,8 @@ const translations = {
             { text: 'درجات الفصل الأول', href: 'BITS/SEM1.pdf' },
             { text: 'درجات الفصل الثاني', href: 'BITS/SEM2.pdf' },
             { text: 'درجات الفصل الثالث', href: 'BITS/SEM3.pdf' },
-            { text: 'درجات الفصل الرابع', href: 'BITS/SEM4.pdf' }
+            { text: 'درجات الفصل الرابع', href: 'BITS/SEM4.pdf' },
+            { text: 'درجات الفصل الخامس', href: 'BITS/SEM5.pdf' }
           ]
         },
         {
