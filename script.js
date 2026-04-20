@@ -665,6 +665,18 @@ function initThemeToggle() {
 // NAVIGATION SYSTEM
 // ============================================
 
+// Sync the real nav height into --nav-total-height so padding-top is exact.
+// On mobile the sub-nav is absolute, so offsetHeight returns only the top row.
+function syncNavHeight() {
+  const nav = document.getElementById('main-nav');
+  if (!nav) return;
+  document.documentElement.style.setProperty('--nav-total-height', nav.offsetHeight + 'px');
+}
+// Run immediately and on every resize/font-load
+syncNavHeight();
+window.addEventListener('resize', syncNavHeight, { passive: true });
+document.fonts?.ready?.then(syncNavHeight);
+
 function initNavigation() {
   const nav = document.getElementById('main-nav');
   const navToggle = document.getElementById('nav-toggle');
