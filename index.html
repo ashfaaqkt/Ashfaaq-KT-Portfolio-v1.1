@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ashfaaq KT | Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="PP/akl.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -125,17 +126,6 @@
               </a>
             </div>
 
-            <div class="cv-dropdown-group cv-lang-group">
-              <button class="nav-icon-btn lang-toggle" id="lang-toggle" aria-label="Toggle Language"
-                title="Switch to Arabic / التبديل إلى العربية" type="button">
-                <svg class="lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path
-                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-                <span class="lang-toggle-label" data-en="العربية" data-ar="English">العربية</span>
-              </button>
-            </div>
           </div>
         </div>
         <!-- Modern nav toggle: 2×3 dot grid → X -->
@@ -205,6 +195,19 @@
         <span class="nav-link-text">Connect</span>
         <span class="nav-link-indicator"></span>
       </a>
+
+      <!-- Language toggle — divider then button -->
+      <div class="sub-nav-divider" aria-hidden="true"></div>
+      <button class="nav-link sub-nav-lang" id="lang-toggle"
+        aria-label="Toggle Language"
+        title="Switch to Arabic / التبديل إلى العربية"
+        type="button">
+        <svg class="nav-link-icon lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span class="nav-link-text lang-toggle-label" data-en="العربية" data-ar="English">العربية</span>
+      </button>
     </div>
   </nav>
 
@@ -218,27 +221,11 @@
           <!-- ── Left: Content ── -->
           <div class="hero-content">
 
-            <!-- Status badge -->
-            <div class="hero-badge" data-animate="fade-up" data-delay="0">
-              <span class="hero-badge-dot"></span>
-              <span data-en="Open to opportunities" data-ar="متاح للفرص">Open to opportunities</span>
-            </div>
-
-            <p class="hero-greeting" data-animate="fade-up" data-delay="60">Hello I Am</p>
+              <p class="hero-greeting" data-animate="fade-up" data-delay="60">Hello I Am</p>
 
             <h1 class="hero-title" data-animate="fade-up" data-delay="120">
               <span class="title-line cursor-highlight-target">ASHFAAQ FEROZ MUHAMMAD</span>
             </h1>
-
-            <!-- Role pills -->
-            <div class="hero-roles" data-animate="fade-up" data-delay="180">
-              <span class="hero-role-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                AI Developer
-              </span>
-              <span class="hero-role-pill">Full-Stack</span>
-              <span class="hero-role-pill">UI / UX</span>
-            </div>
 
             <p class="hero-degree" data-animate="fade-up" data-delay="230">BSc. CS - BITS PILANI</p>
 
@@ -312,29 +299,70 @@
               <div class="profile-frame">
                 <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq KT" class="profile-image" id="profile-image" />
               </div>
-              <!-- Floating skill chips -->
-              <div class="profile-chip chip-1">
-                <span class="chip-dot" style="background:#61dafb"></span>React
+              <!-- Floating tech icon chips -->
+              <div class="profile-chip chip-pos-1" title="GitHub" aria-label="GitHub">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" class="chip-icon-img icon-dark">
               </div>
-              <div class="profile-chip chip-2">
-                <span class="chip-dot" style="background:#68a063"></span>Node.js
+              <div class="profile-chip chip-pos-2" title="JavaScript" aria-label="JavaScript">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" class="chip-icon-img">
               </div>
-              <div class="profile-chip chip-3">
-                <span class="chip-dot" style="background:#8b5cf6"></span>AI Dev
+              <div class="profile-chip chip-pos-3" title="VS Code" aria-label="VS Code">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" class="chip-icon-img">
               </div>
-              <div class="profile-chip chip-4">
-                <span class="chip-dot" style="background:#f59e0b"></span>UI / UX
+              <div class="profile-chip chip-pos-4" title="Node.js" aria-label="Node.js">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-5" title="Docker" aria-label="Docker">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-6" title="AWS" aria-label="AWS">
+                <svg class="chip-icon-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <text x="12" y="13" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-size="7.5" fill="#FF9900">aws</text>
+                  <path d="M4.5 18.5 Q12 22 19.5 18.5" stroke="#FF9900" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+                  <path d="M17.6 16.7 L19.5 18.5 L17.6 20.3" stroke="#FF9900" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <div class="profile-chip chip-pos-7" title="Python" aria-label="Python">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-8" title="Linux" aria-label="Linux">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="Linux" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-9" title="MongoDB" aria-label="MongoDB">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-10" title="HTML5" aria-label="HTML5">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-11" title="CSS3" aria-label="CSS3">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-12" title="C" aria-label="C">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" alt="C" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-13" title="Tableau" aria-label="Tableau">
+                <svg class="chip-icon-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <!-- Tableau cross-bar logo -->
+                  <rect x="10" y="1.5" width="4" height="21" rx="1.5" fill="#E97627"/>
+                  <rect x="1.5" y="10" width="21" height="4" rx="1.5" fill="#E97627"/>
+                  <rect x="10" y="5" width="4" height="3" rx="1" fill="#fff" opacity="0.25"/>
+                  <rect x="10" y="16" width="4" height="3" rx="1" fill="#fff" opacity="0.25"/>
+                  <rect x="5" y="10" width="3" height="4" rx="1" fill="#fff" opacity="0.25"/>
+                  <rect x="16" y="10" width="3" height="4" rx="1" fill="#fff" opacity="0.25"/>
+                </svg>
               </div>
             </div>
           </div>
 
-          <!-- Quote -->
-          <blockquote class="hero-quote" data-animate="fade-up" data-delay="600">
-            <p> So Give Me Coffee And Codes... </p>
-          </blockquote>
-
         </div>
       </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+      <blockquote class="hero-quote" data-animate="fade-up" data-delay="0">
+        <p data-en="So Give Me Coffee And Codes..." data-ar="فقط أعطني القهوة والأكواد...">So Give Me Coffee And Codes...</p>
+      </blockquote>
     </section>
 
     <!-- Page: About -->

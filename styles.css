@@ -38,8 +38,8 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Nav heights */
-  --nav-top-height: 80px;
+  /* Nav heights — top row: 60px logo + 2×24px padding = 108px */
+  --nav-top-height: 108px;
   --sub-nav-height: 44px;
   --nav-total-height: calc(var(--nav-top-height) + var(--sub-nav-height));
 
@@ -485,6 +485,15 @@ html[dir="rtl"] .nav-link[data-page="expertise"] {
 
 html[dir="rtl"] .nav-link[data-page="connect"] {
   order: 1;
+}
+
+/* Keep divider + lang toggle after all nav links in RTL flex */
+html[dir="rtl"] .sub-nav-divider {
+  order: 7;
+}
+
+html[dir="rtl"] .sub-nav .sub-nav-lang {
+  order: 8;
 }
 
 /* Mobile menu RTL */
@@ -1506,6 +1515,35 @@ html[dir="rtl"] .profile-container:hover .profile-image {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ---- Sub-nav divider ---- */
+.sub-nav-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 1px;
+  flex-shrink: 0;
+  margin: 0 4px;
+}
+
+[data-theme="light"] .sub-nav-divider {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+/* ---- Sub-nav language toggle ---- */
+.sub-nav-lang {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sub-nav-lang .lang-icon {
+  transition: transform 0.3s ease;
+}
+
+.sub-nav-lang:hover .lang-icon {
+  transform: rotate(15deg);
+}
+
 /* ---- Nav link: icon + text row ---- */
 .nav-link {
   position: relative;
@@ -1849,9 +1887,6 @@ html[dir="rtl"] .profile-container:hover .profile-image {
   transition: all 0.3s ease;
 }
 
-.cv-lang-group {
-  margin-top: calc(var(--spacing-sm) * -0.5);
-}
 
 .cv-dropdown-item:hover .cv-dropdown-pdf-icon {
   opacity: 1;
@@ -1902,29 +1937,6 @@ html[dir="rtl"] .cv-dropdown-pdf-icon {
   margin-right: 0;
 }
 
-/* Language selector alignment inside dropdown */
-.cv-dropdown-menu .lang-toggle {
-  width: 100%;
-  justify-content: flex-start;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid transparent;
-  border-radius: 8px;
-  gap: var(--spacing-sm);
-  height: auto;
-}
-
-.cv-dropdown-menu .lang-toggle:hover {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: translateX(4px);
-}
-
-.cv-dropdown-menu .lang-toggle-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--color-text-primary);
-}
 
 .nav-toggle {
   display: none;
@@ -2059,8 +2071,11 @@ html[dir="rtl"] .cv-dropdown-pdf-icon {
   padding: 0;
 }
 
-#page-home .hero-section {
-  padding-top: 0;
+/* Desktop only — mobile overrides below with sufficient specificity */
+@media (min-width: 1168px) {
+  #page-home .hero-section {
+    padding-top: 0;
+  }
 }
 
 /* ── Status badge ── */
@@ -2127,7 +2142,11 @@ html[dir="rtl"] .cv-dropdown-pdf-icon {
   background-clip: text;
 }
 
-/* Arabic name */
+/* Arabic name — larger size + Reem Kufi */
+html[dir="rtl"] .hero-title {
+  font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+}
+
 html[dir="rtl"] .hero-title .title-line {
   font-family: 'Reem Kufi', sans-serif;
   direction: rtl;
@@ -2139,35 +2158,6 @@ html[dir="rtl"] .hero-title .title-line {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-/* ── Role pills ── */
-.hero-roles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.hero-role-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 12px;
-  background: rgba(59, 130, 246, 0.08);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 50px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--color-accent-primary);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.hero-role-pill svg {
-  width: 11px;
-  height: 11px;
-  flex-shrink: 0;
 }
 
 /* ── Degree ── */
@@ -2305,19 +2295,87 @@ html[dir="rtl"] .hero-title .title-line {
   background: rgba(59, 130, 246, 0.06);
 }
 
+/* ── Hire Me: live animated background ── */
+.hero-actions .btn-ghost {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #1a1a4e, #0f3460, #533483);
+  background-size: 400% 400%;
+  animation: hireBgShift 5s ease infinite, hireGlow 2.5s ease-in-out infinite alternate;
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep */
+.hero-actions .btn-ghost::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -70%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transform: skewX(-18deg);
+  animation: hireShimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-actions .btn-ghost:hover {
+  animation: hireBgShift 2.5s ease infinite, hireGlowHover 0.4s ease forwards;
+  border-color: rgba(139, 92, 246, 0.8);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+[data-theme="light"] .hero-actions .btn-ghost {
+  background: linear-gradient(135deg, #667eea, #764ba2, #6b48ff, #a855f7, #667eea);
+  background-size: 400% 400%;
+  border-color: rgba(139, 92, 246, 0.6);
+  color: #fff;
+}
+
+@keyframes hireBgShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes hireGlow {
+  from { box-shadow: 0 0 8px rgba(99, 102, 241, 0.35), 0 0 18px rgba(99, 102, 241, 0.15); }
+  to   { box-shadow: 0 0 18px rgba(139, 92, 246, 0.65), 0 0 36px rgba(139, 92, 246, 0.3), 0 0 55px rgba(168, 85, 247, 0.2); }
+}
+
+@keyframes hireGlowHover {
+  to   { box-shadow: 0 0 24px rgba(139, 92, 246, 0.85), 0 0 48px rgba(139, 92, 246, 0.45); }
+}
+
+@keyframes hireShimmer {
+  0%   { left: -70%; }
+  60%  { left: 130%; }
+  100% { left: 130%; }
+}
+
 .hero-quote {
-  grid-column: 1 / -1;
   margin: 0 auto;
-  padding: 10px var(--spacing-2xl);
+  padding: var(--spacing-xl) var(--spacing-2xl);
   text-align: center;
   width: 100%;
   max-width: 860px;
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   display: block;
-  justify-self: center;
-  align-self: end;
+}
+
+/* Standalone quote section wrapper — transparent like the home section */
+.quote-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+[data-theme="light"] .quote-section {
+  background: transparent;
 }
 
 .hero-quote::before {
@@ -2535,38 +2593,60 @@ html[dir="rtl"] .hero-quote p {
   to   { transform: rotate(360deg); }
 }
 
-/* Floating skill chips */
+/* Floating tech icon chips — circular, icon-only */
 .profile-chip {
   position: absolute;
-  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 13px 6px 10px;
+  justify-content: center;
   background: rgba(10, 14, 26, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  white-space: nowrap;
   z-index: 4;
-  letter-spacing: 0.03em;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  cursor: default;
+  transition: box-shadow 0.2s ease, z-index 0s;
 }
 
-.chip-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.profile-chip:hover {
+  animation-play-state: paused;
+  transform: scale(1.22) !important;
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.45);
+  z-index: 10;
 }
 
-.chip-1 { top: 8%;   right: -26px; animation: float-chip 4.0s ease-in-out infinite; }
-.chip-2 { bottom: 24%; right: -30px; animation: float-chip 4.6s ease-in-out 0.8s infinite; }
-.chip-3 { top: 36%;  left: -28px;  animation: float-chip 5.2s ease-in-out 0.4s infinite; }
-.chip-4 { bottom: 8%; left: -18px;  animation: float-chip 4.8s ease-in-out 1.2s infinite; }
+.chip-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
+}
+
+/* Dark-colored icons (GitHub) need inversion in dark mode */
+.icon-dark {
+  filter: invert(1) brightness(1.6);
+}
+
+/* 13-chip clock layout — R=180px orbit around 340×340 container */
+/* Positions computed as: top = (170 - 180·cos θ - 20)/340, left = (170 + 180·sin θ - 20)/340 */
+.chip-pos-1  { top: -8.8%;  left: 44.1%; animation: float-chip 4.0s ease-in-out 0.0s  infinite; }
+.chip-pos-2  { top: -2.9%;  left: 68.8%; animation: float-chip 4.3s ease-in-out 0.2s  infinite; }
+.chip-pos-3  { top: 14.1%;  left: 87.6%; animation: float-chip 4.6s ease-in-out 0.4s  infinite; }
+.chip-pos-4  { top: 37.6%;  left: 96.8%; animation: float-chip 4.9s ease-in-out 0.6s  infinite; }
+.chip-pos-5  { top: 62.9%;  left: 93.5%; animation: float-chip 5.2s ease-in-out 0.8s  infinite; }
+.chip-pos-6  { top: 83.8%;  left: 79.1%; animation: float-chip 4.7s ease-in-out 1.0s  infinite; }
+.chip-pos-7  { top: 95.6%;  left: 56.8%; animation: float-chip 4.4s ease-in-out 1.2s  infinite; }
+.chip-pos-8  { top: 95.6%;  left: 31.5%; animation: float-chip 4.1s ease-in-out 1.4s  infinite; }
+.chip-pos-9  { top: 83.8%;  left:  9.1%; animation: float-chip 4.8s ease-in-out 1.6s  infinite; }
+.chip-pos-10 { top: 62.9%;  left: -5.3%; animation: float-chip 5.1s ease-in-out 1.8s  infinite; }
+.chip-pos-11 { top: 37.6%;  left: -8.5%; animation: float-chip 4.5s ease-in-out 2.0s  infinite; }
+.chip-pos-12 { top: 14.1%;  left:  0.6%; animation: float-chip 4.2s ease-in-out 2.2s  infinite; }
+.chip-pos-13 { top: -2.9%;  left: 19.7%; animation: float-chip 4.9s ease-in-out 2.4s  infinite; }
 
 @keyframes float-chip {
   0%, 100% { transform: translateY(0px); }
@@ -2576,7 +2656,11 @@ html[dir="rtl"] .hero-quote p {
 [data-theme="light"] .profile-chip {
   background: rgba(255, 255, 255, 0.92);
   border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+[data-theme="light"] .icon-dark {
+  filter: none;
 }
 
 /* ============================================
@@ -3199,6 +3283,11 @@ html[dir="rtl"] .projects-search input {
   transform: translateY(-2px);
   box-shadow: var(--shadow-glow);
 }
+
+/* Desktop: show text + arrow, hide GitHub icon */
+.project-link-github { display: none; }
+.project-link-text   { display: inline; }
+.project-link-arrow  { display: inline-block; }
 
 .project-link svg {
   width: 16px;
@@ -5453,19 +5542,37 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   .hero-section {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-lg);
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  /* Use ID specificity to beat the desktop #page-home .hero-section rule */
+  #page-home .hero-section {
+    padding: 9rem 0 var(--spacing-2xl);
+  }
+
+  /* Hide greeting on mobile — name + degree lead the screen */
+  .hero-greeting {
+    display: none;
+  }
+
+  /* Ensure chips floating outside profile-container are never clipped */
+  .hero-visual {
+    overflow: visible;
+  }
+
+  .profile-container {
+    overflow: visible;
+  }
+
+  html[dir="rtl"] .hero-title {
+    font-size: 4.2rem;
   }
 
   html[dir="rtl"] .hero-title .title-line {
     text-align: center !important;
-  }
-
-  .hero-badge {
-    margin: 0 auto var(--spacing-sm);
-  }
-
-  .hero-roles {
-    justify-content: center;
   }
 
   .hero-degree {
@@ -5476,7 +5583,7 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
 
   .hero-description {
     margin: 0 auto var(--spacing-xl);
-    text-align: left;
+    text-align: center;
     max-width: 100%;
   }
 
@@ -5505,14 +5612,15 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     margin: 0 auto;
   }
 
-  /* Reposition chips for smaller container on mobile */
-  .chip-1 { top: 6%;    right: -22px; }
-  .chip-2 { bottom: 22%; right: -26px; }
-  .chip-3 { top: 38%;   left: -24px; }
-  .chip-4 { bottom: 6%; left: -14px; }
+  /* Smaller icon chips on mobile */
+  .profile-chip {
+    width: 34px;
+    height: 34px;
+  }
 
-  .hero-quote {
-    padding: var(--spacing-md) var(--spacing-lg);
+  .chip-icon-img {
+    width: 19px;
+    height: 19px;
   }
 
   /* Chatbot Mobile */
@@ -5606,6 +5714,27 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     display: none;
   }
 
+  /* Divider becomes a full-width horizontal line in the grid */
+  .sub-nav-divider {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 1px;
+    margin: 2px 0;
+  }
+
+  /* Lang toggle spans full width as its own row */
+  .sub-nav .sub-nav-lang {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    min-height: unset;
+  }
+
   .nav-toggle {
     display: flex;
   }
@@ -5666,12 +5795,12 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   }
 
   .hero-quote {
-    margin-top: var(--spacing-lg);
     max-width: 90%;
+    padding: var(--spacing-lg) var(--spacing-xl);
   }
 
   .hero-quote p {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .hero-quote::before {
@@ -5737,16 +5866,21 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   }
 
   .hero-actions {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
+    gap: var(--spacing-sm);
   }
 
-  /* Align hero actions with hero-stats in RTL on small mobile */
+  /* Hire Me spans full width */
+  .hero-actions .btn-ghost {
+    grid-column: 1 / -1;
+  }
+
+  /* RTL: same grid, just direction flips the columns */
   html[dir="rtl"] .hero-actions {
-    align-items: flex-end;
-    justify-content: flex-start;
-    width: fit-content;
-    max-width: 100%;
+    width: 100%;
+    direction: rtl;
   }
 
   .btn {
@@ -5754,9 +5888,238 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     justify-content: center;
   }
 
+  /* Compact hero CTA buttons for mobile */
+  .hero-actions .btn {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.78rem;
+    border-radius: 10px;
+    gap: 5px;
+    min-height: 40px;
+  }
+
+  .hero-actions .btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
   /* Ensure buttons align properly in RTL */
   html[dir="rtl"] .btn {
     text-align: right;
+  }
+
+  /* ── Expertise page: 2-column compact grid ── */
+  #page-expertise .skills-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-expertise .skill-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 12px;
+  }
+
+  #page-expertise .skill-card h3 {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+
+  #page-expertise .skill-pill {
+    font-size: 0.6rem;
+    padding: 2px 7px;
+  }
+
+  #page-expertise .skill-pills {
+    gap: 4px;
+  }
+
+  #page-expertise .languages-list,
+  #page-expertise .hobbies-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-expertise .language-item,
+  #page-expertise .hobby-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 10px;
+  }
+
+  #page-expertise .language-name,
+  #page-expertise .hobby-name {
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+  }
+
+  #page-expertise .language-level,
+  #page-expertise .hobby-description {
+    font-size: 0.65rem;
+  }
+
+  #page-expertise .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  #page-expertise .languages-section,
+  #page-expertise .hobbies-section {
+    margin-top: var(--spacing-lg);
+  }
+
+  /* ── Projects page: 2-column compact grid on phone ── */
+  #page-projects .projects-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-projects .project-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 12px;
+  }
+
+  #page-projects .project-badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    margin-bottom: 6px;
+  }
+
+  #page-projects .project-title {
+    font-size: 0.78rem;
+    margin-bottom: 4px;
+  }
+
+  #page-projects .project-meta {
+    font-size: 0.65rem;
+    margin-bottom: 6px;
+  }
+
+  #page-projects .project-description {
+    font-size: 0.68rem;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  #page-projects .project-link {
+    padding: 6px 10px;
+    gap: 0;
+    align-self: flex-start;
+    border-radius: 8px;
+  }
+
+  /* Icon-only: hide text + arrow, show GitHub mark */
+  #page-projects .project-link-text  { display: none; }
+  #page-projects .project-link-arrow { display: none; }
+  #page-projects .project-link-github {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ── About page: 2×2 compact card grid on phone ── */
+  #page-about .content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* 3rd card spans both columns */
+  #page-about .content-grid .content-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  #page-about .content-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 14px;
+  }
+
+  #page-about .card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+  }
+
+  #page-about .card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #page-about .content-card h3 {
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  #page-about .content-card p {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  /* Lock hero gap at 480px — use ID specificity to win */
+  #page-home .hero-section {
+    padding-top: 9rem;
+  }
+
+  /* Arabic name must stay large even after the general hero-title clamp below */
+  html[dir="rtl"] .hero-title {
+    font-size: 4.2rem;
+  }
+
+  /* ── Footer: 2×2 compact grid ── */
+  .main-footer {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .footer-section h4 {
+    font-size: 0.72rem;
+    margin-bottom: 6px;
+  }
+
+  .footer-nav {
+    gap: 4px;
+  }
+
+  .footer-nav a {
+    font-size: 0.68rem;
+  }
+
+  .footer-social {
+    gap: 5px;
+  }
+
+  .social-link {
+    font-size: 0.68rem;
+    gap: 5px;
+  }
+
+  .social-link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .footer-section p {
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+
+  .footer-bottom {
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .footer-bottom p {
+    font-size: 0.72rem;
+  }
+
+  .footer-signature img {
+    height: 22px;
   }
 
   /* Slightly reduce heading and hero text sizes on small screens to avoid crowding */
@@ -5836,7 +6199,11 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   }
 
   .hero-section {
-    padding: var(--spacing-xl) 0;
+    gap: var(--spacing-md);
+  }
+
+  #page-home .hero-section {
+    padding-top: 9rem;
   }
 
   .nav-container {
@@ -5891,9 +6258,9 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     text-align: center !important;
   }
 
-  /* Make Arabic hero typography more compact on very small screens */
+  /* Arabic hero name — keep large on very small screens */
   html[dir="rtl"] #page-home .hero-title {
-    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-size: 4.2rem;
   }
 
   html[dir="rtl"] #page-home .hero-degree {
@@ -5924,10 +6291,10 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     gap: var(--spacing-sm);
   }
 
-  /* Make buttons smaller on tiny RTL home */
+  /* RTL: match the same compact size */
   html[dir="rtl"] #page-home .hero-actions .btn {
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.85rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.78rem;
   }
 
   /* Shrink hero stats typography */
@@ -5937,28 +6304,6 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
 
   html[dir="rtl"] #page-home .stat-label {
     font-size: 0.7rem;
-  }
-
-  /* Contain and shrink the quote so it stays inside borders */
-  html[dir="rtl"] #page-home .hero-quote {
-    max-width: 85%;
-    margin: var(--spacing-lg) auto 0;
-  }
-
-  html[dir="rtl"] #page-home .hero-quote p {
-    font-size: 1.2rem;
-  }
-
-  html[dir="rtl"] #page-home .hero-quote::before {
-    font-size: 2rem;
-    left: -6px;
-    top: -4px;
-  }
-
-  html[dir="rtl"] #page-home .hero-quote::after {
-    font-size: 2rem;
-    right: -6px;
-    bottom: -10px;
   }
 
   /* Contact section - make more compact and avoid horizontal overflow on tiny screens */
@@ -6210,6 +6555,208 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   html[dir="rtl"] .contact-form button[type="submit"] {
     width: 100%;
     justify-content: center;
+  }
+
+  /* ── Expertise page: 2-column compact grid ── */
+  #page-expertise .skills-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-expertise .skill-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 12px;
+  }
+
+  #page-expertise .skill-card h3 {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+
+  #page-expertise .skill-pill {
+    font-size: 0.6rem;
+    padding: 2px 7px;
+  }
+
+  #page-expertise .skill-pills {
+    gap: 4px;
+  }
+
+  #page-expertise .languages-list,
+  #page-expertise .hobbies-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-expertise .language-item,
+  #page-expertise .hobby-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 10px;
+  }
+
+  #page-expertise .language-name,
+  #page-expertise .hobby-name {
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+  }
+
+  #page-expertise .language-level,
+  #page-expertise .hobby-description {
+    font-size: 0.65rem;
+  }
+
+  #page-expertise .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  #page-expertise .languages-section,
+  #page-expertise .hobbies-section {
+    margin-top: var(--spacing-lg);
+  }
+
+  /* ── Projects page: 2-column compact grid ── */
+  #page-projects .projects-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-projects .project-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 12px;
+  }
+
+  #page-projects .project-badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    margin-bottom: 6px;
+  }
+
+  #page-projects .project-title {
+    font-size: 0.78rem;
+    margin-bottom: 4px;
+  }
+
+  #page-projects .project-meta {
+    font-size: 0.65rem;
+    margin-bottom: 6px;
+  }
+
+  #page-projects .project-description {
+    font-size: 0.68rem;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  #page-projects .project-link {
+    padding: 6px 10px;
+    gap: 0;
+    align-self: flex-start;
+    border-radius: 8px;
+  }
+
+  /* Icon-only: hide text + arrow, show GitHub mark */
+  #page-projects .project-link-text  { display: none; }
+  #page-projects .project-link-arrow { display: none; }
+  #page-projects .project-link-github {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ── About page: 2×2 compact card grid ── */
+  #page-about .content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  #page-about .content-grid .content-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  #page-about .content-card {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 14px;
+  }
+
+  #page-about .card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+  }
+
+  #page-about .card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #page-about .content-card h3 {
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  #page-about .content-card p {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  /* ── Footer: 2×2 compact grid ── */
+  .main-footer {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .footer-section h4 {
+    font-size: 0.72rem;
+    margin-bottom: 6px;
+  }
+
+  .footer-nav {
+    gap: 4px;
+  }
+
+  .footer-nav a {
+    font-size: 0.68rem;
+  }
+
+  .footer-social {
+    gap: 5px;
+  }
+
+  .social-link {
+    font-size: 0.68rem;
+    gap: 5px;
+  }
+
+  .social-link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .footer-section p {
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+
+  .footer-bottom {
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .footer-bottom p {
+    font-size: 0.72rem;
+  }
+
+  .footer-signature img {
+    height: 22px;
   }
 }
 /* Mobile Responsiveness Fine-tuning */
