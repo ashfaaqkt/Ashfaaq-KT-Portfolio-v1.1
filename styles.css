@@ -72,6 +72,9 @@
 
   --color-card-bg: rgba(255, 255, 255, 0.95);
 
+  --color-border-checkbox: rgba(30, 40, 80, 0.35);
+  --color-checkbox-bg: rgba(30, 40, 80, 0.05);
+
   --gradient-blue-black: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
 
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -510,25 +513,19 @@ html[dir="rtl"] .contact-grid {
    تواصل معنا SECTION - ARABIC RTL REDESIGN
    ============================================ */
 
-/* Contact Grid - Full width and proper spacing */
+/* Contact Grid - stacked, RTL direction */
 html[dir="rtl"] .contact-grid {
-  direction: rtl !important;
-  grid-template-columns: 1fr 1fr; /* Force 2 columns */
-  gap: var(--spacing-xl);
+  direction: rtl;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
-/* Contact Cards - Full width with proper padding */
+/* Contact Cards - RTL direction, padding handled by base rule */
 html[dir="rtl"] .contact-info-card,
 html[dir="rtl"] .contact-form-card {
-  direction: rtl !important;
-  text-align: right !important;
+  direction: rtl;
+  text-align: right;
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
-  padding: var(--spacing-xl);
 }
 
 /* Card Titles - Right aligned */
@@ -772,31 +769,56 @@ html[dir="rtl"] .radio-text-block {
   gap: 0;
 }
 
-/* Other Detail Wrapper - No spacing, inline with text */
+/* Other Detail Wrapper — RTL */
 html[dir="rtl"] .other-detail-wrapper {
-  direction: rtl !important;
-  text-align: right !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: 0 !important;
-  gap: 0;
-  padding-top: var(--spacing-xs);
-  box-sizing: border-box !important;
+  direction: rtl;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* Other Detail Input - Center aligned */
 html[dir="rtl"] .other-detail-wrapper input {
-  text-align: center !important;
-  direction: rtl !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+  text-align: right;
+  direction: rtl;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 html[dir="rtl"] .other-detail-wrapper label {
   display: none !important;
+}
+
+html[dir="rtl"] .checkbox-group {
+  direction: rtl;
+  width: 100%;
+}
+
+html[dir="rtl"] .checkbox-label {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* "Other" label stays column in RTL — row-reverse above must not apply */
+html[dir="rtl"] .checkbox-label--other {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+html[dir="rtl"] .checkbox-label-row {
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+html[dir="rtl"] .checkbox-text {
+  text-align: right;
+  flex: 1;
+}
+
+html[dir="rtl"] .checkbox-label--other .other-detail-wrapper input {
+  text-align: right !important;
+  direction: rtl !important;
 }
 
 html[dir="rtl"] .nav-link-indicator {
@@ -834,95 +856,51 @@ html[dir="rtl"] .timeline {
 
 html[dir="rtl"] .timeline::before {
   left: auto;
-  right: 30px;
+  right: 19px;
 }
 
 html[dir="rtl"] .timeline-item {
   padding-left: 0;
-  padding-right: 80px;
-  transform: translate3d(30px, 0, 0);
-}
-
-html[dir="rtl"] .timeline-item.visible {
-  transform: translate3d(0, 0, 0);
+  padding-right: 64px;
 }
 
 html[dir="rtl"] .timeline-dot {
   left: auto;
-  right: 20px;
+  right: 9px;
 }
 
 html[dir="rtl"] .timeline-content {
-  text-align: right !important;
-  direction: rtl !important;
-  align-items: flex-end !important;
-  display: flex !important;
-  flex-direction: column !important;
+  border-left: 1px solid var(--color-border);
+  border-right: 3px solid var(--color-accent-primary);
+  text-align: right;
+  direction: rtl;
 }
 
 html[dir="rtl"] .timeline-content:hover {
-  transform: translateX(-8px);
+  transform: translateX(-5px);
+  border-right-color: var(--color-accent-primary);
 }
 
 html[dir="rtl"] .timeline-header {
-  flex-direction: row-reverse !important;
-  justify-content: flex-start !important;
   align-items: flex-end;
-  direction: rtl !important;
-  text-align: right !important;
-  width: 100% !important;
-  gap: var(--spacing-sm);
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  align-self: flex-end !important;
 }
 
-html[dir="rtl"] .timeline-header .timeline-badge {
-  order: 1 !important;
-  direction: rtl !important;
-  text-align: right !important;
-  unicode-bidi: embed;
+html[dir="rtl"] .timeline-badge {
   align-self: flex-end;
-  margin-left: var(--spacing-sm) !important;
-  margin-right: 0 !important;
-}
-
-html[dir="rtl"] .timeline-header .timeline-title {
-  order: 2 !important;
-  direction: rtl !important;
-  text-align: right !important;
-  unicode-bidi: embed;
-  align-self: flex-end;
-  margin: 0 !important;
-  flex: 1;
 }
 
 html[dir="rtl"] .timeline-links {
   flex-direction: row-reverse;
   justify-content: flex-end;
-  align-self: flex-end;
-  width: 100%;
-  direction: rtl !important;
 }
 
-html[dir="rtl"] .timeline-link {
-  direction: rtl !important;
-  text-align: right !important;
+html[dir="rtl"] .timeline-milestones li {
+  flex-direction: row-reverse;
+  text-align: right;
 }
 
-/* Milestone lists in timeline */
-html[dir="rtl"] .timeline-content ul {
-  direction: rtl !important;
-  text-align: right !important;
-  align-self: flex-end;
-  width: 100%;
-  padding-right: 0;
-  padding-left: 0;
-}
-
-html[dir="rtl"] .timeline-content ul li {
-  direction: rtl !important;
-  text-align: right !important;
+html[dir="rtl"] .timeline-milestones li::before {
+  margin-right: 0;
 }
 
 html[dir="rtl"] .project-card {
@@ -1071,18 +1049,9 @@ html[dir="rtl"] .hobbies-list {
   justify-content: center;
 }
 
-/* Duplicate rules removed - handled in main RTL contact section above */
-
-html[dir="rtl"] .timeline-link {
-  direction: rtl;
-}
 
 html[dir="rtl"] .project-link {
   flex-direction: row;
-}
-
-html[dir="rtl"] .btn {
-  flex-direction: row-reverse;
 }
 
 html[dir="rtl"] .project-link svg {
@@ -1099,23 +1068,6 @@ html[dir="rtl"] .hero-actions .btn-primary svg {
 
 html[dir="rtl"] .nav-cta-btn {
   flex-direction: row-reverse;
-}
-
-/* Duplicate rules removed - handled in main RTL contact section above */
-
-html[dir="rtl"] .form-group {
-  text-align: right;
-}
-
-html[dir="rtl"] .form-group input,
-html[dir="rtl"] .form-group textarea {
-  text-align: right;
-}
-
-html[dir="rtl"] .other-detail-wrapper input {
-  text-align: center;
-  width: 100% !important;
-  box-sizing: border-box !important;
 }
 
 html[dir="rtl"] ul[style*="list-style"] li {
@@ -3105,142 +3057,220 @@ html[dir="rtl"] .hero-quote p {
 
 .timeline {
   position: relative;
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
   padding: var(--spacing-xl) 0;
 }
 
+/* Gradient vertical line */
 .timeline::before {
   content: '';
   position: absolute;
-  left: 30px;
+  left: 19px;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--color-border);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-accent-primary) 8%,
+    var(--color-accent-secondary) 50%,
+    var(--color-accent-tertiary) 92%,
+    transparent 100%
+  );
+  border-radius: 2px;
 }
 
 .timeline-item {
   position: relative;
-  padding-left: 80px;
-  margin-bottom: var(--spacing-2xl);
+  padding-left: 64px;
+  margin-bottom: 1.75rem;
   opacity: 0;
-  transform: translate3d(-30px, 0, 0);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
   backface-visibility: hidden;
 }
 
 .timeline-item.visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translateY(0);
   will-change: auto;
 }
 
+/* Dot — filled circle on the line */
 .timeline-dot {
   position: absolute;
-  left: 20px;
-  top: 8px;
+  left: 9px;
+  top: 18px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background: var(--gradient-primary);
-  border: 4px solid var(--color-bg-primary);
-  box-shadow: var(--shadow-glow);
+  border: 3px solid var(--color-bg-primary);
+  box-shadow: 0 0 0 2px var(--color-accent-primary),
+    0 0 12px rgba(59, 130, 246, 0.35);
+  z-index: 1;
 }
 
+/* First item (current) pulses */
+.timeline-item:first-child .timeline-dot {
+  animation: tl-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes tl-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px var(--color-accent-primary),
+      0 0 12px rgba(59, 130, 246, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 2px var(--color-accent-primary),
+      0 0 0 7px rgba(59, 130, 246, 0.12),
+      0 0 20px rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Card */
 .timeline-content {
-  padding: var(--spacing-lg);
+  position: relative;
+  padding: 1.25rem 1.5rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
+  border-left: 3px solid var(--color-accent-primary);
+  border-radius: 14px;
   backdrop-filter: var(--blur-sm);
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .timeline-content:hover {
   border-color: var(--color-border-hover);
-  transform: translateX(8px);
+  border-left-color: var(--color-accent-primary);
+  transform: translateX(5px);
+  box-shadow: -4px 0 24px rgba(59, 130, 246, 0.1),
+    0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Header: badge stacked above title */
 .timeline-header {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
 }
 
 .timeline-badge {
-  padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.18rem 0.75rem;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-accent-primary);
 }
 
 .timeline-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-text-primary);
   margin: 0;
-}
-
-html[dir="rtl"] .timeline-title {
-  text-align: right !important;
-  direction: rtl !important;
+  line-height: 1.3;
 }
 
 .timeline-subtitle {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-sm);
-}
-
-html[dir="rtl"] .timeline-subtitle {
-  text-align: right !important;
-  direction: rtl !important;
-  align-self: flex-end;
-  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-accent-secondary);
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
 }
 
 .timeline-description {
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
-  line-height: 1.7;
-  margin-bottom: var(--spacing-md);
+  line-height: 1.75;
+  margin-bottom: 0.85rem;
 }
 
-html[dir="rtl"] .timeline-description {
-  text-align: right !important;
-  direction: rtl !important;
-  align-self: flex-end;
-  width: 100%;
+/* Milestone checklist */
+.timeline-milestones {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
+.timeline-milestones li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.timeline-milestones li::before {
+  content: '✓';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+/* Document links */
 .timeline-links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: 0.45rem;
+  margin-top: 0.75rem;
 }
 
 .timeline-link {
-  padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.05);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.28rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  color: var(--color-text-primary);
+  border-radius: 7px;
+  color: var(--color-text-secondary);
   text-decoration: none;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+  white-space: nowrap;
 }
 
 .timeline-link:hover {
   background: rgba(59, 130, 246, 0.1);
   border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
   transform: translateY(-2px);
+}
+
+/* RTL overrides */
+html[dir="rtl"] .timeline-title,
+html[dir="rtl"] .timeline-subtitle,
+html[dir="rtl"] .timeline-description {
+  text-align: right !important;
+  direction: rtl !important;
+  width: 100%;
 }
 
 /* ============================================
@@ -3770,11 +3800,12 @@ html[dir="rtl"] .hobby-description {
    ============================================ */
 
 .contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Force 2 columns */
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-xl);
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .contact-info-card,
@@ -3785,6 +3816,8 @@ html[dir="rtl"] .hobby-description {
   border-radius: 20px;
   backdrop-filter: var(--blur-sm);
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Ensure Get in Touch card (and its dropdowns) sits above Send a Message card */
@@ -3810,106 +3843,6 @@ html[dir="rtl"] .hobby-description {
   gap: var(--spacing-md);
 }
 
-.contact-quick-actions {
-  display: none;
-  /* hidden by default (desktop); shown on small mobile */
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.mobile-contact-group {
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  z-index: 20;
-  /* keep dropdown above following cards */
-  pointer-events: auto;
-  /* Ensure group is interactive */
-}
-
-.mobile-contact-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text-primary);
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  touch-action: manipulation;
-  /* Improve touch responsiveness on mobile */
-  -webkit-tap-highlight-color: transparent;
-  /* Remove default tap highlight */
-  user-select: none;
-  /* Prevent text selection on mobile */
-  pointer-events: auto;
-  /* Ensure button is clickable */
-  position: relative;
-  z-index: 21;
-  /* Ensure button is above menu when closed */
-}
-
-.mobile-contact-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
-.mobile-contact-btn-label {
-  font-size: 0.8rem;
-}
-
-.mobile-contact-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  min-width: 180px;
-  padding: var(--spacing-xs) 0;
-  border-radius: 12px;
-  background: rgba(15, 22, 36, 0.9);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
-  display: none;
-  flex-direction: column;
-  z-index: 100;
-  /* ensure it floats above the Send a Message card */
-  pointer-events: auto;
-  /* Ensure menu links are clickable */
-}
-
-.mobile-contact-menu a {
-  padding: var(--spacing-xs) var(--spacing-md);
-  color: var(--color-text-primary);
-  text-decoration: none;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  /* keep phone number in one line */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  touch-action: manipulation;
-  /* Improve touch responsiveness */
-  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
-  /* Better tap highlight */
-  pointer-events: auto;
-  /* Ensure links are clickable */
-}
-
-.mobile-contact-menu a:hover {
-  background: rgba(59, 130, 246, 0.15);
-}
-
-.mobile-contact-group.open .mobile-contact-menu {
-  display: flex;
-}
-
-/* Also open dropdowns when the button (or any child) has focus – works well on mobile tap */
-.mobile-contact-group:focus-within .mobile-contact-menu {
-  display: flex;
-}
 
 .contact-item {
   display: flex;
@@ -4151,6 +4084,132 @@ html[dir="rtl"] .hobby-description {
 .radio-label span {
   color: var(--color-text-primary);
   font-size: 0.9rem;
+}
+
+/* ── Custom Checkboxes (Contact Form Category) ── */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+
+.checkbox-label:hover {
+  border-color: var(--color-border-hover);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--color-border-checkbox, rgba(120, 130, 150, 0.45));
+  background: var(--color-checkbox-bg, rgba(120, 130, 150, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.checkbox-custom svg {
+  width: 11px;
+  height: 9px;
+  color: #fff;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.22s ease 0.05s;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkbox-custom {
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkbox-custom svg {
+  stroke-dashoffset: 0;
+}
+
+.checkbox-label:has(input[type="checkbox"]:checked) {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.07);
+}
+
+.checkbox-text {
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.checkbox-label:has(input[type="checkbox"]:checked) .checkbox-text {
+  color: var(--color-accent-primary);
+  font-weight: 500;
+}
+
+.other-detail-wrapper {
+  margin-top: 0.5rem;
+}
+
+.other-detail-wrapper input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+.other-detail-wrapper input:focus {
+  border-color: var(--color-border-hover);
+}
+
+/* Other option expands vertically to contain the input */
+.checkbox-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.checkbox-label--other {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.checkbox-label--other .other-detail-wrapper {
+  margin-top: 0.65rem;
+}
+
+.checkbox-label--other .other-detail-wrapper input {
+  width: 100%;
 }
 
 .contact-form button[type="submit"] {
@@ -5281,9 +5340,6 @@ html[dir="rtl"] .admin-table th, html[dir="rtl"] .admin-table td {
     font-size: 1rem;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ============================================
@@ -6073,10 +6129,6 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     grid-template-columns: 1fr;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr 1fr; /* Keep 2 columns on tablets */
-  }
-
   .timeline::before {
     left: 15px;
   }
@@ -6087,18 +6139,18 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
   }
 
   .timeline-item {
-    padding-left: 50px;
+    padding-left: 52px;
   }
 
   html[dir="rtl"] .timeline-item {
     padding-left: 0;
-    padding-right: 50px;
+    padding-right: 52px;
   }
 
   .timeline-dot {
     left: 5px;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 
   html[dir="rtl"] .timeline-dot {
@@ -6438,6 +6490,83 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     left: 0;
     max-width: 90vw;
   }
+
+  /* ── Timeline: clean card-stack on mobile ── */
+  #page-education .timeline {
+    padding: var(--spacing-md) 0;
+  }
+
+  #page-education .timeline::before {
+    display: none;
+  }
+
+  #page-education .timeline-item {
+    padding-left: 0;
+    margin-bottom: 0.85rem;
+  }
+
+  html[dir="rtl"] #page-education .timeline-item {
+    padding-right: 0;
+  }
+
+  #page-education .timeline-dot {
+    display: none;
+  }
+
+  #page-education .timeline-content {
+    border-radius: 12px;
+    padding: 1rem 1rem 0.85rem;
+    border-left: 3px solid var(--color-accent-primary);
+  }
+
+  html[dir="rtl"] #page-education .timeline-content {
+    border-left: 1px solid var(--color-border);
+    border-right: 3px solid var(--color-accent-primary);
+  }
+
+  #page-education .timeline-content:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  #page-education .timeline-badge {
+    font-size: 0.64rem;
+    padding: 0.16rem 0.6rem;
+  }
+
+  #page-education .timeline-title {
+    font-size: 0.9rem;
+  }
+
+  #page-education .timeline-subtitle {
+    font-size: 0.78rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #page-education .timeline-description {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0.6rem;
+  }
+
+  #page-education .timeline-milestones {
+    gap: 0.25rem;
+    margin-bottom: 0.6rem;
+  }
+
+  #page-education .timeline-milestones li {
+    font-size: 0.78rem;
+  }
+
+  #page-education .timeline-links {
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
+  #page-education .timeline-link {
+    font-size: 0.7rem;
+    padding: 0.22rem 0.55rem;
+  }
 }
 
 /* Extra tweaks for narrow mobile devices up to ~530px width */
@@ -6563,9 +6692,8 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     font-size: 0.7rem;
   }
 
-  /* Contact section - make more compact and avoid horizontal overflow on tiny screens */
+  /* Contact section - compact gap on small screens */
   .contact-grid {
-    grid-template-columns: 1fr;
     gap: var(--spacing-md);
     width: 100%;
     max-width: 100%;
@@ -6622,6 +6750,20 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
 
   .radio-label span,
   .radio-text-block {
+    font-size: 0.85rem;
+  }
+
+  .checkbox-label {
+    padding: 0.55rem 0.85rem;
+    gap: 0.6rem;
+  }
+
+  .checkbox-custom {
+    width: 17px;
+    height: 17px;
+  }
+
+  .checkbox-text {
     font-size: 0.85rem;
   }
 
@@ -6683,38 +6825,7 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     gap: var(--spacing-sm);
   }
 
-  /* On small mobile: adjust spacing for quick-action buttons */
-  #page-connect .contact-quick-actions {
-    margin-top: var(--spacing-md);
-    display: flex !important;
-    flex-direction: row;
-    /* show buttons side by side */
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--spacing-sm);
-    flex-wrap: nowrap;
-    /* keep them in one row even on 390x844 */
-  }
-
-  /* Arabic RTL - keep quick actions side by side, mirrored */
-  html[dir="rtl"] #page-connect .contact-quick-actions {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    flex-wrap: nowrap;
-  }
-
-  /* Ensure quick actions stay mobile-only */
-  @media (min-width: 531px) {
-    #page-connect .contact-quick-actions {
-      display: none !important;
-    }
-  }
-
-  html[dir="rtl"] #page-connect .mobile-contact-group {
-    align-items: flex-end;
-  }
-
-  .contact-list {
+.contact-list {
     gap: var(--spacing-sm);
   }
 
@@ -6746,72 +6857,192 @@ html.js-ready [data-animate="slide-up"]:not(.animated) {
     text-overflow: ellipsis;
   }
 
-  /* Arabic RTL-specific tweaks for contact section on very small screens */
+  /* ── Arabic RTL contact section – small screens ── */
   html[dir="rtl"] #page-connect .contact-grid {
     direction: rtl;
+    width: 100%;
   }
 
+  /* Override the global RTL card padding (which is var(--spacing-xl)) */
   html[dir="rtl"] #page-connect .contact-info-card,
   html[dir="rtl"] #page-connect .contact-form-card {
+    padding: var(--spacing-md);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     text-align: right;
+  }
+
+  html[dir="rtl"] #page-connect .contact-list {
+    width: 100%;
+    overflow: hidden;
   }
 
   html[dir="rtl"] #page-connect .contact-item {
     flex-direction: row-reverse;
-    align-items: flex-start;
-    padding: var(--spacing-md);
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-sm);
     position: static;
+    transform: none;
+    transition: none;
+  }
+
+  html[dir="rtl"] #page-connect .contact-item.contact-has-whatsapp {
+    justify-content: space-between;
   }
 
   html[dir="rtl"] #page-connect .contact-main {
     flex-direction: row-reverse;
-    align-items: flex-start;
+    align-items: center;
     flex: 1;
     min-width: 0;
+    overflow: hidden;
+    gap: 0.6rem;
   }
 
   html[dir="rtl"] #page-connect .contact-icon {
-    margin-bottom: 0;
-    margin-left: var(--spacing-md);
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    margin: 0;
   }
 
   html[dir="rtl"] #page-connect .contact-details {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
     text-align: right;
+    gap: 2px;
   }
 
   html[dir="rtl"] #page-connect .contact-label {
     display: block;
-    margin-bottom: 4px;
+    text-align: right;
+    width: 100%;
+    font-size: 0.68rem;
   }
 
+  /* Emails/phone kept LTR so digits read correctly */
   html[dir="rtl"] #page-connect .contact-value {
-    /* Put value on its own clear block under the Arabic label */
     display: block;
     direction: ltr;
-    /* keep digits and @ in correct order */
     text-align: left;
-    margin-top: 2px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     line-height: 1.4;
-    /* Keep entire number/email on one straight line (no vertical stacking) */
     white-space: nowrap;
-    word-break: normal;
-    overflow-x: auto;
-    /* allow gentle horizontal scroll if needed */
-    overflow-y: hidden;
-    text-overflow: clip;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  html[dir="rtl"] #page-connect .contact-phone-link {
+    direction: ltr;
+    text-align: left;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  html[dir="rtl"] #page-connect .contact-side {
+    flex-shrink: 0;
+    width: auto;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   html[dir="rtl"] #page-connect .contact-whatsapp {
-    margin-right: auto;
-    margin-left: 0;
+    flex-shrink: 0;
+    margin: 0;
+    width: 26px;
+    height: 26px;
   }
 
-  /* Make Send Message button consistent and centered in Arabic on small screens */
-  html[dir="rtl"] .contact-form button[type="submit"] {
+  /* ── Send a Message form – RTL mobile ── */
+  html[dir="rtl"] #page-connect .contact-form {
     width: 100%;
+    box-sizing: border-box;
+  }
+
+  html[dir="rtl"] #page-connect .form-group {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  html[dir="rtl"] #page-connect .form-group input,
+  html[dir="rtl"] #page-connect .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+
+  html[dir="rtl"] #page-connect .form-group label {
+    font-size: 0.75rem;
+  }
+
+  /* Checkbox group full-width in RTL mobile */
+  html[dir="rtl"] #page-connect .checkbox-group {
+    width: 100%;
+  }
+
+  html[dir="rtl"] #page-connect .checkbox-label {
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding: 0.55rem 0.75rem;
+    gap: 0.6rem;
+  }
+
+  html[dir="rtl"] #page-connect .checkbox-label--other {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  html[dir="rtl"] #page-connect .checkbox-label-row {
+    flex-direction: row-reverse;
+    width: 100%;
+  }
+
+  html[dir="rtl"] #page-connect .checkbox-text {
+    font-size: 0.85rem;
+    flex: 1;
+    text-align: right;
+  }
+
+  html[dir="rtl"] #page-connect .other-detail-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  html[dir="rtl"] #page-connect .other-detail-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: right;
+    direction: rtl;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  /* Submit button full-width */
+  html[dir="rtl"] #page-connect .contact-form button[type="submit"] {
+    width: 100% !important;
+    align-self: stretch !important;
     justify-content: center;
+    margin: 0;
   }
 
   /* ── Expertise page: 2-column compact grid ── */

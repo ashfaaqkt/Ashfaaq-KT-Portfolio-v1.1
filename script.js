@@ -236,6 +236,8 @@ const translations = {
       subtitle: 'Open to remote and hybrid opportunities. Comfortable working across time zones in India and Saudi Arabia.',
       getInTouch: 'Get in Touch',
       email: 'Email',
+      workEmail: 'Work Email',
+      personalEmail: 'Personal Email',
       phoneIN: 'Phone (IN)',
       sendMessage: 'Send a Message',
       name: 'Name',
@@ -311,7 +313,8 @@ const translations = {
           <p>See the complete <a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Expertise section</a> for details!</p>`,
         contact: `You can contact Ashfaaq directly through:
           <ul>
-            <li><strong>Email:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
+            <li><strong>Work Email:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
+            <li><strong>Personal Email:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
             <li><strong>Phone (India):</strong> <a href="tel:+919995032407">+91 99950 32407</a> | <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">WhatsApp</a></li>
           </ul>
           <p>You can also <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">visit the Contact section</a> to send a message directly through the form!</p>`
@@ -456,6 +459,8 @@ const translations = {
       subtitle: 'منفتح على الفرص عن بُعد والهجينة. مرتاح في العمل عبر المناطق الزمنية في الهند والمملكة العربية السعودية.',
       getInTouch: 'تواصل معنا',
       email: 'البريد الإلكتروني',
+      workEmail: 'البريد المهني',
+      personalEmail: 'البريد الشخصي',
       phoneIN: 'الهاتف (الهند)',
       sendMessage: 'أرسل رسالة',
       name: 'الاسم',
@@ -531,7 +536,8 @@ const translations = {
           <p>راجع <a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم الخبرات</a> الكامل للتفاصيل!</p>`,
         contact: `يمكنك التواصل مع اشفاق مباشرة من خلال:
           <ul>
-            <li><strong>البريد الإلكتروني:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
+            <li><strong>البريد المهني:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
+            <li><strong>البريد الشخصي:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
             <li><strong>الهاتف (الهند):</strong> <a href="tel:+919995032407">+91 99950 32407</a> | <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">WhatsApp</a></li>
           </ul>
           <p>يمكنك أيضاً <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">زيارة قسم التواصل</a> لإرسال رسالة مباشرة من خلال النموذج!</p>`
@@ -574,7 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
   safeInit('scrollProgress', initScrollProgress);
   safeInit('backToTop', initBackToTop);
   safeInit('contactForm', initContactForm);
-  safeInit('mobileContactActions', initMobileContactActions);
   safeInit('chatbot', initChatbot);
   safeInit('portfolioSummaryModal', initPortfolioSummaryModal);
 
@@ -661,7 +666,6 @@ function initNavigation() {
   let activeSectionId = 'home';
 
   // Handle scroll effect on nav with throttling
-  let lastScroll = 0;
   let navTicking = false;
 
   window.addEventListener('scroll', () => {
@@ -696,7 +700,6 @@ function initNavigation() {
           });
         }
 
-        lastScroll = currentScroll;
         navTicking = false;
       });
       navTicking = true;
@@ -1160,14 +1163,10 @@ function setLanguage(lang) {
   const getInTouch = document.querySelector('.contact-info-card h3');
   if (getInTouch) getInTouch.textContent = t.connect.getInTouch;
 
-  const emailLabel = document.querySelector('.contact-item .contact-label');
-  if (emailLabel) emailLabel.textContent = t.connect.email;
-
-  const phoneLabels = document.querySelectorAll('.contact-item .contact-label');
-  if (phoneLabels.length >= 3) {
-    phoneLabels[1].textContent = t.connect.phoneIN;
-    phoneLabels[2].textContent = t.connect.phoneSA;
-  }
+  const contactLabels = document.querySelectorAll('.contact-item .contact-label');
+  if (contactLabels[0]) contactLabels[0].textContent = t.connect.workEmail;
+  if (contactLabels[1]) contactLabels[1].textContent = t.connect.personalEmail;
+  if (contactLabels[2]) contactLabels[2].textContent = t.connect.phoneIN;
 
   const sendMessageTitle = document.querySelector('.contact-form-card h3');
   if (sendMessageTitle) sendMessageTitle.textContent = t.connect.sendMessage;
@@ -1193,11 +1192,11 @@ function setLanguage(lang) {
   const categoryLabel = document.querySelector('.form-label');
   if (categoryLabel) categoryLabel.textContent = t.connect.category;
 
-  const radioLabels = document.querySelectorAll('.radio-label span');
-  if (radioLabels.length >= 3) {
-    radioLabels[0].textContent = t.connect.individual;
-    radioLabels[1].textContent = t.connect.company;
-    radioLabels[2].textContent = t.connect.other;
+  const checkboxLabels = document.querySelectorAll('.checkbox-text');
+  if (checkboxLabels.length >= 3) {
+    checkboxLabels[0].textContent = t.connect.individual;
+    checkboxLabels[1].textContent = t.connect.company;
+    checkboxLabels[2].textContent = t.connect.other;
   }
 
   const otherInput = document.getElementById('other-detail');
@@ -1785,29 +1784,19 @@ function populateTimeline() {
     if (item.milestones) {
       const processedMilestones = item.milestones.map(processText);
       milestonesHTML = `
-        <ul style="list-style: none; padding: 0; margin-top: 1rem; direction: ${rtlStyles.direction}; text-align: ${rtlStyles.textAlign};">
-          ${processedMilestones.map(milestone => `
-            <li style="padding: 0.5rem 0; color: var(--color-text-secondary); direction: ${rtlStyles.direction}; text-align: ${rtlStyles.textAlign};">
-              <span style="color: var(--color-accent-primary); ${rtlStyles.marginProp}: 0.5rem;">▹</span>
-              ${milestone}
-            </li>
-          `).join('')}
+        <ul class="timeline-milestones">
+          ${processedMilestones.map(m => `<li>${m}</li>`).join('')}
         </ul>
       `;
     }
 
-    // Keep HTML order consistent - CSS will handle RTL ordering
-    const headerHTML = `
-      <div class="timeline-header">
-        <span class="timeline-badge">${badge}</span>
-        <h3 class="timeline-title">${title}</h3>
-      </div>
-    `;
-
     timelineItem.innerHTML = `
       <div class="timeline-dot"></div>
       <div class="timeline-content">
-        ${headerHTML}
+        <div class="timeline-header">
+          <span class="timeline-badge">${badge}</span>
+          <h3 class="timeline-title">${title}</h3>
+        </div>
         <p class="timeline-subtitle">${subtitle}</p>
         <p class="timeline-description">${description}</p>
         ${milestonesHTML}
@@ -2653,21 +2642,36 @@ function initContactForm() {
 
   if (!contactForm) return;
 
-  // Handle category radio changes
-  if (categoryRadios.length > 0 && otherInputGroup && otherDetailInput) {
-    categoryRadios.forEach(radio => {
-      radio.addEventListener('change', () => {
-        if (radio.value === 'other') {
+  // Enforce single-select and handle "Other" reveal
+  const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
+  const otherCheck = document.getElementById('category-other-check');
+
+  // Prevent clicks inside the "Other" text input from bubbling to the label
+  // (which would toggle the checkbox and immediately hide the input again)
+  if (otherDetailInput) {
+    otherDetailInput.addEventListener('click', e => e.stopPropagation());
+    otherDetailInput.addEventListener('mousedown', e => e.stopPropagation());
+  }
+
+  categoryCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) {
+        categoryCheckboxes.forEach(other => { if (other !== cb) other.checked = false; });
+      }
+      const otherSelected = otherCheck && otherCheck.checked;
+      if (otherInputGroup && otherDetailInput) {
+        if (otherSelected) {
           otherInputGroup.style.display = 'block';
           otherDetailInput.setAttribute('required', 'required');
+          otherDetailInput.focus();
         } else {
           otherInputGroup.style.display = 'none';
           otherDetailInput.removeAttribute('required');
           otherDetailInput.value = '';
         }
-      });
+      }
     });
-  }
+  });
 
   // Handle form submission
   contactForm.addEventListener('submit', (e) => {
@@ -2676,29 +2680,31 @@ function initContactForm() {
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
-    const category = document.querySelector('input[name="category"]:checked')?.value;
+    const selectedCategory = document.querySelector('input[name="category"]:checked')?.value;
     const otherDetail = document.getElementById('other-detail')?.value.trim();
 
     // Validate form
-    if (!name || !email || !message || !category) {
-      alert('Please fill in all required fields.');
+    if (!name || !email || !message || !selectedCategory) {
+      alert('Please fill in all required fields and select a category.');
       return;
     }
 
-    if (category === 'other' && !otherDetail) {
+    if (selectedCategory === 'other' && !otherDetail) {
       alert('Please specify your category in the "Other" field.');
       otherDetailInput.focus();
       return;
     }
 
+    const categoryLabel = selectedCategory === 'other' ? otherDetail : selectedCategory;
+
     // Build email subject and body
-    const subject = encodeURIComponent(`Contact from ${name} - ${category === 'other' ? otherDetail : category}`);
+    const subject = encodeURIComponent(`Contact from ${name} - ${categoryLabel}`);
     const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nCategory: ${category === 'other' ? otherDetail : category}\n\nMessage:\n${message}`
+      `Name: ${name}\nEmail: ${email}\nCategory: ${categoryLabel}\n\nMessage:\n${message}`
     );
 
     // Create mailto link
-    const mailtoLink = `mailto:ashfaaqktmail@gmail.com?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:hire.me@ashfaaqkt.com?subject=${subject}&body=${body}`;
 
     // Open email client
     window.location.href = mailtoLink;
@@ -2715,65 +2721,6 @@ function initContactForm() {
     }, 1000);
   });
 }
-
-// ============================================
-// AUTO SCROLL NAVIGATION (Scroll to change pages)
-// ============================================
-
-let isScrolling = false;
-let scrollTimeout = null;
-let lastWheelTime = 0;
-let wheelDelta = 0;
-
-
-  // ============================================
-  // MOBILE CONTACT ACTIONS (PHONE / WHATSAPP)
-  // ============================================
-
-  function initMobileContactActions() {
-    const groups = document.querySelectorAll('.mobile-contact-group');
-    if (!groups.length) return;
-
-    groups.forEach(group => {
-      const button = group.querySelector('.mobile-contact-btn');
-      if (!button) return;
-
-      // Handle click events (works on both desktop and mobile)
-      const handleToggle = (e) => {
-        e.stopPropagation();
-        const isOpen = group.classList.contains('open');
-        // Close any other open menus
-        document.querySelectorAll('.mobile-contact-group.open').forEach(g => {
-          g.classList.remove('open');
-          const btn = g.querySelector('.mobile-contact-btn');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
-        });
-        if (!isOpen) {
-          group.classList.add('open');
-          // Update aria-expanded
-          button.setAttribute('aria-expanded', 'true');
-        } else {
-          button.setAttribute('aria-expanded', 'false');
-        }
-      };
-
-      button.addEventListener('click', handleToggle);
-    });
-
-    // Close menus when clicking outside
-    document.addEventListener('click', (e) => {
-      // Check if click is inside any mobile-contact-group
-      const clickedInside = Array.from(groups).some(group => group.contains(e.target));
-      if (!clickedInside) {
-        document.querySelectorAll('.mobile-contact-group.open').forEach(g => {
-          g.classList.remove('open');
-          const btn = g.querySelector('.mobile-contact-btn');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
-        });
-      }
-    });
-
-  }
 
 
 
@@ -2824,30 +2771,6 @@ function initAnchorLinks() {
     }
   });
 }
-
-// ============================================
-// PERFORMANCE OPTIMIZATION
-// ============================================
-
-// Throttle scroll events
-function throttle(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-// Apply throttling to scroll handlers
-const throttledScroll = throttle(() => {
-  // Scroll-dependent functions are already optimized
-}, 16);
-
-window.addEventListener('scroll', throttledScroll);
 
 // ============================================
 // CHATBOT
@@ -3216,8 +3139,15 @@ function initAuth() {
     }
   }
 
-  // Export openAuthModal for global use
-  window.openAuthModal = () => openModal(authModal);
+  // Export openAuthModal for global use — accepts optional 'login' or 'signup' tab name
+  window.openAuthModal = (tab) => {
+    openModal(authModal);
+    if (tab === 'signup' || tab === 'register') {
+      if (tabRegister) tabRegister.click();
+    } else {
+      if (tabLogin) tabLogin.click();
+    }
+  };
   
   if (authBtn) {
     authBtn.addEventListener('click', (e) => {
@@ -3274,8 +3204,6 @@ function initAuth() {
     });
   }
   
-  let pendingPdfLink = null;
-  
   // Form Submit Login
   if (formLogin) {
     formLogin.addEventListener('submit', async (e) => {
@@ -3299,10 +3227,8 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
-          const pdfToOpen = pendingPdfLink || window.pendingPdfLink;
-          if (pdfToOpen) {
-            window.openProtectedPDF(pdfToOpen, data.token);
-            pendingPdfLink = null;
+          if (window.pendingPdfLink) {
+            window.openProtectedPDF(window.pendingPdfLink, data.token);
             window.pendingPdfLink = null;
           }
         } else {
@@ -3354,10 +3280,8 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
-          const pdfToOpen = pendingPdfLink || window.pendingPdfLink;
-          if (pdfToOpen) {
-            window.openProtectedPDF(pdfToOpen, data.token);
-            pendingPdfLink = null;
+          if (window.pendingPdfLink) {
+            window.openProtectedPDF(window.pendingPdfLink, data.token);
             window.pendingPdfLink = null;
           }
         } else {
@@ -3427,18 +3351,24 @@ function initAuth() {
 
   function renderAdminUsers(users) {
     const tbody = document.getElementById('admin-users-tbody');
+    if (!tbody) return;
     tbody.innerHTML = '';
     users.forEach(u => {
       const row = document.createElement('tr');
       const d = new Date(u.createdAt);
-      row.innerHTML = `
-        <td>${d.toLocaleDateString()} ${d.toLocaleTimeString()}</td>
-        <td>${u.name}</td>
-        <td>${u.email}</td>
-        <td>${u.phone || '-'}</td>
-        <td>${u.category}</td>
-        <td>${u.company || '-'}</td>
-      `;
+      // Use textContent for each cell to prevent stored XSS from user-supplied data
+      [
+        `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`,
+        u.name,
+        u.email,
+        u.phone || '-',
+        u.category,
+        u.company || '-'
+      ].forEach(text => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        row.appendChild(td);
+      });
       tbody.appendChild(row);
     });
   }

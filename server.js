@@ -9,12 +9,26 @@ const User = require('./models/User');
 const connectDB = require('./lib/db');
 
 const app = express();
-app.use(cors());
+
+// Restrict CORS to the same origin (or a configured allow-list)
+const allowedOrigin = process.env.CORS_ORIGIN || null;
+app.use(cors(allowedOrigin ? { origin: allowedOrigin } : { origin: false }));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
+
+// Require secrets — refuse to start with known-bad defaults
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set.');
+  process.exit(1);
+}
+if (!process.env.ADMIN_PASSWORD) {
+  console.error('FATAL: ADMIN_PASSWORD environment variable is not set.');
+  process.exit(1);
+}
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // Database connection middleware (Ensures connection before processing any API route)
 app.use(async (req, res, next) => {
@@ -84,6 +98,13 @@ app.use(express.static(__dirname));
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, phone, category, company, password } = req.body;
+
+    if (!name || !email || !password || !category) {
+      return res.status(400).json({ message: 'Name, email, category, and password are required.' });
+    }
+    if (typeof password !== 'string' || password.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters.' });
+    }
 
     // Check if user already exists
     let user = await User.findOne({ email });
