@@ -58,22 +58,13 @@
         </button>
         <div class="cv-dropdown-container">
           <button class="nav-cta-btn" id="cv-dropdown-toggle" aria-label="CV Options" aria-expanded="false">
-            <span data-en="Menu" data-ar="قائمة">Menu</span>
+            <span class="nav-cta-label-desktop" data-en="Resume" data-ar="السيرة الذاتية">Resume</span>
+            <span class="nav-cta-label-mobile" data-en="CV" data-ar="CV">CV</span>
             <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
           <div class="cv-dropdown-menu" id="cv-dropdown-menu">
-
-            <!-- Auth Group (Sign in) -->
-            <div class="cv-dropdown-group" style="padding-bottom: 0;">
-              <button class="cv-dropdown-item auth-btn" id="auth-btn" aria-label="Sign In" style="justify-content: center; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); font-size: 1.1rem; font-weight: 600;">
-                <span data-en="Sign in" data-ar="تسجيل الدخول">Sign in</span>
-              </button>
-              <button class="cv-dropdown-item logout-btn" id="logout-btn" style="justify-content: center; display: none; margin-top: 5px; background: rgba(255, 59, 59, 0.1); border-color: rgba(255, 59, 59, 0.3); color: #ff5555; font-size: 0.9rem;">
-                <span data-en="Logout" data-ar="تسجيل الخروج">Logout</span>
-              </button>
-            </div>
 
             <div class="cv-dropdown-group">
               <div class="cv-dropdown-category" data-en="Normal Resume" data-ar="السيرة الذاتية العادية">Normal Resume
@@ -116,13 +107,6 @@
                   stroke-width="2">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
                 </svg>
-              </a>
-            </div>
-
-            <!-- Admin Group -->
-            <div class="cv-dropdown-group" style="padding-bottom: 0;">
-              <a href="#" class="cv-dropdown-item admin-login-btn" id="admin-login-link" style="justify-content: center; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
-                <span data-en="Admin" data-ar="المشرف">Admin</span>
               </a>
             </div>
 
@@ -196,17 +180,31 @@
         <span class="nav-link-indicator"></span>
       </a>
 
-      <!-- Language toggle — divider then button -->
+      <!-- Divider then lang + auth (auth is rightmost in LTR) -->
       <div class="sub-nav-divider" aria-hidden="true"></div>
+
       <button class="nav-link sub-nav-lang" id="lang-toggle"
         aria-label="Toggle Language"
-        title="Switch to Arabic / التبديل إلى العربية"
         type="button">
-        <svg class="nav-link-icon lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        <!-- Modern translate icon -->
+        <svg class="lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 8l6 6"/>
+          <path d="M4 14l6-6 2-3"/>
+          <path d="M2 5h12"/>
+          <path d="M7 2h1"/>
+          <path d="M22 22l-5-10-5 10"/>
+          <path d="M14 18h6"/>
         </svg>
-        <span class="nav-link-text lang-toggle-label" data-en="العربية" data-ar="English">العربية</span>
+        <span class="lang-tooltip" data-en="Switch to Arabic" data-ar="Switch to English">Switch to Arabic</span>
+      </button>
+
+      <!-- Auth icon — rightmost in LTR, leftmost in RTL -->
+      <button class="sub-nav-auth" id="auth-btn" aria-label="Sign In" type="button">
+        <svg class="auth-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="auth-tooltip">Sign In</span>
       </button>
     </div>
   </nav>
@@ -227,7 +225,9 @@
               <span class="title-line cursor-highlight-target">ASHFAAQ FEROZ MUHAMMAD</span>
             </h1>
 
-            <p class="hero-degree" data-animate="fade-up" data-delay="230">BSc. CS - BITS PILANI</p>
+            <p class="hero-degree" data-animate="fade-up" data-delay="230">
+              <span class="hero-degree-dot"></span>BSc. CS &mdash; BITS PILANI
+            </p>
 
             <p class="hero-description" data-animate="fade-up" data-delay="300">
               Tech-driven developer with expertise in MERN full-stack development, cloud integration, UI/UX design,
@@ -339,6 +339,31 @@
               </div>
               <div class="profile-chip chip-pos-12" title="C" aria-label="C">
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" alt="C" class="chip-icon-img">
+              </div>
+              <div class="profile-chip chip-pos-14" title="Microsoft Azure" aria-label="Microsoft Azure">
+                <svg class="chip-icon-img" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="az-a" x1="0.989" y1="0.163" x2="0.234" y2="0.997" gradientUnits="objectBoundingBox">
+                      <stop offset="0" stop-color="#114a8b"/>
+                      <stop offset="1" stop-color="#0669bc"/>
+                    </linearGradient>
+                    <linearGradient id="az-b" x1="0.098" y1="0.317" x2="0.864" y2="0.689" gradientUnits="objectBoundingBox">
+                      <stop offset="0" stop-opacity=".3"/>
+                      <stop offset="0.071" stop-opacity=".2"/>
+                      <stop offset="0.321" stop-opacity=".1"/>
+                      <stop offset="0.623" stop-opacity=".05"/>
+                      <stop offset="1" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="az-c" x1="0.374" y1="0.116" x2="0.617" y2="0.985" gradientUnits="objectBoundingBox">
+                      <stop offset="0" stop-color="#3ccbf4"/>
+                      <stop offset="1" stop-color="#2892df"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M33.338 6.544h26.038L33.476 89.455a4.15 4.15 0 0 1-3.933 2.817H8.149a4.15 4.15 0 0 1-3.921-5.484L27.4 9.36a4.15 4.15 0 0 1 3.933-2.817z" fill="url(#az-a)"/>
+                  <path d="M71.175 60.898H29.387a1.911 1.911 0 0 0-1.3 3.308l27.054 25.27a4.17 4.17 0 0 0 2.85 1.121h23.8z" fill="#0078d4"/>
+                  <path d="M33.338 6.544a4.12 4.12 0 0 0-3.943 2.879L4.252 86.744a4.14 4.14 0 0 0 3.908 5.528h20.787a4.44 4.44 0 0 0 3.4-2.9l5.015-14.78 17.955 16.765a4.24 4.24 0 0 0 2.666.972H81.24L71.024 60.898l-29.781.007L57.553 6.544z" fill="url(#az-b)"/>
+                  <path d="M68.608 9.36a4.14 4.14 0 0 0-3.928-2.817H33.568a4.14 4.14 0 0 1 3.928 2.817l23.17 77.428a4.15 4.15 0 0 1-3.928 5.484h31.112a4.15 4.15 0 0 0 3.928-5.484z" fill="url(#az-c)"/>
+                </svg>
               </div>
               <div class="profile-chip chip-pos-13" title="Tableau" aria-label="Tableau">
                 <svg class="chip-icon-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -726,86 +751,60 @@
 
   <!-- Footer -->
   <footer class="main-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4>Navigation</h4>
-        <nav class="footer-nav">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#education">Education</a>
-          <a href="#projects">Projects</a>
-          <a href="#expertise">Expertise</a>
-          <a href="#connect">Connect</a>
-        </nav>
-      </div>
-      <div class="footer-section">
-        <h4>Connect</h4>
-        <div class="footer-social">
-          <a href="https://ashfaaqkt.com" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--website">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10" />
-              <path
-                d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-            </svg>
-            <span>Website</span>
-          </a>
-          <a href="https://www.linkedin.com/in/ashfaaq-kt-109342177/" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--linkedin">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M6 9h3v12H6zM7.5 5.5A2 2 0 1 1 7.5 9a2 2 0 0 1 0-3.5ZM13 9h3v2h.05c.42-.8 1.45-1.65 3-1.65 3.2 0 3.95 2.1 3.95 4.8V21h-3v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.57-2.3 3.17V21h-3z" />
-            </svg>
-            <span>LinkedIn</span>
-          </a>
-          <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--github">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M12 2C6.48 2 2 6.5 2 12a10 10 0 0 0 6.84 9.49c.5.1.68-.21.68-.48v-1.7c-2.78.6-3.37-1.2-3.37-1.2-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.05 1.53 1.05.9 1.54 2.36 1.1 2.94.84.1-.66.36-1.1.65-1.35-2.22-.26-4.56-1.12-4.56-5 0-1.1.39-2 .99-2.7-.1-.26-.43-1.3.1-2.7 0 0 .83-.26 2.75 1.02a9.3 9.3 0 0 1 5 0c1.92-1.28 2.75-1.02 2.75-1.02.53 1.4.2 2.44.1 2.7.6.7.99 1.6.99 2.7 0 3.9-2.34 4.74-4.57 5 .37.32.69.94.69 1.9v2.8c0 .27.18.59.69.48A10 10 0 0 0 22 12c0-5.5-4.48-10-10-10Z" />
-            </svg>
-            <span>GitHub</span>
-          </a>
-        </div>
-      </div>
-      <div class="footer-section">
-        <h4>Social Media</h4>
-        <div class="footer-social">
-          <a href="https://www.instagram.com/ashfaaq_kt?igsh=eXl4YmgxdXdjdTNq&utm_source=qr" target="_blank"
-            rel="noopener noreferrer" class="social-link social-link--instagram">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 3.5A4.5 4.5 0 1 0 16.5 12 4.51 4.51 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5zM17.75 6a1.25 1.25 0 1 0 1.25 1.25A1.25 1.25 0 0 0 17.75 6z" />
-            </svg>
-            <span>Instagram</span>
-          </a>
-          <a href="https://x.com/ashfaaq_kt?s=21" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--x">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M4 3l6.5 8.4L4.2 21h2.3l5-6.4L15.8 21H20l-6.7-8.8L19.6 3h-2.3l-4.6 5.9L8.2 3H4z" />
-            </svg>
-            <span>X</span>
-          </a>
-          <a href="https://www.facebook.com/ishfm" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M13.5 21v-7.2H16l.4-3h-2.9V8.4c0-.9.3-1.5 1.6-1.5H16.5V4.2C16.2 4.1 15.3 4 14.3 4c-2.4 0-4 1.3-4 3.8V10H8v3h2.3V21h3.2z" />
-            </svg>
-            <span>Facebook</span>
-          </a>
-        </div>
-      </div>
-      <div class="footer-section">
-        <h4>Status</h4>
-        <p>AI-Assisted SWE | Open to Remote, Hybrid & Onsite roles in India & GCC.</p>
+    <div class="footer-glow"></div>
+
+    <!-- Hero brand -->
+    <div class="footer-hero">
+      <h2 class="footer-name cursor-highlight-target">Ashfaaq KT</h2>
+      <p class="footer-tagline" data-en="AI-Assisted Workflow Developer" data-ar="مطوّر سير العمل بالذكاء الاصطناعي">AI-Assisted Workflow Developer</p>
+      <div class="footer-availability">
+        <span class="footer-avail-dot"></span>
+        <span data-en="Open to Remote, Hybrid &amp; Onsite roles in India &amp; GCC" data-ar="منفتح على العمل عن بُعد والهجين والحضوري في الهند ودول الخليج">Open to Remote, Hybrid &amp; Onsite roles in India &amp; GCC</span>
       </div>
     </div>
+
+    <!-- Social icons -->
+    <div class="footer-socials">
+      <a href="https://ashfaaqkt.com" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--website" aria-label="Website">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/ashfaaq-kt-109342177/" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--linkedin" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 9h3v12H6zM7.5 5.5A2 2 0 1 1 7.5 9a2 2 0 0 1 0-3.5ZM13 9h3v2h.05c.42-.8 1.45-1.65 3-1.65 3.2 0 3.95 2.1 3.95 4.8V21h-3v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.57-2.3 3.17V21h-3z"/></svg>
+      </a>
+      <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.5 2 12a10 10 0 0 0 6.84 9.49c.5.1.68-.21.68-.48v-1.7c-2.78.6-3.37-1.2-3.37-1.2-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.05 1.53 1.05.9 1.54 2.36 1.1 2.94.84.1-.66.36-1.1.65-1.35-2.22-.26-4.56-1.12-4.56-5 0-1.1.39-2 .99-2.7-.1-.26-.43-1.3.1-2.7 0 0 .83-.26 2.75 1.02a9.3 9.3 0 0 1 5 0c1.92-1.28 2.75-1.02 2.75-1.02.53 1.4.2 2.44.1 2.7.6.7.99 1.6.99 2.7 0 3.9-2.34 4.74-4.57 5 .37.32.69.94.69 1.9v2.8c0 .27.18.59.69.48A10 10 0 0 0 22 12c0-5.5-4.48-10-10-10Z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ashfaaq_kt?igsh=eXl4YmgxdXdjdTNq&utm_source=qr" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--instagram" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm5 3.5A4.5 4.5 0 1 0 16.5 12 4.51 4.51 0 0 0 12 7.5zm0 2A2.5 2.5 0 1 1 9.5 12 2.5 2.5 0 0 1 12 9.5zM17.75 6a1.25 1.25 0 1 0 1.25 1.25A1.25 1.25 0 0 0 17.75 6z"/></svg>
+      </a>
+      <a href="https://x.com/ashfaaq_kt?s=21" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--x" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3l6.5 8.4L4.2 21h2.3l5-6.4L15.8 21H20l-6.7-8.8L19.6 3h-2.3l-4.6 5.9L8.2 3H4z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/ishfm" target="_blank" rel="noopener noreferrer" class="footer-social-icon fsi--facebook" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.2H16l.4-3h-2.9V8.4c0-.9.3-1.5 1.6-1.5H16.5V4.2C16.2 4.1 15.3 4 14.3 4c-2.4 0-4 1.3-4 3.8V10H8v3h2.3V21h3.2z"/></svg>
+      </a>
+    </div>
+
+    <!-- Navigation links -->
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="#home" class="footer-link" data-en="Home" data-ar="الرئيسية">Home</a>
+      <span class="footer-link-sep" aria-hidden="true">·</span>
+      <a href="#about" class="footer-link" data-en="About" data-ar="نبذة">About</a>
+      <span class="footer-link-sep" aria-hidden="true">·</span>
+      <a href="#education" class="footer-link" data-en="Education" data-ar="التعليم">Education</a>
+      <span class="footer-link-sep" aria-hidden="true">·</span>
+      <a href="#projects" class="footer-link" data-en="Projects" data-ar="المشاريع">Projects</a>
+      <span class="footer-link-sep" aria-hidden="true">·</span>
+      <a href="#expertise" class="footer-link" data-en="Expertise" data-ar="الخبرات">Expertise</a>
+      <span class="footer-link-sep" aria-hidden="true">·</span>
+      <a href="#connect" class="footer-link" data-en="Connect" data-ar="التواصل">Connect</a>
+    </nav>
+
+    <!-- Bottom bar: copyright left, signature right (admin trigger) -->
     <div class="footer-bottom">
-      <p>Ashfaaq KT © 2026 | v 1.1</p>
-      <div class="footer-signature">
-        <img src="PP/ashfaaq-sign.jpg" alt="Signature of Ashfaaq KT" />
-      </div>
+      <span class="footer-copy" data-en="Ashfaaq KT © 2026 · v 1.1" data-ar="© 2026 أشفاق كي تي · v 1.1">Ashfaaq KT © 2026 · v 1.1</span>
+      <img src="PP/ashfaaq-sign.jpg" alt="Signature of Ashfaaq KT" class="footer-signature-img"
+        id="admin-login-link" role="button" tabindex="0" aria-label="Admin login" />
     </div>
   </footer>
 
@@ -1137,9 +1136,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Custom Cursor -->
-  <div class="custom-cursor" id="custom-cursor"></div>
 
   <!-- Back to Top Button -->
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">

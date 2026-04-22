@@ -616,35 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 
 function initCustomCursor() {
-  const cursorEl = document.getElementById('custom-cursor');
-  if (!cursorEl) return;
-
-  // Don't run on touch / coarse pointer devices
-  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-    return;
-  }
-
-  document.addEventListener('mousemove', (e) => {
-    cursorEl.classList.add('is-visible');
-    const x = e.clientX;
-    const y = e.clientY;
-    cursorEl.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-  }, { passive: true });
-
-  document.addEventListener('mouseleave', () => {
-    cursorEl.classList.remove('is-visible');
-  });
-
-  // Make cursor large over highlighted headings (both EN + AR share same elements)
-  const highlightTargets = document.querySelectorAll('.cursor-highlight-target');
-  highlightTargets.forEach((el) => {
-    el.addEventListener('mouseenter', () => {
-      cursorEl.classList.add('is-large');
-    });
-    el.addEventListener('mouseleave', () => {
-      cursorEl.classList.remove('is-large');
-    });
-  });
+  // No global custom cursor — highlight effect is CSS-only on target elements.
+  // Nothing to initialise here; .cursor-highlight-target:hover handles the glow.
 }
 
 // ============================================
@@ -996,17 +969,16 @@ function setLanguage(lang) {
   document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
   document.documentElement.setAttribute('lang', lang);
 
-  // Update language toggle tooltip / accessibility text
+  // Update language toggle tooltip text + accessibility label
   const langToggle = document.getElementById('lang-toggle');
   if (langToggle) {
+    const tooltip = langToggle.querySelector('.lang-tooltip');
     if (lang === 'en') {
-      // Site is in English → button switches to Arabic
-      langToggle.setAttribute('title', 'Switch to Arabic / التبديل إلى العربية');
       langToggle.setAttribute('aria-label', 'Switch to Arabic');
+      if (tooltip) tooltip.textContent = 'Switch to Arabic';
     } else {
-      // Site is in Arabic → button switches to English
-      langToggle.setAttribute('title', 'Switch to English / التبديل إلى الإنجليزية');
       langToggle.setAttribute('aria-label', 'Switch to English');
+      if (tooltip) tooltip.textContent = 'Switch to English';
     }
   }
 
@@ -1234,28 +1206,7 @@ function setLanguage(lang) {
   const sendBtn = document.querySelector('#contact-form button[type="submit"] span');
   if (sendBtn) sendBtn.textContent = t.connect.send;
 
-  // Update footer
-  const footerNav = document.querySelectorAll('.footer-section h4');
-  if (footerNav.length >= 4) {
-    footerNav[0].textContent = t.footer.navigation;
-    footerNav[1].textContent = t.footer.connect;
-    footerNav[2].textContent = t.footer.social;
-    footerNav[3].textContent = t.footer.status;
-  }
-
-  // Update footer navigation links
-  const footerNavLinks = document.querySelectorAll('.footer-nav a');
-  if (footerNavLinks.length >= 6) {
-    const linkKeys = ['home', 'about', 'education', 'projects', 'expertise', 'connect'];
-    footerNavLinks.forEach((link, index) => {
-      if (linkKeys[index]) {
-        link.textContent = t.footer.navLinks[linkKeys[index]];
-      }
-    });
-  }
-
-  const statusText = document.querySelector('.footer-section:last-of-type p');
-  if (statusText) statusText.textContent = t.footer.statusText;
+  // Footer text updated via data-en/data-ar generic handler above
 
   // Re-populate dynamic content with new language
   if (typeof populateDynamicContent === 'function') {
@@ -3122,7 +3073,6 @@ function initPortfolioSummaryModal() {
 
 function initAuth() {
   const authBtn = document.getElementById('auth-btn');
-  const logoutBtn = document.getElementById('logout-btn');
   const adminBtn = document.getElementById('admin-login-link');
   
   const authModal = document.getElementById('auth-modal');
@@ -3220,7 +3170,11 @@ function initAuth() {
   }
   initEnhancedForm();
 
-  // Set auth state
+  // Icon SVGs reused in updateAuthState
+  const iconSignIn = `<svg class="auth-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+  const iconLoggedIn = `<svg class="auth-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>`;
+
+  // Set auth state — icon-only button with tooltip
   function updateAuthState() {
     if (!authBtn) return;
     try {
@@ -3228,23 +3182,20 @@ function initAuth() {
       const userStr = localStorage.getItem('portfolio_user');
       if (token && userStr) {
         const user = JSON.parse(userStr);
-        authBtn.innerHTML = `<span>Hello ${user.name}!</span>`;
-        if (logoutBtn) logoutBtn.style.display = 'flex';
+        const label = currentLanguage === 'ar' ? `مرحباً ${user.name}` : `Hello ${user.name}`;
+        authBtn.setAttribute('aria-label', label);
+        authBtn.dataset.loggedIn = 'true';
+        authBtn.innerHTML = `${iconLoggedIn}<span class="auth-tooltip">${label}</span>`;
         return;
       }
     } catch (err) {
-      console.error('Auth state error', err);
       localStorage.removeItem('portfolio_token');
       localStorage.removeItem('portfolio_user');
     }
-    
-    if (logoutBtn) logoutBtn.style.display = 'none';
-    const langSpan = document.createElement('span');
-    langSpan.setAttribute('data-en', 'Sign in');
-    langSpan.setAttribute('data-ar', 'تسجيل الدخول');
-    langSpan.textContent = currentLanguage === 'ar' ? 'تسجيل الدخول' : 'Sign in';
-    authBtn.innerHTML = '';
-    authBtn.appendChild(langSpan);
+    const label = currentLanguage === 'ar' ? 'تسجيل الدخول' : 'Sign In';
+    authBtn.setAttribute('aria-label', label);
+    authBtn.dataset.loggedIn = 'false';
+    authBtn.innerHTML = `${iconSignIn}<span class="auth-tooltip">${label}</span>`;
   }
   updateAuthState();
   
@@ -3272,29 +3223,28 @@ function initAuth() {
     authBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      if (!localStorage.getItem('portfolio_token')) {
+      if (authBtn.dataset.loggedIn === 'true') {
+        // Already logged in — clicking signs out
+        localStorage.removeItem('portfolio_token');
+        localStorage.removeItem('portfolio_user');
+        updateAuthState();
+      } else {
         openModal(authModal);
       }
     });
   }
-  
+
   if (adminBtn) {
     adminBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       openModal(adminModal);
     });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      localStorage.removeItem('portfolio_token');
-      localStorage.removeItem('portfolio_user');
-      updateAuthState();
-      // Close dropdown if needed
-      if (typeof closeCVDropdown === 'function') closeCVDropdown();
+    adminBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal(adminModal);
+      }
     });
   }
   
