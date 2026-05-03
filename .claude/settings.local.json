@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(awk '/@media/{f=1; start=NR} f && /\\\\.contact-form|\\\\.checkbox|\\\\.radio|\\\\.contact-info|\\\\.contact-item/{print NR\": \"$0} /^}/ && f && NR>start{f=0}' \"c:\\\\Users\\\\ashfa\\\\OneDrive\\\\Dev\\\\portfolio website\\\\Ashfaaq KT 1st Portfolio web 2.0\\\\styles.css\")",
+      "Bash(grep -E \"\\\\.\\(env|json|md|js|css|html\\)$|^d\")",
+      "Bash(node --check server.js)",
+      "Bash(node --check script.js)",
+      "Bash(git commit --amend -m ' *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'grep -v \"Co-Authored-By:\"' 04eabd607e75e9696cf5060f774a60a573b1eea7^..HEAD)",
+      "Bash(git update-ref *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)"
+    ]
+  }
+}

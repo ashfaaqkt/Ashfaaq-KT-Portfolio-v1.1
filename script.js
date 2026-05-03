@@ -150,6 +150,15 @@ const translations = {
       title: 'Academic journey & milestones',
       timeline: [
         {
+          badge: '2024 — Present',
+          title: 'AshTech Solutions · Founder & Full-Stack Developer',
+          subtitle: 'Software Solutions Agency',
+          description: 'Architected and deployed a production-ready agency website with an integrated AI chatbot, serverless backend, and custom domain routing. Building software solutions for clients globally.',
+          links: [
+            { text: 'Visit AshTech', href: 'https://www.ashtechnologiesolutions.com/' }
+          ]
+        },
+        {
           badge: '2023 — Present',
           title: 'BITS Pilani · B.Sc. Computer Science',
           subtitle: 'Online Program · CGPA 8.01',
@@ -373,6 +382,15 @@ const translations = {
       title: 'الرحلة الأكاديمية والمعالم',
       timeline: [
         {
+          badge: '2024 — الحاضر',
+          title: 'حلول آش تك · مؤسس ومطور Full-Stack',
+          subtitle: 'وكالة حلول برمجية',
+          description: 'تصميم ونشر موقع وكالة جاهز للإنتاج مع برنامج دردشة آلي مدمج، وخلفية بدون خادم، وتوجيه نطاق مخصص. بناء حلول برمجية للعملاء عالمياً.',
+          links: [
+            { text: 'زيارة آش تك', href: 'https://www.ashtechnologiesolutions.com/' }
+          ]
+        },
+        {
           badge: '2023 — الحاضر',
           title: 'معهد بتس بيلاني التقنية · بكالوريوس علوم الحاسوب',
           subtitle: 'اونلاين · المعدل التراكمي 8.01',
@@ -563,13 +581,15 @@ function safeInit(name, fn) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Add js-ready class to enable animation hiding as early as possible
+  document.documentElement.classList.add('js-ready');
+
   // Initialize auth first for state and PDF protection
   safeInit('auth', initAuth);
   
   // Initialize language system
   safeInit('language', initLanguageSystem);
   safeInit('themeToggle', initThemeToggle);
-  safeInit('customCursor', initCustomCursor);
 
   // Initialize in proper order to prevent flicker
   safeInit('navigation', initNavigation);
@@ -583,47 +603,28 @@ document.addEventListener('DOMContentLoaded', () => {
   safeInit('chatbot', initChatbot);
   safeInit('portfolioSummaryModal', initPortfolioSummaryModal);
 
-  // Initialize animations after a brief delay to ensure DOM is ready
-  requestAnimationFrame(() => {
-    // Add js-ready class to enable animation hiding
-    document.documentElement.classList.add('js-ready');
+  // Initialize animations
+  initScrollAnimations();
+  populateDynamicContent();
 
-    initScrollAnimations();
-    populateDynamicContent();
-    initPageTransitions();
-    // Disabled auto page snapping on scroll/touch to prevent unwanted jumps at page edges
-    // initAutoScrollNavigation();
-
-    // Fallback: Ensure animated elements become visible after a delay
-    // in case IntersectionObserver fails or elements are already in viewport
-    setTimeout(() => {
-      const activePage = document.querySelector('.page.active');
-      if (activePage) {
-        const animatedElements = activePage.querySelectorAll('[data-animate]:not(.animated)');
-        animatedElements.forEach((el, index) => {
-          const delay = parseInt(el.getAttribute('data-delay')) || 0;
-          setTimeout(() => {
-            if (!el.classList.contains('animated')) {
-              el.classList.add('animated');
-              animatedElementsSet.add(el);
-            }
-          }, delay + (index * 50));
-        });
-      }
-    }, 500);
+  // Fallback: Ensure animated elements become visible after a delay
+  // in case IntersectionObserver fails or elements are already in viewport
+  setTimeout(() => {
+    const animatedElements = document.querySelectorAll('[data-animate]:not(.animated)');
+    animatedElements.forEach((el, index) => {
+      const delay = parseInt(el.getAttribute('data-delay')) || 0;
+      setTimeout(() => {
+        if (!el.classList.contains('animated')) {
+          el.classList.add('animated');
+          animatedElementsSet.add(el);
+        }
+      }, delay + (index * 50));
     });
+  }, 1000);
 
   // PDF interception moved to top of file for early protection
 });
 
-// ============================================
-// CUSTOM CURSOR
-// ============================================
-
-function initCustomCursor() {
-  // No global custom cursor — highlight effect is CSS-only on target elements.
-  // Nothing to initialise here; .cursor-highlight-target:hover handles the glow.
-}
 
 // ============================================
 // THEME SYSTEM
@@ -782,11 +783,8 @@ function navigateToPage(pageId) {
   });
 
   // Trigger animations for newly visible section (kept for consistency)
-  setTimeout(() => {
-    if (typeof initPageAnimations === 'function') {
-      initPageAnimations();
-    }
-  }, 100);
+  // Ensure header highlights correctly
+  syncNavHeight();
 }
 
 // Make navigateToPage globally accessible for onclick handlers
@@ -903,19 +901,6 @@ function updateCVDropdownLabels() {
   });
 }
 
-function initPageTransitions() {
-  // Smooth page transitions
-  const pages = document.querySelectorAll('.page');
-
-  pages.forEach(page => {
-    page.addEventListener('transitionend', () => {
-      if (page.classList.contains('active')) {
-        // Page is now active, trigger animations
-        initPageAnimations();
-      }
-    });
-  });
-}
 
 // ============================================
 // LANGUAGE SYSTEM
@@ -1367,8 +1352,7 @@ function initScrollAnimations() {
   }
 
   // Observe all elements with data-animate attribute
-  const currentPage = document.querySelector('.page.active');
-  const animatedElements = currentPage ? currentPage.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
+  const animatedElements = document.querySelectorAll('[data-animate]');
   animatedElements.forEach(el => {
     // Only observe if not already animated
     if (!animatedElementsSet.has(el)) {
@@ -1391,50 +1375,14 @@ function initScrollAnimations() {
   });
 
   // Also observe timeline items, project cards, and skill cards
-  const timelineItems = document.querySelectorAll('.timeline-item:not(.visible)');
-  timelineItems.forEach(item => {
+  const scrollItems = document.querySelectorAll('.timeline-item:not(.visible), .project-card:not(.visible), .skill-card:not(.visible)');
+  scrollItems.forEach(item => {
     if (!animatedElementsSet.has(item)) {
       globalAnimationObserver.observe(item);
     }
   });
-
-  const projectCards = document.querySelectorAll('.project-card:not(.visible)');
-  projectCards.forEach(card => {
-    if (!animatedElementsSet.has(card)) {
-      globalAnimationObserver.observe(card);
-    }
-  });
-
-  const skillCards = document.querySelectorAll('.skill-card:not(.visible)');
-  skillCards.forEach(card => {
-    if (!animatedElementsSet.has(card)) {
-      globalAnimationObserver.observe(card);
-    }
-  });
 }
 
-function initPageAnimations() {
-  // Reset animations only for elements in the active page
-  const currentPage = document.querySelector('.page.active');
-  if (!currentPage) return;
-
-  const animatedElements = currentPage.querySelectorAll('[data-animate]');
-  animatedElements.forEach(el => {
-    // Only reset if not already in viewport
-    const rect = el.getBoundingClientRect();
-    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (!isInViewport) {
-      el.classList.remove('animated');
-      animatedElementsSet.delete(el);
-
-      // Re-observe if observer exists
-      if (globalAnimationObserver) {
-        globalAnimationObserver.observe(el);
-      }
-    }
-  });
-}
 
 // ============================================
 // SCROLL PROGRESS
@@ -1729,44 +1677,33 @@ function toArabicNumerals(str) {
 
 // Timeline
 function populateTimeline() {
-  const timeline = document.getElementById('timeline');
-  if (!timeline) return;
+  const track = document.getElementById('timeline');
+  if (!track) return;
 
-  // Clear existing timeline items to prevent duplication
-  timeline.innerHTML = '';
+  // Clear existing
+  track.innerHTML = '';
 
-  // Get timeline data from translations based on current language
-  // Use currentLanguage which should be updated before this function is called
   const lang = currentLanguage || 'en';
   const t = translations[lang];
   if (!t || !t.education || !t.education.timeline) return;
 
   const timelineData = t.education.timeline;
   const isRTL = lang === 'ar';
-
-  // Helper function to process text (convert numbers if RTL)
   const processText = (text) => isRTL ? toArabicNumerals(text) : text;
 
-  // RTL style attributes
-  const rtlStyles = isRTL
-    ? { direction: 'rtl', textAlign: 'right', marginProp: 'margin-left' }
-    : { direction: 'ltr', textAlign: 'left', marginProp: 'margin-right' };
+  // Build slides
+  timelineData.forEach((item) => {
+    const slide = document.createElement('div');
+    slide.className = 'timeline-item visible';
 
-  timelineData.forEach((item, index) => {
-    const timelineItem = document.createElement('div');
-    timelineItem.className = 'timeline-item';
-
-    // Process all text fields
     const badge = processText(item.badge);
     const title = processText(item.title);
     const subtitle = processText(item.subtitle);
     const description = processText(item.description);
 
-    // Generate links HTML
     let linksHTML = '';
     if (item.links) {
       const arrow = isRTL ? '↖' : '↗';
-      // Reverse links order in RTL mode
       const linksToDisplay = isRTL ? [...item.links].reverse() : item.links;
       linksHTML = `
         <div class="timeline-links">
@@ -1779,19 +1716,16 @@ function populateTimeline() {
       `;
     }
 
-    // Generate milestones HTML
     let milestonesHTML = '';
     if (item.milestones) {
-      const processedMilestones = item.milestones.map(processText);
       milestonesHTML = `
         <ul class="timeline-milestones">
-          ${processedMilestones.map(m => `<li>${m}</li>`).join('')}
+          ${item.milestones.map(m => `<li>${processText(m)}</li>`).join('')}
         </ul>
       `;
     }
 
-    timelineItem.innerHTML = `
-      <div class="timeline-dot"></div>
+    slide.innerHTML = `
       <div class="timeline-content">
         <div class="timeline-header">
           <span class="timeline-badge">${badge}</span>
@@ -1803,47 +1737,176 @@ function populateTimeline() {
         ${linksHTML}
       </div>
     `;
-
-    timeline.appendChild(timelineItem);
-
-    // Animate in using global observer pattern
-    requestAnimationFrame(() => {
-      // Check if element is already in viewport - make visible immediately
-      const rect = timelineItem.getBoundingClientRect();
-      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-
-      if (isInViewport) {
-        // If already visible, add visible class immediately with a small delay for animation
-        setTimeout(() => {
-          timelineItem.classList.add('visible');
-          animatedElementsSet.add(timelineItem);
-        }, index * 100);
-      } else {
-        // Otherwise, observe it for when it comes into view
-        if (globalAnimationObserver && !animatedElementsSet.has(timelineItem)) {
-          globalAnimationObserver.observe(timelineItem);
-        }
-        // Fallback: make visible after a delay if observer doesn't trigger
-        setTimeout(() => {
-          if (!timelineItem.classList.contains('visible')) {
-            timelineItem.classList.add('visible');
-            animatedElementsSet.add(timelineItem);
-          }
-        }, 1000 + (index * 100));
-      }
-    });
+    track.appendChild(slide);
   });
 
-  // Ensure all timeline items are observed after creation
-  setTimeout(() => {
-    const timelineItems = document.querySelectorAll('.timeline-item:not(.visible)');
-    timelineItems.forEach(item => {
-      if (globalAnimationObserver && !animatedElementsSet.has(item)) {
-        globalAnimationObserver.observe(item);
-      }
+  // ── Carousel engine ──
+  const total = timelineData.length;
+  let current = 0;
+
+  const counterEl = document.getElementById('edu-carousel-counter');
+  const dotsContainer = document.getElementById('timeline-indicators');
+  const prevBtn = document.getElementById('timeline-prev');
+  const nextBtn = document.getElementById('timeline-next');
+
+  // Build dot indicators
+  if (dotsContainer) {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'edu-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', `Go to milestone ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  // Set total in counter
+  if (counterEl) {
+    const totalSpan = counterEl.querySelector('.edu-counter-total');
+    if (totalSpan) totalSpan.textContent = String(total).padStart(2, '0');
+  }
+
+  function goTo(index) {
+    // Wrap infinitely in both directions
+    current = ((index % total) + total) % total;
+
+    // Slide the track — read actual slide width so mobile (88%) and desktop (84%) both work
+    const slides = track.querySelectorAll('.timeline-item');
+    const firstSlide = slides[0];
+    let slideW = 84; // default desktop %
+    if (firstSlide) {
+      const basis = getComputedStyle(firstSlide).flexBasis;
+      if (basis && basis.endsWith('%')) slideW = parseFloat(basis);
+    }
+    const offset = (100 - slideW) / 2; // center the first card
+    track.style.transform = `translateX(calc(${offset}% - ${current * slideW}%))`;
+
+
+    // Update counter
+    if (counterEl) {
+      const currentSpan = counterEl.querySelector('.edu-counter-current');
+      if (currentSpan) currentSpan.textContent = String(current + 1).padStart(2, '0');
+    }
+
+    // Update dots
+    if (dotsContainer) {
+      dotsContainer.querySelectorAll('.edu-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === current);
+      });
+    }
+
+    // Apply peek blur to adjacent slides (wrapping)
+    const prevIdx = ((current - 1) % total + total) % total;
+    const nextIdx = (current + 1) % total;
+    slides.forEach((slide, i) => {
+      slide.classList.remove('peek-prev', 'peek-next');
+      if (i === prevIdx) slide.classList.add('peek-prev');
+      if (i === nextIdx) slide.classList.add('peek-next');
     });
-  }, 100);
+    // No button disabling — loop is infinite
+  }
+
+  // Init
+  goTo(0);
+
+  // Button handlers (clone to remove old listeners)
+  if (prevBtn) {
+    const newPrev = prevBtn.cloneNode(true);
+    prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+    newPrev.addEventListener('click', () => goTo(current - 1));
+  }
+  if (nextBtn) {
+    const newNext = nextBtn.cloneNode(true);
+    nextBtn.parentNode.replaceChild(newNext, nextBtn);
+    newNext.addEventListener('click', () => goTo(current + 1));
+  }
+
+  // Keyboard navigation when education section is visible
+  const eduSection = document.getElementById('page-education');
+  if (eduSection) {
+    document.addEventListener('keydown', (e) => {
+      // Only respond if education page is the active page
+      if (!eduSection.classList.contains('active')) return;
+      if (e.key === 'ArrowRight') goTo(current + 1);
+      if (e.key === 'ArrowLeft') goTo(current - 1);
+    });
+  }
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const viewport = track.parentElement;
+
+  if (viewport) {
+    viewport.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) goTo(current + 1);  // swipe left → next
+        else goTo(current - 1);            // swipe right → prev
+      }
+    }, { passive: true });
+  }
+
+  // ── Auto-play ──
+  const AUTO_INTERVAL = 5000;   // advance every 5s
+  const RESUME_DELAY  = 8000;   // resume 8s after last interaction
+  let autoTimer = null;
+  let resumeTimer = null;
+
+  function autoAdvance() {
+    goTo(current + 1); // goTo wraps infinitely
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(autoAdvance, AUTO_INTERVAL);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+  }
+
+  function pauseAndResume() {
+    stopAuto();
+    resumeTimer = setTimeout(startAuto, RESUME_DELAY);
+  }
+
+  // Pause on any user interaction with the carousel
+  const carouselEl = document.getElementById('edu-carousel');
+  if (carouselEl) {
+    carouselEl.addEventListener('mouseenter', () => stopAuto());
+    carouselEl.addEventListener('mouseleave', () => {
+      stopAuto();
+      resumeTimer = setTimeout(startAuto, RESUME_DELAY);
+    });
+    // Pause on click (buttons, dots)
+    carouselEl.addEventListener('click', pauseAndResume);
+  }
+
+  // Pause on keyboard interaction (already handled above, just reset timer)
+  if (eduSection) {
+    document.addEventListener('keydown', (e) => {
+      if (!eduSection.classList.contains('active')) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') pauseAndResume();
+    });
+  }
+
+  // Pause on touch
+  if (viewport) {
+    viewport.addEventListener('touchstart', pauseAndResume, { passive: true });
+  }
+
+  // Start auto-play
+  startAuto();
 }
+
 
 // Projects
 function populateProjects() {
@@ -1857,6 +1920,30 @@ function populateProjects() {
 
   const projects = [
     {
+      badge: 'Featured',
+      badgeAr: 'مميز',
+      title: 'AshTech Software Solutions',
+      titleAr: 'شركة آش تك للحلول البرمجية',
+      meta: 'AI · Mobile · Web3 · Robotics · E-commerce',
+      description: 'AshTech Software Solutions is a technology company built on one principle - great software changes everything. We specialize in varied domains including AI-powered systems, mobile applications, Web3/Blockchain ecosystems, robotics software, and comprehensive E-commerce platforms.',
+      descriptionAr: 'شركة آش تك للحلول البرمجية هي شركة تكنولوجيا مبنية على مبدأ واحد - البرمجيات العظيمة تغير كل شيء. نحن متخصصون في مجالات متنوعة بما في ذلك الأنظمة المدعومة بالذكاء الاصطناعي، وتطبيقات الهاتف المحمول، ومنظومات Web3/Blockchain، وبرمجيات الروبوتات، ومنصات التجارة الإلكترونية الشاملة.',
+      link: { text: 'Visit AshTech', textAr: 'زيارة آش تك', href: 'https://www.ashtechnologiesolutions.com/' },
+      liveLink: { text: 'Live Demo', textAr: 'عرض مباشر', href: 'https://www.ashtechnologiesolutions.com/' },
+      image: 'PP/projects/AshTech.png.png'
+    },
+    {
+      badge: 'Featured',
+      badgeAr: 'مميز',
+      title: 'Basket Store — Premium MERN E-Commerce Platform',
+      titleAr: 'منصة باسكت ستور للتجارة الإلكترونية',
+      meta: 'MongoDB · Express · React · Node.js · Gemini API',
+      description: 'A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce app with dark-mode UI, seller/customer role switching, and Google Gemini–powered chat and product insights.',
+      descriptionAr: 'تطبيق تجارة إلكترونية متكامل مبني بتقنية MERN (MongoDB, Express, React, Node.js) مع واجهة داكنة، وتبديل بين أدوار البائع والعميل، ودردشة ورؤى منتجات مدعومة بـ Google Gemini.',
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/E-Commerce-Backend-System-Entri-MERN-2-ME5' },
+      liveLink: { text: 'Live Demo', textAr: 'عرض مباشر', href: 'https://e-commerce-backend-system-entri-mer-nu.vercel.app/' },
+      image: 'PP/projects/basket-store.png.png'
+    },
+    {
       badge: 'Study Project',
       badgeAr: 'مشروع دراسي',
       title: 'Bill Scanning Based Reward Intelligence System',
@@ -1864,7 +1951,21 @@ function populateProjects() {
       meta: 'JS · React · GEMINI API',
       description: 'Developed a reward intelligence system based on bill scanning, integrating Gemini API for robust data extraction. Built as a Phase 3 study project showcasing full-stack capabilities.',
       descriptionAr: 'تم تطوير نظام ذكاء للمكافآت يعتمد على مسح الفواتير، مع دمج واجهة Gemini API لاستخراج بيانات قوية. تم بناؤه كمشروع دراسي للمرحلة الثالثة يعرض قدرات Full-Stack.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ' },
+      liveLink: { text: 'Live Demo', textAr: 'عرض مباشر', href: 'https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html' },
+      image: 'PP/projects/bill-scanning.png.png'
+    },
+    {
+      badge: 'Study Project',
+      badgeAr: 'مشروع دراسي',
+      title: 'StudyBuddy Full-Stack Application',
+      titleAr: 'تطبيق StudyBuddy المتكامل',
+      meta: 'MERN · Gemini AI · JWT',
+      description: 'A complete full-stack educational platform built as the final capstone for the Entri Elevate program. Features secure JWT authentication, AI-powered note summarization and quiz generation via Gemini API, a Pomodoro timer, and a responsive analytics dashboard.',
+      descriptionAr: 'منصة تعليمية متكاملة بنيت كمشروع التخرج النهائي لبرنامج Entri Elevate. تشمل مصادقة JWT الآمنة، وتلخيص الملاحظات وإنشاء الاختبارات تلقائياً عبر واجهة Gemini، ومؤقت بومودورو، ولوحة معلومات تحليلية متجاوبة.',
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/StudyBuddy-Entri-Final-Project-By-Ashfaaq' },
+      liveLink: { text: 'Live Demo', textAr: 'عرض مباشر', href: 'https://study-buddy-entri-final-project-by.vercel.app' },
+      image: 'PP/projects/studybuddy.png.png'
     },
     {
       badge: 'Featured',
@@ -1874,7 +1975,9 @@ function populateProjects() {
       meta: 'HTML · CSS · JavaScript',
       description: 'Designed and deployed ashfaaqkt.com with performance and clean UX top-of-mind. Built as a static site and hosted via GitHub, using a custom domain purchased from GoDaddy. Features modern animations, responsive design, and optimized loading.',
       descriptionAr: 'تم تصميم ونشر ashfaaqkt.com مع التركيز على الأداء وتجربة المستخدم النظيفة. تم بناؤه كموقع ثابت ومستضاف عبر GitHub مع ربط نطاق مخصص تم شراؤه من GoDaddy. يتميز بالرسوم المتحركة الحديثة والتصميم المتجاوب والتحميل المحسّن.',
-      link: { text: 'Visit Website', textAr: 'زيارة الموقع', href: 'https://ashfaaqkt.com' }
+      link: { text: 'Visit Website', textAr: 'زيارة الموقع', href: 'https://ashfaaqkt.com' },
+      liveLink: { text: 'Live Demo', textAr: 'عرض مباشر', href: 'https://ashfaaqkt.com' },
+      image: 'PP/projects/ashfaaq-portfolio.png.png'
     },
     {
       badge: 'FinTech',
@@ -1884,7 +1987,8 @@ function populateProjects() {
       meta: 'Python · SQL · gRPC',
       description: 'Secure transaction system with client/server architecture, authentication layers, and SQL-backed persistence. Implements robust error handling and transaction management for financial operations.',
       descriptionAr: 'نظام معاملات آمن مع بنية عميل/خادم وطبقات المصادقة والاستمرارية المدعومة بـ SQL. ينفذ معالجة أخطاء قوية وإدارة معاملات للعمليات المالية.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Banking-gRPC-System' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Banking-gRPC-System' },
+      image: 'PP/projects/Banking-gRPC-System.png.png'
     },
     {
       badge: 'Cloud',
@@ -1894,7 +1998,8 @@ function populateProjects() {
       meta: 'SQL · AWS · Cloud',
       description: 'Deployed production-ready database schemas on AWS RDS, enabling scalable data storage with automated backups, monitoring, and high availability. Demonstrates cloud infrastructure expertise.',
       descriptionAr: 'تم نشر مخططات قاعدة بيانات جاهزة للإنتاج على AWS RDS، مما يتيح تخزين بيانات قابل للتوسع مع النسخ الاحتياطي التلقائي والمراقبة والتوفر العالي. يظهر خبرة في البنية التحتية السحابية.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Database-AWS-RDS-Integration' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Database-AWS-RDS-Integration' },
+      image: 'PP/projects/Database-AWS-RDS-Integration.png.png'
     },
     {
       badge: 'Data Analysis',
@@ -1904,7 +2009,8 @@ function populateProjects() {
       meta: 'Tableau · Data Visualization',
       description: 'Interactive visualizations using charts, graphs, and trend analysis to uncover mental health patterns across different demographic groups. Transforms raw data into actionable insights.',
       descriptionAr: 'تصورات تفاعلية باستخدام الرسوم البيانية والرسوم والتحليل الاتجاهي للكشف عن أنماط الصحة العقلية عبر مجموعات ديموغرافية مختلفة. يحول البيانات الخام إلى رؤى قابلة للتنفيذ.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Tableau-Mental-Health-Data-Analysis-Project' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Tableau-Mental-Health-Data-Analysis-Project' },
+      image: 'PP/projects/Tableau-Mental-Health-Data-Analysis.png.png'
     },
     {
       badge: 'Data Viz',
@@ -1914,7 +2020,8 @@ function populateProjects() {
       meta: 'Tableau · Business Intelligence',
       description: 'Visualized pricing, occupancy, and demand insights to support rental management decisions. Created comprehensive dashboards for market analysis and revenue optimization.',
       descriptionAr: 'تصور رؤى التسعير والإشغال والطلب لدعم قرارات إدارة الإيجار. إنشاء لوحات معلومات شاملة لتحليل السوق وتحسين الإيرادات.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Airbnb-Dashboard-in-Tableau' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Airbnb-Dashboard-in-Tableau' },
+      image: 'PP/projects/Airbnb-Dashboards.png.png'
     },
     {
       badge: 'Database',
@@ -1924,7 +2031,8 @@ function populateProjects() {
       meta: 'SQL · Database Design',
       description: 'Complete SQL database system with schema design, data management, and complex queries supporting course assignments, enrollments, and student-instructor workflows. Demonstrates advanced SQL skills.',
       descriptionAr: 'نظام قاعدة بيانات SQL كامل مع تصميم المخطط وإدارة البيانات والاستعلامات المعقدة التي تدعم مهام الدورة والتسجيلات وسير عمل الطالب-المدرب. يظهر مهارات SQL متقدمة.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Database-Creation-and-Data-Manipulation-for-an-Education-System' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Database-Creation-and-Data-Manipulation-for-an-Education-System' },
+      image: 'PP/projects/Education-System-Database.png.png'
     },
     {
       badge: 'Data Analysis',
@@ -1934,7 +2042,8 @@ function populateProjects() {
       meta: 'Python · Pandas · Visualization',
       description: 'End-to-end data analysis workflow covering player demographics, performance metrics, and market valuation through data cleaning, EDA, and comprehensive visualizations. Showcases data science capabilities.',
       descriptionAr: 'سير عمل تحليل بيانات شامل يغطي التركيبة السكانية للاعبين ومقاييس الأداء وتقييم السوق من خلال تنظيف البيانات والتحليل الاستكشافي والتصورات الشاملة. يعرض قدرات علم البيانات.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Football-Players-Data-Analysis-Project' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Football-Players-Data-Analysis-Project' },
+      image: 'PP/projects/Football-Player-Data-Analysis.png.png'
     },
     {
       badge: 'DevOps',
@@ -1944,7 +2053,8 @@ function populateProjects() {
       meta: 'Git · GitHub · Docker · Flask',
       description: 'Complete DevOps workflow with Git version control, GitHub integration, and Docker containerization for Flask applications. Demonstrates end-to-end CI/CD practices and container orchestration.',
       descriptionAr: 'سير عمل DevOps كامل مع التحكم في الإصدارات Git وتكامل GitHub وحاويات Docker لتطبيقات Flask. يظهر ممارسات CI/CD الشاملة وتنسيق الحاويات.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/DevOps-Workflow-Implementation-using-Git-GitHub-Docker' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/DevOps-Workflow-Implementation-using-Git-GitHub-Docker' },
+      image: 'PP/projects/DevOps-Workflow.png.jpg'
     },
     {
       badge: 'Systems',
@@ -1954,7 +2064,8 @@ function populateProjects() {
       meta: 'C · Network Programming',
       description: 'Low-level HTTP client implementation using raw TCP sockets to connect to web servers, send requests, and receive responses. Demonstrates deep understanding of network protocols and systems programming.',
       descriptionAr: 'تنفيذ عميل HTTP منخفض المستوى باستخدام مقابس TCP الخام للاتصال بخوادم الويب وإرسال الطلبات واستقبال الردود. يظهر فهماً عميقاً لبروتوكولات الشبكة وبرمجة الأنظمة.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Implementation-of-an-HTTP-Client-in-C-for-Server-Communication' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/Implementation-of-an-HTTP-Client-in-C-for-Server-Communication' },
+      image: 'PP/projects/HTTP-Client-in-C.png.png'
     },
     {
       badge: 'UI/UX Design',
@@ -1964,17 +2075,8 @@ function populateProjects() {
       meta: 'MockUp (iPad) · UI/UX Design',
       description: 'A multi-service delivery and mobility app concept. ETTI, meaning "reached" in Malayalam, represents speed, trust, and reliability. The app combines food delivery, groceries, auto-rickshaw rides, porter services, and an AI assistant into one seamless platform. UI/UX mockups designed on iPad using MockUp showcase the complete visual flow.',
       descriptionAr: 'مفهوم تطبيق توصيل متعدد الخدمات والتنقل. ETTI، بمعنى "وصل" في المالايالامية، يمثل السرعة والثقة والموثوقية. يجمع التطبيق بين توصيل الطعام والبقالة وركوب الريكشا وخدمات الحمالين ومساعد ذكاء اصطناعي في منصة سلسة واحدة. النماذج الأولية لواجهة المستخدم/تجربة المستخدم المصممة على iPad باستخدام MockUp تعرض التدفق البصري الكامل.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/ETTI-App-MockUp-design' }
-    },
-    {
-      badge: 'MERN Stack',
-      badgeAr: 'MERN Stack',
-      title: 'StudyBuddy Notes Application',
-      titleAr: 'تطبيق ملاحظات StudyBuddy',
-      meta: 'React · CSS · JS · API',
-      description: 'Built a MERN-based AI study platform enabling note management, automated quiz generation, and performance tracking. Integrated Google Gemini AI for smart quiz creation and content summarization. Designed a responsive UI with modern UX and analytics dashboards.',
-      descriptionAr: 'تم بناء منصة دراسية مدعومة بالذكاء الاصطناعي تعتمد على MERN تتيح إدارة الملاحظات وإنشاء الاختبارات تلقائياً وتتبع الأداء. تم دمج Google Gemini AI لإنشاء اختبارات ذكية وتلخيص المحتوى. صمم واجهة مستخدم متجاوبة مع تجربة مستخدم حديثة ولوحات معلومات تحليلية.',
-      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/StudyBuddy-MiniProject-Entri-MERN' }
+      link: { text: 'View on GitHub', textAr: 'عرض على GitHub', href: 'https://github.com/ashfaaqkt/ETTI-App-MockUp-design' },
+      image: 'PP/projects/ETTI-App-UI-UX-Design.png'
     }
   ];
 
@@ -2097,22 +2199,40 @@ function populateProjects() {
       const badge = project.badge;
       const title = project.title;
       const description = (isRTL && project.descriptionAr) ? project.descriptionAr : project.description;
-      const linkText = project.link.text;
+      const linkText = (isRTL && project.link.textAr) ? project.link.textAr : project.link.text;
+
+
+      // Image: always use static image; wrap in clickable link if project has a live demo
+      const hasLive = !!project.liveLink;
+      const liveUrl = hasLive ? project.liveLink.href : '';
+      const imageTag = `<img src="${project.image}" alt="${title}" class="project-image" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('no-image');" />`;
+      const imageHtml = hasLive
+        ? `<a href="${liveUrl}" target="_blank" rel="noopener noreferrer" class="project-image-link" title="Open live demo">${imageTag}<span class="project-image-live-badge">● LIVE</span></a>`
+        : imageTag;
 
       projectCard.innerHTML = `
-        <span class="project-badge">${badge}</span>
-        <h3 class="project-title">${title}</h3>
-        <p class="project-meta">${project.meta}</p>
-        <p class="project-description">${description}</p>
-        <a href="${project.link.href}" target="_blank" rel="noopener noreferrer" class="project-link">
-          <span class="project-link-text">${linkText}</span>
-          <svg class="project-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
-          </svg>
-          <svg class="project-link-github" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
-          </svg>
-        </a>
+        <div class="project-image-wrapper">
+          ${imageHtml}
+          <span class="project-badge">${badge}</span>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">${title}</h3>
+          <div class="project-tags">
+            ${project.meta.split(' · ').map(tag => `<span class="project-tag">${tag}</span>`).join('')}
+          </div>
+          <p class="project-description">${description}</p>
+          <div class="project-links-container">
+            <a href="${project.link.href}" target="_blank" rel="noopener noreferrer" class="project-link">
+              <span class="project-link-text">${linkText}</span>
+              <svg class="project-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+              </svg>
+              <svg class="project-link-github" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
       `;
 
       projectsGrid.appendChild(projectCard);
@@ -2148,7 +2268,68 @@ function populateProjects() {
         }
       });
     }, 100);
+
+    // ── Mobile carousel dot indicators ──
+    setupProjectCarouselDots(filteredProjects.length);
   }
+
+  function setupProjectCarouselDots(count) {
+    const dotsContainer = document.getElementById('projects-carousel-dots');
+    if (!dotsContainer) return;
+
+    dotsContainer.innerHTML = '';
+
+    // Only show dots if we're on small screen (carousel mode)
+    const isMobile = window.matchMedia('(max-width: 530px)').matches;
+    if (!isMobile || count <= 1) return;
+
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'p-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', `Project ${i + 1}`);
+      dot.addEventListener('click', () => {
+        const cards = projectsGrid.querySelectorAll('.project-card');
+        if (cards[i]) {
+          cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        }
+      });
+      dotsContainer.appendChild(dot);
+    }
+
+    // Track scroll to update active dot
+    let scrollTimeout;
+    projectsGrid.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const cards = projectsGrid.querySelectorAll('.project-card');
+        const gridRect = projectsGrid.getBoundingClientRect();
+        const gridCenter = gridRect.left + gridRect.width * 0.35;
+
+        let closestIdx = 0;
+        let closestDist = Infinity;
+
+        cards.forEach((card, idx) => {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const dist = Math.abs(cardCenter - gridCenter);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestIdx = idx;
+          }
+        });
+
+        dotsContainer.querySelectorAll('.p-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === closestIdx);
+        });
+      }, 50);
+    }, { passive: true });
+  }
+
+  // Re-setup dots on resize
+  window.addEventListener('resize', () => {
+    const cardCount = projectsGrid.querySelectorAll('.project-card').length;
+    setupProjectCarouselDots(cardCount);
+  });
 
   // Initial render
   renderProjects();

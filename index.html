@@ -495,8 +495,37 @@
           </h2>
         </div>
 
-        <div class="timeline" id="timeline">
-          <!-- Dynamically populated -->
+        <div class="edu-carousel" id="edu-carousel">
+          <!-- Step counter -->
+          <div class="edu-carousel-counter" id="edu-carousel-counter">
+            <span class="edu-counter-current">01</span>
+            <span class="edu-counter-sep">/</span>
+            <span class="edu-counter-total">06</span>
+          </div>
+
+          <!-- Viewport with side arrows inside -->
+          <div class="edu-carousel-stage">
+            <button class="edu-nav-btn edu-nav-prev" id="timeline-prev" aria-label="Previous milestone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            <div class="edu-carousel-viewport">
+              <div class="edu-carousel-track" id="timeline">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <button class="edu-nav-btn edu-nav-next" id="timeline-next" aria-label="Next milestone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Dots below -->
+          <div class="edu-carousel-dots" id="timeline-indicators"></div>
         </div>
       </div>
     </section>
@@ -539,6 +568,7 @@
         <div class="projects-grid" id="projects-grid">
           <!-- Dynamically populated -->
         </div>
+        <div class="projects-carousel-dots" id="projects-carousel-dots"></div>
 
         <div class="projects-cta" data-animate="fade-up" data-delay="400">
           <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
@@ -792,7 +822,11 @@
 
     <!-- Bottom bar: copyright left, signature right (admin trigger) -->
     <div class="footer-bottom">
-      <span class="footer-copy" data-en="Ashfaaq KT © 2026 · v 1.1" data-ar="© 2026 أشفاق كي تي · v 1.1">Ashfaaq KT © 2026 · v 1.1</span>
+      <span class="footer-copy">
+        <span data-en="Ashfaaq KT © 2026" data-ar="© 2026 أشفاق كي تي">Ashfaaq KT © 2026</span> · 
+        <span data-en="Built By" data-ar="بني بواسطة">Built By</span> 
+        <a href="https://www.ashtechnologiesolutions.com/" target="_blank" style="color: var(--color-accent-primary); text-decoration: none; font-weight: 500;">AshTech</a>
+      </span>
       <img src="PP/ashfaaq-sign.jpg" alt="Signature of Ashfaaq KT" class="footer-signature-img"
         id="admin-login-link" role="button" tabindex="0" aria-label="Admin login" />
     </div>
