@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Ashfaaq KT</title>
+  <link rel="icon" type="image/svg+xml" href="PP/akl.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- Background orbs (same as main site) -->
+  <div class="bg-canvas">
+    <div class="bg-gradient-orb orb-1"></div>
+    <div class="bg-gradient-orb orb-2"></div>
+    <div class="bg-gradient-orb orb-3"></div>
+  </div>
+
+  <!-- Top Nav -->
+  <nav class="adm-nav">
+    <a href="index.html" class="adm-brand">Ashfaaq KT</a>
+    <div class="adm-nav-right">
+      <button id="adm-signout" class="adm-nav-btn adm-signout" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out &amp; Home
+      </button>
+    </div>
+  </nav>
+
+  <main class="adm-main">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="adm-board" class="adm-board" hidden>
+
+      <!-- Tab navigation -->
+      <div class="adm-tabs-wrap">
+        <div class="adm-tabs" role="tablist">
+          <button class="adm-tab active" data-tab="users" role="tab" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Users</span>
+          </button>
+          <button class="adm-tab" data-tab="timeline" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span>Timeline</span>
+          </button>
+          <button class="adm-tab" data-tab="projects" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span>Projects</span>
+          </button>
+          <button class="adm-tab" data-tab="settings" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Settings</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="adm-content">
+
+        <!-- ════════ USERS PANEL ════════ -->
+        <section id="panel-users" class="adm-panel" role="tabpanel">
+          <div class="adm-panel-head">
+            <h2>Users <span id="u-count" class="adm-badge"></span></h2>
+            <div class="adm-controls">
+              <div class="adm-search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="u-search" placeholder="Search name or email…" class="adm-input" />
+              </div>
+              <div class="adm-custom-select" id="u-filter-wrap">
+                <button type="button" class="adm-custom-trigger" id="u-filter-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="u-filter-label">All Categories</span>
+                  <svg class="adm-custom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <ul class="adm-custom-options" role="listbox" id="u-filter-options">
+                  <li class="adm-custom-option adm-custom-option--selected" role="option" data-value="all">All Categories</li>
+                  <li class="adm-custom-option" role="option" data-value="HR">HR</li>
+                  <li class="adm-custom-option" role="option" data-value="Founder">Founder</li>
+                  <li class="adm-custom-option" role="option" data-value="Recruiter">Recruiter</li>
+                  <li class="adm-custom-option" role="option" data-value="Viewer">Viewer</li>
+                  <li class="adm-custom-option" role="option" data-value="Other">Other</li>
+                </ul>
+                <input type="hidden" id="u-filter" value="all" />
+              </div>
+            </div>
+          </div>
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th>Date</th><th>Name</th><th>Email</th>
+                  <th>Phone</th><th>Category</th><th>Company</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="u-tbody">
+                <tr class="adm-skel-row"><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--lg"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--sm"></span></td></tr>
+                <tr class="adm-skel-row"><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--lg"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--lg"></span></td><td><span class="adm-skel adm-skel--sm"></span></td></tr>
+                <tr class="adm-skel-row"><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--lg"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--sm"></span></td></tr>
+                <tr class="adm-skel-row"><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--sm"></span></td></tr>
+                <tr class="adm-skel-row"><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--lg"></span></td><td><span class="adm-skel"></span></td><td><span class="adm-skel adm-skel--sm"></span></td><td><span class="adm-skel adm-skel--md"></span></td><td><span class="adm-skel adm-skel--sm"></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ════════ TIMELINE PANEL ════════ -->
+        <section id="panel-timeline" class="adm-panel" role="tabpanel" hidden>
+          <div class="adm-panel-head">
+            <h2>Timeline</h2>
+            <button id="tl-add-btn" class="adm-btn-primary">+ Add Entry</button>
+          </div>
+          <div id="tl-list" class="adm-list"></div>
+
+          <div id="tl-form-wrap" class="adm-form-card" hidden>
+            <h3 id="tl-form-title">Add Timeline Entry</h3>
+            <form id="tl-form" autocomplete="off">
+              <input type="hidden" id="tl-id" />
+              <div class="adm-grid-2">
+                <div class="adm-field-group">
+                  <label>Title (EN)</label>
+                  <div class="adm-translate-row">
+                    <input type="text" id="tl-title" class="adm-input" placeholder="Job / Degree title" />
+                    <button type="button" class="adm-tr-btn" data-src="tl-title" data-dst="tl-titleAr" title="Translate to Arabic">↔ AR</button>
+                  </div>
+                </div>
+                <div class="adm-field-group">
+                  <label>Title (AR)</label>
+                  <input type="text" id="tl-titleAr" class="adm-input" dir="rtl" placeholder="العنوان" />
+                </div>
+              </div>
+              <div class="adm-grid-2">
+                <div class="adm-field-group">
+                  <label>Company / Institution</label>
+                  <input type="text" id="tl-company" class="adm-input" />
+                </div>
+                <div class="adm-field-group">
+                  <label>Period</label>
+                  <input type="text" id="tl-period" class="adm-input" placeholder="2022 – Present" />
+                </div>
+              </div>
+              <div class="adm-field-group">
+                <label>Type</label>
+                <select id="tl-type" class="adm-select">
+                  <option value="experience">Experience</option>
+                  <option value="education">Education</option>
+                </select>
+              </div>
+              <div class="adm-field-group">
+                <label>Description (EN)</label>
+                <div class="adm-translate-row adm-translate-row--area">
+                  <textarea id="tl-desc" class="adm-textarea" rows="4" placeholder="Description in English"></textarea>
+                  <button type="button" class="adm-tr-btn" data-src="tl-desc" data-dst="tl-descAr" title="Translate to Arabic">↔ AR</button>
+                </div>
+              </div>
+              <div class="adm-field-group">
+                <label>Description (AR)</label>
+                <textarea id="tl-descAr" class="adm-textarea" rows="4" dir="rtl" placeholder="الوصف بالعربي"></textarea>
+              </div>
+              <div class="adm-field-group">
+                <label>Upload PDF (optional — saved to /CV/ folder)</label>
+                <input type="file" id="tl-pdf" accept=".pdf" class="adm-file-input" />
+                <div id="tl-pdf-status" class="adm-file-status"></div>
+              </div>
+              <div id="tl-err" class="adm-error"></div>
+              <div class="adm-form-actions">
+                <button type="submit" class="adm-btn-primary">Save Entry</button>
+                <button type="button" id="tl-cancel" class="adm-btn-ghost">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ════════ PROJECTS PANEL ════════ -->
+        <section id="panel-projects" class="adm-panel" role="tabpanel" hidden>
+          <div class="adm-panel-head">
+            <h2>Projects</h2>
+            <button id="pr-add-btn" class="adm-btn-primary">+ Add Project</button>
+          </div>
+          <div id="pr-list" class="adm-list"></div>
+
+          <div id="pr-form-wrap" class="adm-form-card" hidden>
+            <h3 id="pr-form-title">Add Project</h3>
+            <form id="pr-form" autocomplete="off" enctype="multipart/form-data">
+              <input type="hidden" id="pr-id" />
+              <div class="adm-grid-2">
+                <div class="adm-field-group">
+                  <label>Title (EN)</label>
+                  <div class="adm-translate-row">
+                    <input type="text" id="pr-title" class="adm-input" placeholder="Project name" />
+                    <button type="button" class="adm-tr-btn" data-src="pr-title" data-dst="pr-titleAr" title="Translate to Arabic">↔ AR</button>
+                  </div>
+                </div>
+                <div class="adm-field-group">
+                  <label>Title (AR)</label>
+                  <input type="text" id="pr-titleAr" class="adm-input" dir="rtl" placeholder="اسم المشروع" />
+                </div>
+              </div>
+              <div class="adm-field-group">
+                <label>Description (EN)</label>
+                <div class="adm-translate-row adm-translate-row--area">
+                  <textarea id="pr-desc" class="adm-textarea" rows="3" placeholder="Project description"></textarea>
+                  <button type="button" class="adm-tr-btn" data-src="pr-desc" data-dst="pr-descAr" title="Translate to Arabic">↔ AR</button>
+                </div>
+              </div>
+              <div class="adm-field-group">
+                <label>Description (AR)</label>
+                <textarea id="pr-descAr" class="adm-textarea" rows="3" dir="rtl" placeholder="وصف المشروع"></textarea>
+              </div>
+              <div class="adm-grid-2">
+                <div class="adm-field-group">
+                  <label>GitHub URL</label>
+                  <input type="url" id="pr-github" class="adm-input" placeholder="https://github.com/…" />
+                </div>
+                <div class="adm-field-group">
+                  <label>Live Demo URL</label>
+                  <input type="url" id="pr-demo" class="adm-input" placeholder="https://…" />
+                </div>
+              </div>
+              <div class="adm-grid-2">
+                <div class="adm-field-group">
+                  <label>Tags <small>(comma separated)</small></label>
+                  <input type="text" id="pr-tags" class="adm-input" placeholder="React, Node.js, MongoDB" />
+                </div>
+                <div class="adm-field-group">
+                  <label>Badge / Type</label>
+                  <input type="text" id="pr-badge" class="adm-input" placeholder="Full Stack, AI, …" />
+                </div>
+              </div>
+              <div class="adm-field-group">
+                <label>Project Image</label>
+                <input type="file" id="pr-image" accept="image/*" class="adm-file-input" />
+                <div id="pr-img-preview" class="adm-img-preview"></div>
+              </div>
+              <div id="pr-err" class="adm-error"></div>
+              <div class="adm-form-actions">
+                <button type="submit" class="adm-btn-primary">Save Project</button>
+                <button type="button" id="pr-cancel" class="adm-btn-ghost">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ════════ SETTINGS PANEL ════════ -->
+        <section id="panel-settings" class="adm-panel" role="tabpanel" hidden>
+          <div class="adm-panel-head">
+            <h2>Settings</h2>
+          </div>
+          <div class="adm-form-card">
+            <h3>Profile Picture</h3>
+            <div class="adm-pp-wrap">
+              <img src="PP/pp.jpg" alt="Profile" id="settings-pp-img" class="adm-pp-img" />
+            </div>
+            <form id="settings-pp-form" enctype="multipart/form-data">
+              <div class="adm-field-group">
+                <label>Upload new photo</label>
+                <input type="file" id="settings-pp-file" accept="image/*" class="adm-file-input" />
+              </div>
+              <div id="settings-pp-err" class="adm-error"></div>
+              <div class="adm-form-actions">
+                <button type="submit" class="adm-btn-primary">Update Photo</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div><!-- /adm-content -->
+    </div><!-- /adm-board -->
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="adm-footer">
+    <span>Ashfaaq KT © 2026 · Admin Panel</span>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>

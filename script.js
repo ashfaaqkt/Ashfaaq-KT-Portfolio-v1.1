@@ -607,6 +607,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   populateDynamicContent();
 
+  // Auto-scroll hint for About page card carousel (mobile only)
+  const aboutContentGrid = document.querySelector('#page-about .content-grid');
+  if (aboutContentGrid) {
+    createAutoScroller(aboutContentGrid, { speed: 0.3, pauseMs: 3000, startDelayMs: 2000 });
+  }
+
   // Fallback: Ensure animated elements become visible after a delay
   // in case IntersectionObserver fails or elements are already in viewport
   setTimeout(() => {
@@ -623,6 +629,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 1000);
 
   // PDF interception moved to top of file for early protection
+
+  // Show sign-in hint on launch if not authenticated
+  function maybeShowSignInHint() {
+    const token = localStorage.getItem('portfolio_token');
+    const isValid = token && token !== 'null' && token !== 'undefined' && token.length > 20;
+    if (!isValid) showSignInHintToast();
+  }
+  setTimeout(maybeShowSignInHint, 2500);
+
+  // Re-show hint when user switches language — but skip the first languageChanged
+  // event which is fired by initLanguageSystem's startup setLanguage call
+  let _skipFirstLangChange = true;
+  document.addEventListener('languageChanged', () => {
+    if (_skipFirstLangChange) { _skipFirstLangChange = false; return; }
+    maybeShowSignInHint();
+  });
 });
 
 
@@ -637,8 +659,12 @@ function initThemeToggle() {
   themeToggleBtn.addEventListener('click', () => {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const newTheme = isLight ? 'dark' : 'light';
+
+    // Smooth transition: briefly add class so all elements animate theme properties
+    document.documentElement.classList.add('theme-switching');
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('portfolio-theme', newTheme);
+    setTimeout(() => document.documentElement.classList.remove('theme-switching'), 400);
   });
 }
 
@@ -751,8 +777,8 @@ function initNavigation() {
     });
   });
 
-  // CV Dropdown functionality
-  initCVDropdown();
+  // CV Modal functionality
+  initCVModal();
 
   // Initial page load: ensure we start at home without relying on URL hash
   navigateToPage('home');
@@ -790,113 +816,181 @@ function navigateToPage(pageId) {
 // Make navigateToPage globally accessible for onclick handlers
 window.navigateToPage = navigateToPage;
 
-function initCVDropdown() {
-  const cvDropdownToggle = document.getElementById('cv-dropdown-toggle');
-  const cvDropdownMenu = document.getElementById('cv-dropdown-menu');
-  const cvDropdownContainer = document.querySelector('.cv-dropdown-container');
+// ============================================
+// TOAST NOTIFICATIONS
+// ============================================
+function getGreeting(lang) {
+  const h = new Date().getHours();
+  if (lang === 'ar') {
+    if (h < 5)  return 'ليلة طيبة';
+    if (h < 12) return 'صباح الخير';
+    if (h < 17) return 'مساء الخير';
+    if (h < 21) return 'مساء النور';
+    return 'ليلة سعيدة';
+  }
+  if (h < 5)  return 'Good Night';
+  if (h < 12) return 'Good Morning';
+  if (h < 17) return 'Good Afternoon';
+  if (h < 21) return 'Good Evening';
+  return 'Good Night';
+}
 
-  if (!cvDropdownToggle || !cvDropdownMenu) return;
-
-  // Toggle dropdown
-  cvDropdownToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isExpanded = cvDropdownToggle.getAttribute('aria-expanded') === 'true';
-
-    if (isExpanded) {
-      closeCVDropdown();
-    } else {
-      openCVDropdown();
-    }
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (cvDropdownContainer && !cvDropdownContainer.contains(e.target)) {
-      closeCVDropdown();
-    }
-  });
-
-  // Close dropdown on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && cvDropdownMenu.classList.contains('active')) {
-      closeCVDropdown();
-    }
-  });
-
-  // Close dropdown when language is toggled (English ↔ Arabic)
-  const langToggleBtn = document.getElementById('lang-toggle');
-  if (langToggleBtn) {
-    langToggleBtn.addEventListener('click', () => {
-      closeCVDropdown();
-    });
+function showToast({ title, sub = '', icon = '👋', type = 'welcome', duration = 5000, onRender = null }) {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    document.body.appendChild(container);
   }
 
-  function openCVDropdown() {
-    cvDropdownMenu.classList.add('active');
-    cvDropdownToggle.setAttribute('aria-expanded', 'true');
-  }
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <span class="toast-icon" aria-hidden="true">${icon}</span>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      ${sub ? `<div class="toast-sub">${sub}</div>` : ''}
+    </div>
+    <div class="toast-progress"><div class="toast-progress-bar"></div></div>
+  `;
+  container.appendChild(toast);
+  if (onRender) onRender(toast);
 
-  function closeCVDropdown() {
-    cvDropdownMenu.classList.remove('active');
-    cvDropdownToggle.setAttribute('aria-expanded', 'false');
-    document.documentElement.classList.remove('dropdown-open');
-  }
-
-  // Prevent main page scroll when cursor is inside the dropdown
-  cvDropdownMenu.addEventListener('mouseenter', () => {
-    if (cvDropdownMenu.classList.contains('active')) {
-      document.documentElement.classList.add('dropdown-open');
-    }
-  });
-
-  cvDropdownMenu.addEventListener('mouseleave', () => {
-    document.documentElement.classList.remove('dropdown-open');
-  });
-
-  // Close dropdown when clicking on a link
-  const cvDropdownItems = cvDropdownMenu.querySelectorAll('.cv-dropdown-item');
-  cvDropdownItems.forEach(item => {
-    item.addEventListener('click', () => {
-      closeCVDropdown();
+  // Animate in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      toast.classList.add('toast-visible');
+      const bar = toast.querySelector('.toast-progress-bar');
+      if (bar) {
+        bar.style.transition = `transform ${duration}ms linear`;
+        bar.style.transform = 'scaleX(0)';
+      }
     });
   });
 
-  // Update dropdown labels based on language
-  updateCVDropdownLabels();
+  // Auto-hide
+  const hideTimer = setTimeout(() => dismissToast(toast), duration);
 
-  // Listen for language changes
-  document.addEventListener('languageChanged', () => {
-    updateCVDropdownLabels();
+  function dismissToast(t) {
+    clearTimeout(hideTimer);
+    t.classList.remove('toast-visible');
+    t.classList.add('toast-hiding');
+    t.addEventListener('transitionend', () => t.remove(), { once: true });
+  }
+}
+
+function showWelcomeToast(firstName, isNew = false) {
+  const lang = currentLanguage || 'en';
+  const greeting = getGreeting(lang);
+  const isAr = lang === 'ar';
+  const title = isAr
+    ? (isNew ? `مرحباً ${firstName}! 🎉` : `أهلاً بعودتك، ${firstName}! 🎉`)
+    : (isNew ? `Welcome, ${firstName}! 🎉` : `Welcome back, ${firstName}! 🎉`);
+  showToast({
+    title,
+    sub: greeting,
+    icon: '✨',
+    type: 'welcome',
+    duration: 5000
   });
 }
 
-function updateCVDropdownLabels() {
+function showGoodbyeToast(firstName) {
   const lang = currentLanguage || 'en';
+  const isAr = lang === 'ar';
+  showToast({
+    title: isAr ? `وداعاً ${firstName}!` : `Goodbye, ${firstName}!`,
+    sub: isAr ? 'أتمنى لك يوماً رائعاً 😊' : 'Have a nice day 😊',
+    icon: '👋',
+    type: 'bye',
+    duration: 4000
+  });
+}
 
-  // Update category labels
-  const categories = document.querySelectorAll('.cv-dropdown-category');
-  categories.forEach(category => {
-    const text = category.getAttribute(`data-${lang}`) || category.getAttribute('data-en');
-    if (text) {
-      category.textContent = text;
+function showSignInHintToast() {
+  // Remove any existing hint toast before showing a new one
+  document.querySelectorAll('.toast.toast-hint').forEach(t => t.remove());
+
+  const lang = currentLanguage || 'en';
+  const isAr = lang === 'ar';
+  const linkLabel = isAr ? 'سجّل الدخول الآن ←' : 'Sign in now →';
+  const subText = isAr
+    ? `انضم لعرض وتنزيل ملفات السيرة الذاتية والشهادات<br><button class="toast-link" data-toast-action="signin">${linkLabel}</button>`
+    : `Join to view & download CVs and certificates<br><button class="toast-link" data-toast-action="signin">${linkLabel}</button>`;
+
+  showToast({
+    title: isAr ? 'قم بتسجيل الدخول للوصول الكامل' : 'Sign in for full access to files',
+    sub: subText,
+    icon: '🔒',
+    type: 'hint',
+    duration: 8000,
+    onRender(toast) {
+      const btn = toast.querySelector('[data-toast-action="signin"]');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          toast.classList.remove('toast-visible');
+          toast.classList.add('toast-hiding');
+          toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+          if (typeof window.openAuthModal === 'function') window.openAuthModal('login');
+        });
+      }
+    }
+  });
+}
+
+function initCVModal() {
+  const cvModalBtn = document.getElementById('cv-modal-btn');
+  const cvModalOverlay = document.getElementById('cv-modal-overlay');
+  const cvModalClose = document.getElementById('cv-modal-close');
+
+  if (!cvModalBtn || !cvModalOverlay) return;
+
+  function openModal() {
+    cvModalOverlay.classList.add('active');
+    cvModalOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    cvModalOverlay.classList.remove('active');
+    cvModalOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  window.openCVModal = openModal;
+
+  cvModalBtn.addEventListener('click', openModal);
+
+  if (cvModalClose) {
+    cvModalClose.addEventListener('click', closeModal);
+  }
+
+  // Close on overlay backdrop click
+  cvModalOverlay.addEventListener('click', (e) => {
+    if (e.target === cvModalOverlay) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cvModalOverlay.classList.contains('active')) {
+      closeModal();
     }
   });
 
-  // Update dropdown text labels
-  const texts = document.querySelectorAll('.cv-dropdown-text');
-  texts.forEach(textEl => {
-    const text = textEl.getAttribute(`data-${lang}`) || textEl.getAttribute('data-en');
-    if (text) {
-      textEl.textContent = text;
-    }
-  });
+  // Update modal text based on language
+  updateCVModalLabels();
+  document.addEventListener('languageChanged', updateCVModalLabels);
+}
 
-  // Update language badges
-  const labels = document.querySelectorAll('.cv-dropdown-label');
-  labels.forEach(label => {
-    const text = label.getAttribute(`data-${lang}`) || label.getAttribute('data-en');
-    if (text) {
-      label.textContent = text;
+function updateCVModalLabels() {
+  const lang = currentLanguage || 'en';
+  const modal = document.getElementById('cv-modal');
+  if (!modal) return;
+
+  modal.querySelectorAll('[data-en]').forEach(el => {
+    const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en');
+    if (text && el.children.length === 0) {
+      el.textContent = text;
     }
   });
 }
@@ -1038,7 +1132,10 @@ function setLanguage(lang) {
   // Generic text elements with data-en / data-ar attributes (e.g., mobile contact buttons)
   document.querySelectorAll('[data-en][data-ar]').forEach(el => {
     const text = el.getAttribute(lang === 'ar' ? 'data-ar' : 'data-en');
-    if (text) el.textContent = text;
+    if (!text) return;
+    /* Elements marked data-html="true" may contain safe markup (e.g. links) */
+    if (el.dataset.html === 'true') el.innerHTML = text;
+    else el.textContent = text;
   });
 
   // Update placeholders
@@ -1439,6 +1536,75 @@ function initBackToTop() {
   backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+}
+
+// ============================================
+// AUTO-SCROLLER UTILITY
+// ============================================
+
+// Slowly scrolls an element right on loop, pausing when the user interacts.
+// Returns a { stop } handle. Speed is px per animation frame (~60fps).
+// loop:true duplicates children so the scroll wraps seamlessly.
+function createAutoScroller(el, { speed = 0.5, pauseMs = 3000, startDelayMs = 1500, loop = false } = {}) {
+  if (!el) return null;
+  let rafId = null;
+  let userPaused = false;
+  let resumeTimer = null;
+
+  if (loop) {
+    Array.from(el.children).forEach(child => el.appendChild(child.cloneNode(true)));
+  }
+
+  function getMax() {
+    return el.scrollWidth - el.clientWidth;
+  }
+
+  function step() {
+    if (userPaused) return;
+
+    if (loop) {
+      const half = el.scrollWidth / 2;
+      el.scrollLeft += speed;
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+    } else {
+      const max = getMax();
+      if (max <= 0) return;
+      const next = el.scrollLeft + speed;
+      el.scrollLeft = next >= max ? 0 : next;
+    }
+
+    rafId = requestAnimationFrame(step);
+  }
+
+  function pauseByUser() {
+    if (userPaused) return;
+    userPaused = true;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => {
+      userPaused = false;
+      rafId = requestAnimationFrame(step);
+    }, pauseMs);
+  }
+
+  function stop() {
+    userPaused = true;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    clearTimeout(resumeTimer);
+  }
+
+  // Only listen to genuine user intent events (not 'scroll' which also fires on our writes)
+  el.addEventListener('touchstart', pauseByUser, { passive: true });
+  el.addEventListener('mousedown', pauseByUser);
+  el.addEventListener('wheel', pauseByUser, { passive: true });
+  el.addEventListener('keydown', pauseByUser);
+
+  // Start after delay (let page settle first)
+  const startTimer = setTimeout(() => {
+    if (loop || getMax() > 0) rafId = requestAnimationFrame(step);
+  }, startDelayMs);
+
+  return { stop, pause: pauseByUser, _startTimer: startTimer };
 }
 
 // ============================================
@@ -2122,27 +2288,38 @@ function populateProjects() {
   // Filter Scroll Buttons Logic
   const scrollLeftBtn = document.getElementById('filter-scroll-left');
   const scrollRightBtn = document.getElementById('filter-scroll-right');
+  const projectsFiltersWrapper = document.getElementById('projects-filters-wrapper');
 
   if (projectsFilters && scrollLeftBtn && scrollRightBtn) {
     const scrollAmount = 200;
 
     const updateScrollButtons = () => {
       const maxScroll = projectsFilters.scrollWidth - projectsFilters.clientWidth;
+
       if (maxScroll <= 0) {
         scrollLeftBtn.classList.remove('active');
         scrollRightBtn.classList.remove('active');
+        if (projectsFiltersWrapper) {
+          projectsFiltersWrapper.classList.add('at-start', 'at-end');
+        }
         return;
       }
-      
+
       const scrollL = projectsFilters.scrollLeft;
       const isRTLDir = window.getComputedStyle(projectsFilters).direction === 'rtl';
-      
+
       if (isRTLDir) {
         scrollRightBtn.classList.toggle('active', scrollL < 0);
         scrollLeftBtn.classList.toggle('active', Math.abs(scrollL) < maxScroll - 1);
       } else {
         scrollLeftBtn.classList.toggle('active', scrollL > 0);
         scrollRightBtn.classList.toggle('active', Math.ceil(scrollL) < maxScroll);
+      }
+
+      // Gradient fade visibility
+      if (projectsFiltersWrapper) {
+        projectsFiltersWrapper.classList.toggle('at-start', scrollL <= 1);
+        projectsFiltersWrapper.classList.toggle('at-end', Math.ceil(scrollL) >= maxScroll - 1);
       }
     };
 
@@ -2156,7 +2333,7 @@ function populateProjects() {
 
     projectsFilters.addEventListener('scroll', updateScrollButtons);
     window.addEventListener('resize', updateScrollButtons);
-    
+
     // Initial check after categories populate
     setTimeout(updateScrollButtons, 100);
   }
@@ -2271,6 +2448,12 @@ function populateProjects() {
 
     // ── Mobile carousel dot indicators ──
     setupProjectCarouselDots(filteredProjects.length);
+
+    // ── Auto-scroll hint on mobile carousel ──
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      if (window._projectsGridScroller) window._projectsGridScroller.stop();
+      window._projectsGridScroller = createAutoScroller(projectsGrid, { speed: 0.35, pauseMs: 3000, startDelayMs: 2500 });
+    }
   }
 
   function setupProjectCarouselDots(count) {
@@ -2290,7 +2473,10 @@ function populateProjects() {
       dot.addEventListener('click', () => {
         const cards = projectsGrid.querySelectorAll('.project-card');
         if (cards[i]) {
-          cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          const cardLeft = cards[i].getBoundingClientRect().left
+            - projectsGrid.getBoundingClientRect().left
+            + projectsGrid.scrollLeft;
+          projectsGrid.scrollTo({ left: cardLeft, behavior: 'smooth' });
         }
       });
       dotsContainer.appendChild(dot);
@@ -2492,6 +2678,13 @@ function populateSkills() {
       });
       filterBtn.classList.add('active');
 
+      // Clear search when switching categories
+      const si = document.getElementById('skills-search-input');
+      if (si) {
+        si.value = '';
+        skillsGrid.querySelectorAll('.skill-card').forEach(c => c.classList.remove('search-hidden'));
+      }
+
       // Filter skills
       skillsGrid.querySelectorAll('.skill-card').forEach(card => {
         if (filter.id === 'all' || card.getAttribute('data-category') === filter.id) {
@@ -2513,27 +2706,38 @@ function populateSkills() {
   // Skills Scroll Buttons Logic
   const scrollLeftBtn = document.getElementById('skills-scroll-left');
   const scrollRightBtn = document.getElementById('skills-scroll-right');
+  const skillsFiltersWrapper = document.getElementById('skills-filters-wrapper');
 
   if (skillsFilters && scrollLeftBtn && scrollRightBtn) {
     const scrollAmount = 200;
 
     const updateScrollButtons = () => {
       const maxScroll = skillsFilters.scrollWidth - skillsFilters.clientWidth;
+
       if (maxScroll <= 0) {
         scrollLeftBtn.classList.remove('active');
         scrollRightBtn.classList.remove('active');
+        if (skillsFiltersWrapper) {
+          skillsFiltersWrapper.classList.add('at-start', 'at-end');
+        }
         return;
       }
-      
+
       const scrollL = skillsFilters.scrollLeft;
       const isRTLDir = window.getComputedStyle(skillsFilters).direction === 'rtl';
-      
+
       if (isRTLDir) {
         scrollRightBtn.classList.toggle('active', scrollL < 0);
         scrollLeftBtn.classList.toggle('active', Math.abs(scrollL) < maxScroll - 1);
       } else {
         scrollLeftBtn.classList.toggle('active', scrollL > 0);
         scrollRightBtn.classList.toggle('active', Math.ceil(scrollL) < maxScroll);
+      }
+
+      // Gradient fade visibility
+      if (skillsFiltersWrapper) {
+        skillsFiltersWrapper.classList.toggle('at-start', scrollL <= 1);
+        skillsFiltersWrapper.classList.toggle('at-end', Math.ceil(scrollL) >= maxScroll - 1);
       }
     };
 
@@ -2547,9 +2751,24 @@ function populateSkills() {
 
     skillsFilters.addEventListener('scroll', updateScrollButtons);
     window.addEventListener('resize', updateScrollButtons);
-    
+
     // Initial check after categories populate
     setTimeout(updateScrollButtons, 100);
+  }
+
+  // Search input
+  const searchInput = document.getElementById('skills-search-input');
+  if (searchInput) {
+    searchInput.placeholder = isRTL ? 'ابحث عن المهارات...' : 'Search skills...';
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      skillsGrid.querySelectorAll('.skill-card').forEach(card => {
+        const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+        const pills = Array.from(card.querySelectorAll('.skill-pill')).map(p => p.textContent.toLowerCase());
+        const matches = !query || title.includes(query) || pills.some(p => p.includes(query));
+        card.classList.toggle('search-hidden', !matches);
+      });
+    });
   }
 
   // Create skill cards
@@ -3180,16 +3399,8 @@ function initAuth() {
   const adminBtn = document.getElementById('admin-login-link');
   
   const authModal = document.getElementById('auth-modal');
-  const adminModal = document.getElementById('admin-login-modal');
-  const dashboardModal = document.getElementById('admin-dashboard-modal');
-  
   const closeAuth = document.getElementById('auth-modal-close');
-  const closeAdmin = document.getElementById('admin-login-close');
-  const closeDashboard = document.getElementById('admin-dashboard-close');
-  
   const overlayAuth = document.getElementById('auth-modal-overlay');
-  const overlayAdmin = document.getElementById('admin-login-overlay');
-  const overlayDashboard = document.getElementById('admin-dashboard-overlay');
   
   const tabLogin = document.getElementById('tab-login');
   const tabRegister = document.getElementById('tab-register');
@@ -3336,6 +3547,11 @@ function initAuth() {
       e.stopPropagation();
       if (authBtn.dataset.loggedIn === 'true') {
         // Already logged in — clicking signs out
+        try {
+          const u = JSON.parse(localStorage.getItem('portfolio_user') || '{}');
+          const firstName = (u.name || '').split(' ')[0];
+          if (firstName) showGoodbyeToast(firstName);
+        } catch (_) {}
         localStorage.removeItem('portfolio_token');
         localStorage.removeItem('portfolio_user');
         updateAuthState();
@@ -3349,19 +3565,99 @@ function initAuth() {
     adminBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      openModal(adminModal);
+      openAdminPopup();
     });
     adminBtn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openModal(adminModal);
+        openAdminPopup();
       }
     });
   }
+
+  /* ── Admin Gate Popup ── */
+  const admPopup      = document.getElementById('adm-popup');
+  const admPopupClose = document.getElementById('adm-popup-close');
+  const admPopupOverlay = document.getElementById('adm-popup-overlay');
+  const admPopupForm  = document.getElementById('adm-popup-form');
+  const admPopupPass  = document.getElementById('adm-popup-pass');
+  const admPopupEye   = document.getElementById('adm-popup-eye');
+  const admPopupErr   = document.getElementById('adm-popup-err');
+  const admPopupSubmit = document.getElementById('adm-popup-submit');
+
+  function openAdminPopup() {
+    if (!admPopup) return;
+    admPopup.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    admPopupErr.textContent = '';
+    admPopupPass.value = '';
+    setTimeout(() => admPopupPass.focus(), 120);
+  }
+
+  function closeAdminPopup() {
+    if (!admPopup) return;
+    admPopup.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+
+  if (admPopupClose) admPopupClose.addEventListener('click', closeAdminPopup);
+  if (admPopupOverlay) admPopupOverlay.addEventListener('click', closeAdminPopup);
+
+  /* Eye toggle */
+  if (admPopupEye) {
+    admPopupEye.addEventListener('click', () => {
+      const isPass = admPopupPass.type === 'password';
+      admPopupPass.type = isPass ? 'text' : 'password';
+      admPopupEye.querySelector('.eye-open').style.display  = isPass ? 'none' : '';
+      admPopupEye.querySelector('.eye-closed').style.display = isPass ? '' : 'none';
+    });
+  }
+
+  /* Submit — verify password then redirect */
+  if (admPopupForm) {
+    admPopupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = admPopupPass.value;
+      if (!pw) return;
+      admPopupErr.textContent = '';
+      admPopupSubmit.disabled = true;
+      admPopupSubmit.querySelector('.adm-popup-submit-text').textContent = 'Verifying…';
+      admPopupSubmit.querySelector('.adm-popup-submit-arrow').hidden = true;
+      admPopupSubmit.querySelector('.adm-popup-spinner').hidden = false;
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pw })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('admin_token', data.token);
+          admPopupSubmit.querySelector('.adm-popup-submit-text').textContent = 'Redirecting…';
+          setTimeout(() => { window.location.href = 'admin.html'; }, 300);
+        } else {
+          admPopupErr.textContent = data.message || 'Incorrect password.';
+          admPopupPass.value = '';
+          admPopupPass.focus();
+          resetSubmitBtn();
+        }
+      } catch (_) {
+        admPopupErr.textContent = 'Server error. Is the backend running?';
+        resetSubmitBtn();
+      }
+    });
+  }
+
+  function resetSubmitBtn() {
+    if (!admPopupSubmit) return;
+    admPopupSubmit.disabled = false;
+    admPopupSubmit.querySelector('.adm-popup-submit-text').textContent = 'Enter Dashboard';
+    admPopupSubmit.querySelector('.adm-popup-submit-arrow').hidden = false;
+    admPopupSubmit.querySelector('.adm-popup-spinner').hidden = true;
+  }
   
   [closeAuth, overlayAuth].forEach(el => el && el.addEventListener('click', () => hideModal(authModal)));
-  [closeAdmin, overlayAdmin].forEach(el => el && el.addEventListener('click', () => hideModal(adminModal)));
-  [closeDashboard, overlayDashboard].forEach(el => el && el.addEventListener('click', () => hideModal(dashboardModal)));
   
   // Tabs Toggle
   if (tabLogin && tabRegister) {
@@ -3408,9 +3704,13 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
+          const firstName = (data.user?.name || '').split(' ')[0];
+          if (firstName) showWelcomeToast(firstName, false);
           if (window.pendingPdfLink) {
-            window.openProtectedPDF(window.pendingPdfLink, data.token);
+            const pending = window.pendingPdfLink;
             window.pendingPdfLink = null;
+            if (typeof window.openCVModal === 'function') window.openCVModal();
+            window.openProtectedPDF(pending, data.token);
           }
         } else {
           errorEl.textContent = data.message;
@@ -3461,9 +3761,13 @@ function initAuth() {
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
           hideModal(authModal);
+          const firstName = (data.user?.name || '').split(' ')[0];
+          if (firstName) showWelcomeToast(firstName, true);
           if (window.pendingPdfLink) {
-            window.openProtectedPDF(window.pendingPdfLink, data.token);
+            const pending = window.pendingPdfLink;
             window.pendingPdfLink = null;
+            if (typeof window.openCVModal === 'function') window.openCVModal();
+            window.openProtectedPDF(pending, data.token);
           }
         } else {
           errorEl.textContent = data.message;
@@ -3475,104 +3779,6 @@ function initAuth() {
       }
     });
   }
-
-  // Form Submit Admin Login
-  const formAdmin = document.getElementById('form-admin-login');
-  if (formAdmin) {
-    formAdmin.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const pw = document.getElementById('admin-password').value;
-      const errorEl = document.getElementById('admin-login-error');
-      const submitBtn = formAdmin.querySelector('button[type="submit"]');
-      
-      errorEl.textContent = '';
-      submitBtn.classList.add('btn-loading');
-      
-      try {
-        const res = await fetch(`${API_BASE_URL}/admin/login`, {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ password: pw })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          hideModal(adminModal);
-          errorEl.textContent = '';
-          fetchAdminDashboard(data.token);
-        } else {
-          errorEl.textContent = data.message;
-        }
-      } catch (err) {
-        errorEl.textContent = 'Server error.';
-      } finally {
-        submitBtn.classList.remove('btn-loading');
-      }
-    });
-  }
-  
-  // Fetch Admin Users
-  let allAdminUsers = [];
-  async function fetchAdminDashboard(token) {
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/users`, {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      const users = await res.json();
-      if (res.ok) {
-        allAdminUsers = users;
-        renderAdminUsers(users);
-        openModal(dashboardModal);
-      } else {
-        alert('Failed to load users: ' + users.message);
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error fetching admin dashboard');
-    }
-  }
-
-  function renderAdminUsers(users) {
-    const tbody = document.getElementById('admin-users-tbody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    users.forEach(u => {
-      const row = document.createElement('tr');
-      const d = new Date(u.createdAt);
-      // Use textContent for each cell to prevent stored XSS from user-supplied data
-      [
-        `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`,
-        u.name,
-        u.email,
-        u.phone || '-',
-        u.category,
-        u.company || '-'
-      ].forEach(text => {
-        const td = document.createElement('td');
-        td.textContent = text;
-        row.appendChild(td);
-      });
-      tbody.appendChild(row);
-    });
-  }
-
-  // Admin Search and Filter
-  const adminSearch = document.getElementById('admin-search-input');
-  const adminFilter = document.getElementById('admin-category-filter');
-
-  function applyAdminFilters() {
-    const searchTerm = adminSearch.value.toLowerCase();
-    const filterValue = adminFilter.value;
-
-    const filtered = allAdminUsers.filter(u => {
-      const matchesSearch = u.name.toLowerCase().includes(searchTerm) || 
-                            u.email.toLowerCase().includes(searchTerm);
-      const matchesFilter = filterValue === 'all' || u.category === filterValue;
-      return matchesSearch && matchesFilter;
-    });
-    renderAdminUsers(filtered);
-  }
-
-  if (adminSearch) adminSearch.addEventListener('input', applyAdminFilters);
-  if (adminFilter) adminFilter.addEventListener('change', applyAdminFilters);
 
   // PDF interception moved to global DOMContentLoaded for better reliability
 }

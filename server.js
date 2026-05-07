@@ -5,14 +5,45 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const User = require('./models/User');
+const Timeline = require('./models/Timeline');
+const Project = require('./models/Project');
 const connectDB = require('./lib/db');
+
+/* ── Multer storage configs ── */
+const pdfStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, 'CV')),
+  filename:    (req, file, cb) => cb(null, Date.now() + '-' + path.basename(file.originalname))
+});
+const imgStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, 'uploads', 'projects');
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + path.basename(file.originalname))
+});
+const ppStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, 'PP')),
+  filename:    (req, file, cb) => cb(null, 'pp' + path.extname(file.originalname))
+});
+
+const uploadPdf  = multer({ storage: pdfStorage, limits: { fileSize: 20 * 1024 * 1024 }, fileFilter: (r, f, cb) => cb(null, f.mimetype === 'application/pdf') });
+const uploadImg  = multer({ storage: imgStorage, limits: { fileSize: 10 * 1024 * 1024 }, fileFilter: (r, f, cb) => cb(null, f.mimetype.startsWith('image/')) });
+const uploadPp   = multer({ storage: ppStorage,  limits: { fileSize: 10 * 1024 * 1024 }, fileFilter: (r, f, cb) => cb(null, f.mimetype.startsWith('image/')) });
 
 const app = express();
 
-// Restrict CORS to the same origin (or a configured allow-list)
+// Allow same-origin and any explicitly configured origin
 const allowedOrigin = process.env.CORS_ORIGIN || null;
-app.use(cors(allowedOrigin ? { origin: allowedOrigin } : { origin: false }));
+app.use(cors({
+  origin: allowedOrigin
+    ? allowedOrigin
+    : (origin, cb) => cb(null, true),   // allow all in dev; set CORS_ORIGIN in prod
+  credentials: true
+}));
 
 app.use(express.json());
 
@@ -89,7 +120,8 @@ app.get('/:folder/:filename', (req, res, next) => {
   });
 });
 
-// Serve all other static files (HTML, CSS, JS, images, OCC PDFs, etc.)
+// Serve uploaded project images and other static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(__dirname));
 
 // --- Auth Routes ---
@@ -189,6 +221,149 @@ app.get('/api/admin/users', verifyAdmin, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Delete a user
+app.delete('/api/admin/users/:id', verifyAdmin, async (req, res) => {
+  try {
+    const deleted = await User.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ─── Timeline Routes ────────────────────────────────────────────────────────
+
+// Public — read all (used by main site too)
+app.get('/api/timeline', async (req, res) => {
+  try {
+    const items = await Timeline.find().sort({ createdAt: -1 });
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/api/admin/timeline', verifyAdmin, async (req, res) => {
+  try {
+    const item = new Timeline(req.body);
+    await item.save();
+    res.status(201).json(item);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.put('/api/admin/timeline/:id', verifyAdmin, async (req, res) => {
+  try {
+    const item = await Timeline.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!item) return res.status(404).json({ message: 'Entry not found' });
+    res.json(item);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.delete('/api/admin/timeline/:id', verifyAdmin, async (req, res) => {
+  try {
+    const item = await Timeline.findByIdAndDelete(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Entry not found' });
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// PDF upload (saves to /CV/)
+app.post('/api/admin/upload-pdf', verifyAdmin, uploadPdf.single('pdf'), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: 'No PDF uploaded' });
+  res.json({ path: '/CV/' + req.file.filename });
+});
+
+// ─── Project Routes ──────────────────────────────────────────────────────────
+
+// Public — read all
+app.get('/api/projects', async (req, res) => {
+  try {
+    const items = await Project.find().sort({ createdAt: -1 });
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/api/admin/projects', verifyAdmin, uploadImg.single('image'), async (req, res) => {
+  try {
+    const tags = req.body.tags ? req.body.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+    const project = new Project({
+      title:         req.body.title,
+      titleAr:       req.body.titleAr || '',
+      description:   req.body.description || '',
+      descriptionAr: req.body.descriptionAr || '',
+      github:        req.body.github || '',
+      demo:          req.body.demo || '',
+      tags,
+      badge:         req.body.badge || '',
+      image:         req.file ? '/uploads/projects/' + req.file.filename : ''
+    });
+    await project.save();
+    res.status(201).json(project);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.put('/api/admin/projects/:id', verifyAdmin, uploadImg.single('image'), async (req, res) => {
+  try {
+    const tags = req.body.tags ? req.body.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+    const update = {
+      title:         req.body.title,
+      titleAr:       req.body.titleAr || '',
+      description:   req.body.description || '',
+      descriptionAr: req.body.descriptionAr || '',
+      github:        req.body.github || '',
+      demo:          req.body.demo || '',
+      tags,
+      badge:         req.body.badge || ''
+    };
+    if (req.file) update.image = '/uploads/projects/' + req.file.filename;
+
+    const project = await Project.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
+    if (!project) return res.status(404).json({ message: 'Project not found' });
+    res.json(project);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.delete('/api/admin/projects/:id', verifyAdmin, async (req, res) => {
+  try {
+    const project = await Project.findByIdAndDelete(req.params.id);
+    if (!project) return res.status(404).json({ message: 'Project not found' });
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ─── Settings — Profile Picture ───────────────────────────────────────────────
+
+app.post('/api/admin/profile-picture', verifyAdmin, uploadPp.single('photo'), (req, res) => {
+  if (!req.file) return res.status(400).json({ message: 'No image uploaded' });
+  res.json({ path: '/PP/' + req.file.filename });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

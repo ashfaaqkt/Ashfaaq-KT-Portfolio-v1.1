@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Ashfaaq KT</title>
+  <link rel="icon" type="image/svg+xml" href="PP/akl.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Privacy page layout ── */
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .prv-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 62px;
+      background: rgba(10, 10, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    [data-theme="light"] .prv-nav {
+      background: rgba(255,255,255,0.92);
+      border-bottom-color: rgba(0,0,0,0.07);
+    }
+
+    .prv-brand {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-accent-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .prv-nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .prv-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--color-text-primary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .prv-back svg { width: 14px; height: 14px; }
+    .prv-back:hover { background: rgba(255,255,255,0.1); }
+
+    [data-theme="light"] .prv-back {
+      border-color: rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.03);
+    }
+    [data-theme="light"] .prv-back:hover { background: rgba(0,0,0,0.07); }
+
+    .prv-lang-toggle {
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--color-text-primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .prv-lang-toggle:hover {
+      background: rgba(var(--color-accent-primary-rgb, 102,126,234), 0.15);
+      border-color: var(--color-accent-primary);
+      color: var(--color-accent-primary);
+    }
+    [data-theme="light"] .prv-lang-toggle {
+      border-color: rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.03);
+    }
+
+    .prv-main {
+      flex: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 56px 28px 80px;
+      width: 100%;
+    }
+
+    .prv-header { margin-bottom: 48px; text-align: center; }
+
+    .prv-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(102,126,234,0.12);
+      border: 1px solid rgba(102,126,234,0.25);
+      color: var(--color-accent-primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .prv-title {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--color-text-primary);
+      letter-spacing: -0.03em;
+      margin: 0 0 12px;
+      line-height: 1.15;
+    }
+
+    .prv-subtitle {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .prv-updated {
+      font-size: 0.78rem;
+      color: var(--color-text-secondary);
+      opacity: 0.65;
+      margin-top: 10px;
+    }
+
+    .prv-divider {
+      width: 48px;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--color-accent-primary), transparent);
+      margin: 20px auto 0;
+    }
+
+    .prv-section {
+      margin-bottom: 40px;
+      padding: 28px 32px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+    }
+    [data-theme="light"] .prv-section {
+      background: rgba(255,255,255,0.85);
+      border-color: rgba(0,0,0,0.07);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+
+    .prv-section-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .prv-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(102,126,234,0.12);
+      border: 1px solid rgba(102,126,234,0.2);
+      color: var(--color-accent-primary);
+    }
+    .prv-icon svg { width: 18px; height: 18px; }
+
+    .prv-section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+
+    .prv-body {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .prv-body p { margin: 0 0 12px; }
+    .prv-body p:last-child { margin-bottom: 0; }
+
+    .prv-body ul {
+      margin: 8px 0 12px 0;
+      padding-left: 20px;
+    }
+    html[dir="rtl"] .prv-body ul { padding-left: 0; padding-right: 20px; }
+
+    .prv-body li {
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .prv-body li::marker { color: var(--color-accent-primary); }
+
+    .prv-body strong { color: var(--color-text-primary); font-weight: 600; }
+
+    .prv-body a {
+      color: var(--color-accent-primary);
+      text-decoration: none;
+    }
+    .prv-body a:hover { text-decoration: underline; }
+
+    .prv-highlight {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: rgba(102,126,234,0.08);
+      border-left: 3px solid var(--color-accent-primary);
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      font-style: italic;
+    }
+    html[dir="rtl"] .prv-highlight {
+      border-left: none;
+      border-right: 3px solid var(--color-accent-primary);
+    }
+
+    .prv-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      color: var(--color-text-secondary);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      opacity: 0.7;
+    }
+    [data-theme="light"] .prv-footer { border-top-color: rgba(0,0,0,0.06); }
+
+    /* RTL text blocks */
+    .prv-ar { display: none; }
+    html[dir="rtl"] .prv-en { display: none; }
+    html[dir="rtl"] .prv-ar { display: block; }
+    html[dir="rtl"] .prv-section { font-family: 'Inter', sans-serif; }
+    html[dir="rtl"] .prv-body { font-size: 0.95rem; line-height: 2; }
+    html[dir="rtl"] .prv-title { font-size: clamp(1.6rem, 5vw, 2.4rem); }
+
+    @media (max-width: 600px) {
+      .prv-nav { padding: 0 18px; }
+      .prv-main { padding: 36px 16px 60px; }
+      .prv-section { padding: 20px 18px; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-canvas">
+    <div class="bg-gradient-orb orb-1"></div>
+    <div class="bg-gradient-orb orb-2"></div>
+    <div class="bg-gradient-orb orb-3"></div>
+  </div>
+
+  <nav class="prv-nav">
+    <a href="index.html" class="prv-brand">Ashfaaq KT</a>
+    <div class="prv-nav-right">
+      <a href="index.html" class="prv-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span class="prv-en">Back</span>
+        <span class="prv-ar">رجوع</span>
+      </a>
+      <button class="prv-lang-toggle" id="prv-lang-btn">عربي</button>
+    </div>
+  </nav>
+
+  <main class="prv-main">
+
+    <div class="prv-header">
+      <div class="prv-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="prv-en">Privacy &amp; Policy</span>
+        <span class="prv-ar">الخصوصية والسياسة</span>
+      </div>
+      <h1 class="prv-title">
+        <span class="prv-en">Privacy Policy</span>
+        <span class="prv-ar">سياسة الخصوصية</span>
+      </h1>
+      <p class="prv-subtitle">
+        <span class="prv-en">This policy explains what data is collected when you sign up and how it is used and protected.</span>
+        <span class="prv-ar">توضح هذه السياسة البيانات التي يتم جمعها عند التسجيل وكيفية استخدامها وحمايتها.</span>
+      </p>
+      <p class="prv-updated">
+        <span class="prv-en">Last updated: May 2026</span>
+        <span class="prv-ar">آخر تحديث: مايو ٢٠٢٦</span>
+      </p>
+      <div class="prv-divider"></div>
+    </div>
+
+    <!-- 1. Who We Are -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Who We Are</span>
+          <span class="prv-ar">من نحن</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">This is the personal portfolio website of <strong>Ashfaaq KT</strong>, a software developer. This site is operated solely by Ashfaaq KT and is not affiliated with any company or organization. The purpose of this website is to showcase skills, projects, and professional experience.</p>
+        <p class="prv-ar">هذا الموقع هو المحفظة الشخصية لـ <strong>أشفاق كي تي</strong>، مطور برمجيات. يُدار هذا الموقع بشكل فردي ولا ينتمي إلى أي شركة أو مؤسسة. الغرض من الموقع هو عرض المهارات والمشاريع والخبرة المهنية.</p>
+        <div class="prv-highlight prv-en">This is a personal portfolio — not a commercial platform. Your data is never sold, rented, or shared with third parties.</div>
+        <div class="prv-highlight prv-ar">هذا موقع محفظة شخصية وليس منصة تجارية. لن تُباع بياناتك أو تُؤجَر أو تُشارك مع أطراف خارجية.</div>
+      </div>
+    </div>
+
+    <!-- 2. Data Collected -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Data We Collect</span>
+          <span class="prv-ar">البيانات التي نجمعها</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">When you create an account, the following information is collected and stored securely in our database:</p>
+        <p class="prv-ar">عند إنشاء حساب، يتم جمع المعلومات التالية وتخزينها بشكل آمن في قاعدة البيانات:</p>
+        <ul class="prv-en">
+          <li><strong>Full Name</strong> — used to personalise your experience and greet you on login.</li>
+          <li><strong>Email Address</strong> — used as your unique login identifier.</li>
+          <li><strong>Phone Number</strong> — optional; collected as a professional reference point.</li>
+          <li><strong>Role / Category</strong> — (e.g. HR, Recruiter, Founder) helps me understand who is reviewing my portfolio.</li>
+          <li><strong>Company / Firm Name</strong> — optional; for professional context.</li>
+          <li><strong>Password</strong> — stored as a secure, irreversible hash (bcrypt). Never stored in plain text.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li><strong>الاسم الكامل</strong> — يُستخدم لتخصيص تجربتك والترحيب بك عند تسجيل الدخول.</li>
+          <li><strong>البريد الإلكتروني</strong> — يُستخدم كمعرّف تسجيل دخول فريد.</li>
+          <li><strong>رقم الهاتف</strong> — اختياري؛ يُجمع كمرجع مهني.</li>
+          <li><strong>الدور / الفئة</strong> — (مثل HR، مسؤول توظيف، مؤسس) يساعدني على معرفة من يراجع محفظتي.</li>
+          <li><strong>اسم الشركة</strong> — اختياري؛ للسياق المهني.</li>
+          <li><strong>كلمة المرور</strong> — مُخزَّنة كتجزئة آمنة وغير قابلة للعكس (bcrypt). لا تُخزَّن أبدًا كنص عادي.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. Why Sign In -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Why Sign-In Is Required</span>
+          <span class="prv-ar">لماذا يُطلب تسجيل الدخول</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">Sign-in is required to access certain protected files, including my CV, academic certificates, and official documents. This is not for commercial purposes — it is to:</p>
+        <p class="prv-ar">يُطلب تسجيل الدخول للوصول إلى ملفات معينة محمية، بما في ذلك السيرة الذاتية والشهادات الأكاديمية والوثائق الرسمية. وليس لأغراض تجارية، بل من أجل:</p>
+        <ul class="prv-en">
+          <li>Protect my personal documents from anonymous mass-downloading.</li>
+          <li>Know who is accessing my professional materials.</li>
+          <li>Prevent misuse, redistribution, or fraudulent use of my credentials.</li>
+          <li>Ensure that only genuine recruiters, HR professionals, or interested parties view sensitive files.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li>حماية وثائقي الشخصية من التنزيل الجماعي المجهول.</li>
+          <li>معرفة من يصل إلى موادي المهنية.</li>
+          <li>منع إساءة الاستخدام أو إعادة التوزيع أو الاستخدام الاحتيالي لبياناتي الاعتمادية.</li>
+          <li>ضمان أن المجنّدين أو متخصصي الموارد البشرية أو الأطراف المهتمة فقط هم من يطّلعون على الملفات الحساسة.</li>
+        </ul>
+        <div class="prv-highlight prv-en">Your registration information is visible only to me (the site owner) via the admin dashboard. It is never publicly displayed.</div>
+        <div class="prv-highlight prv-ar">معلومات تسجيلك مرئية لي فقط (مالك الموقع) عبر لوحة الإدارة. ولا تُعرض للعموم أبدًا.</div>
+      </div>
+    </div>
+
+    <!-- 4. Intellectual Property -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M14.5 9a3 3 0 0 0-5 2.2c0 3.3 5 5.8 5 5.8s-5 0-5 0"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Intellectual Property Rights</span>
+          <span class="prv-ar">حقوق الملكية الفكرية</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">All content on this website — including but not limited to photographs, images, design elements, project screenshots, PDF documents, certificates, and the source code of this website — is the exclusive intellectual property of <strong>Ashfaaq KT</strong>, unless otherwise stated.</p>
+        <p class="prv-ar">جميع المحتويات على هذا الموقع — بما في ذلك على سبيل المثال لا الحصر: الصور الفوتوغرافية، والصور، وعناصر التصميم، ولقطات الشاشة للمشاريع، ومستندات PDF، والشهادات، والكود المصدري لهذا الموقع — هي ملكية فكرية حصرية لـ <strong>أشفاق كي تي</strong>، ما لم يُذكر خلاف ذلك.</p>
+        <ul class="prv-en">
+          <li>You may <strong>not</strong> reproduce, copy, distribute, or publish any content from this site without explicit written permission.</li>
+          <li>You may <strong>not</strong> use any images, designs, or content for commercial purposes.</li>
+          <li>Project ideas, code architecture, and design patterns displayed here represent original work.</li>
+          <li>Certificates and official documents are protected by law and may not be altered or misrepresented.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li><strong>لا يُسمح لك</strong> بإعادة إنتاج أي محتوى من هذا الموقع أو نسخه أو توزيعه أو نشره دون إذن كتابي صريح.</li>
+          <li><strong>لا يُسمح لك</strong> باستخدام أي صور أو تصاميم أو محتوى لأغراض تجارية.</li>
+          <li>أفكار المشاريع ومعمارية الكود وأنماط التصميم المعروضة هنا تمثل عملًا أصيلًا.</li>
+          <li>الشهادات والوثائق الرسمية محمية بموجب القانون ولا يجوز تعديلها أو تحريفها.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5. File Misuse -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Prohibited Use of Files</span>
+          <span class="prv-ar">الاستخدامات المحظورة للملفات</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">By accessing any protected file on this site, you agree that you will <strong>not</strong>:</p>
+        <p class="prv-ar">بالوصول إلى أي ملف محمي على هذا الموقع، فإنك توافق على <strong>عدم</strong>:</p>
+        <ul class="prv-en">
+          <li>Share, redistribute, or forward documents (CV, certificates) to any third party without my consent.</li>
+          <li>Alter, edit, or forge any document or certificate obtained from this site.</li>
+          <li>Use my CV or credentials to impersonate me or misrepresent my identity.</li>
+          <li>Screenshot or screen-record protected content for purposes other than personal review.</li>
+          <li>Use any file for fraudulent, defamatory, or illegal purposes.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li>مشاركة أو إعادة توزيع أو إعادة توجيه المستندات (السيرة الذاتية، الشهادات) لأي طرف ثالث دون موافقتي.</li>
+          <li>تعديل أو تحرير أو تزوير أي وثيقة أو شهادة تم الحصول عليها من هذا الموقع.</li>
+          <li>استخدام سيرتي الذاتية أو بياناتي الاعتمادية لانتحال شخصيتي أو تحريف هويتي.</li>
+          <li>التقاط لقطات شاشة أو تسجيل المحتوى المحمي لأغراض غير المراجعة الشخصية.</li>
+          <li>استخدام أي ملف لأغراض احتيالية أو تشهيرية أو غير قانونية.</li>
+        </ul>
+        <div class="prv-highlight prv-en">Violation of these terms may result in account termination and, where applicable, legal action.</div>
+        <div class="prv-highlight prv-ar">قد يؤدي انتهاك هذه الشروط إلى إنهاء الحساب، وعند الاقتضاء، اتخاذ إجراءات قانونية.</div>
+      </div>
+    </div>
+
+    <!-- 6. Data Security -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Data Security</span>
+          <span class="prv-ar">أمان البيانات</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">Your data is handled with care:</p>
+        <p class="prv-ar">يتم التعامل مع بياناتك بعناية:</p>
+        <ul class="prv-en">
+          <li>Passwords are hashed using <strong>bcrypt</strong> — they are never stored or readable in plain text.</li>
+          <li>All sessions are protected using <strong>JWT tokens</strong> with expiry.</li>
+          <li>Protected files are only served after token verification on every request.</li>
+          <li>Your data is stored on a secure MongoDB database and is not exposed to the public.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li>كلمات المرور مُجزَّأة باستخدام <strong>bcrypt</strong> — لا تُخزَّن أبدًا كنص قابل للقراءة.</li>
+          <li>جميع الجلسات محمية باستخدام <strong>رموز JWT</strong> منتهية الصلاحية.</li>
+          <li>الملفات المحمية لا تُقدَّم إلا بعد التحقق من الرمز في كل طلب.</li>
+          <li>تُخزَّن بياناتك في قاعدة بيانات MongoDB آمنة ولا تُكشَف للعموم.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. Your Rights -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Your Rights</span>
+          <span class="prv-ar">حقوقك</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">As a registered user, you have the right to:</p>
+        <p class="prv-ar">بصفتك مستخدمًا مسجلًا، يحق لك:</p>
+        <ul class="prv-en">
+          <li>Request to know what personal data is stored about you.</li>
+          <li>Request deletion of your account and all associated data.</li>
+          <li>Correct any inaccurate information in your profile.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li>طلب معرفة البيانات الشخصية المخزّنة عنك.</li>
+          <li>طلب حذف حسابك وجميع البيانات المرتبطة به.</li>
+          <li>تصحيح أي معلومات غير دقيقة في ملفك الشخصي.</li>
+        </ul>
+        <p class="prv-en">To exercise any of these rights, contact: <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></p>
+        <p class="prv-ar">لممارسة أي من هذه الحقوق، تواصل عبر: <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></p>
+      </div>
+    </div>
+
+    <!-- 8. Changes -->
+    <div class="prv-section">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">Changes to This Policy</span>
+          <span class="prv-ar">التغييرات على هذه السياسة</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">This privacy policy may be updated occasionally to reflect changes in the site's features or applicable regulations. The "Last updated" date at the top of this page will always reflect the most recent revision. Continued use of the site after changes implies acceptance.</p>
+        <p class="prv-ar">قد يتم تحديث سياسة الخصوصية هذه أحيانًا لتعكس التغييرات في ميزات الموقع أو الأنظمة المعمول بها. ستعكس دائمًا تاريخ "آخر تحديث" في أعلى هذه الصفحة أحدث مراجعة. الاستمرار في استخدام الموقع بعد التغييرات يعني القبول بها.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="prv-footer">
+    <span class="prv-en">Ashfaaq KT © 2026 · All rights reserved.</span>
+    <span class="prv-ar">أشفاق كي تي © 2026 · جميع الحقوق محفوظة.</span>
+  </footer>
+
+  <script>
+    /* Theme */
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+
+    /* Lang toggle */
+    const btn = document.getElementById('prv-lang-btn');
+    let lang = localStorage.getItem('language') || 'en';
+
+    function applyLang(l) {
+      lang = l;
+      if (l === 'ar') {
+        document.documentElement.setAttribute('lang', 'ar');
+        document.documentElement.setAttribute('dir', 'rtl');
+        btn.textContent = 'English';
+      } else {
+        document.documentElement.setAttribute('lang', 'en');
+        document.documentElement.setAttribute('dir', 'ltr');
+        btn.textContent = 'عربي';
+      }
+    }
+
+    applyLang(lang);
+    btn.addEventListener('click', () => applyLang(lang === 'en' ? 'ar' : 'en'));
+  </script>
+</body>
+</html>
