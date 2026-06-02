@@ -150,6 +150,7 @@
           <path d="M14 18h6"/>
         </svg>
         <span class="lang-tooltip" data-en="Switch to Arabic" data-ar="Switch to English">Switch to Arabic</span>
+        <span class="mobile-nav-label" data-en="Change Language" data-ar="تغيير اللغة">Change Language</span>
       </button>
 
       <!-- Auth icon — rightmost in LTR, leftmost in RTL -->
@@ -190,8 +191,66 @@
               I combine AI-assisted workflows with hands-on development to create efficient, modern software solutions.
             </p>
 
+            <!-- CTA Dock -->
+            <div class="hero-actions" data-animate="fade-up" data-delay="380">
+              <div class="cta-dock">
+
+                <button type="button" class="cta-item cta-primary" id="portfolio-summary-btn">
+                  <span class="cta-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <rect x="3" y="3" width="18" height="18" rx="3"/>
+                      <path d="M3 9h18M9 21V9"/>
+                    </svg>
+                  </span>
+                  <span class="cta-body">
+                    <span class="cta-label" data-en="Portfolio Summary" data-ar="ملخص المحفظة">Portfolio Summary</span>
+                    <span class="cta-sub" data-en="Quick overview of all my work" data-ar="نظرة سريعة على أعمالي">Quick overview of all my work</span>
+                  </span>
+                  <span class="cta-chevron">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                </button>
+
+                <a href="#projects" class="cta-item cta-secondary" onclick="navigateToPage('projects'); return false;">
+                  <span class="cta-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <polyline points="16 18 22 12 16 6"/>
+                      <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                  </span>
+                  <span class="cta-body">
+                    <span class="cta-label" data-en="Browse Projects" data-ar="استعرض المشاريع">Browse Projects</span>
+                    <span class="cta-sub" data-en="20+ real-world builds" data-ar="أكثر من 20 مشروعًا حقيقيًا">20+ real-world builds</span>
+                  </span>
+                  <span class="cta-chevron">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                </a>
+
+                <a href="#connect" class="cta-item cta-hire" onclick="navigateToPage('connect'); return false;">
+                  <span class="cta-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                  </span>
+                  <span class="cta-body">
+                    <span class="cta-label" data-en="Hire Me" data-ar="وظفني">Hire Me</span>
+                    <span class="cta-sub">
+                      <span class="cta-avail-dot"></span>
+                      <span data-en="Available · Open to opportunities" data-ar="متاح · منفتح على الفرص">Available · Open to opportunities</span>
+                    </span>
+                  </span>
+                  <span class="cta-chevron">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                </a>
+
+              </div>
+            </div>
+
             <!-- Stats: 2 × 2 card grid -->
-            <div class="hero-stats" data-animate="fade-up" data-delay="380">
+            <div class="hero-stats" data-animate="fade-up" data-delay="460">
               <div class="stat-item">
                 <div class="stat-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
@@ -220,26 +279,6 @@
                 <div class="stat-value">20+</div>
                 <div class="stat-label">Projects</div>
               </div>
-            </div>
-
-            <!-- CTA buttons -->
-            <div class="hero-actions" data-animate="fade-up" data-delay="460">
-              <button type="button" class="btn btn-primary" id="portfolio-summary-btn">
-                <span>View Summary</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
-              <a href="#projects" class="btn btn-secondary">
-                <span>View Projects</span>
-              </a>
-              <a href="#connect" class="btn btn-ghost" onclick="navigateToPage('connect'); return false;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                <span data-en="Hire Me" data-ar="وظفني">Hire Me</span>
-              </a>
             </div>
 
           </div>
@@ -342,8 +381,8 @@
       </div>
     </section>
 
-    <!-- Quote Section -->
-    <section class="quote-section">
+    <!-- Page: Quote -->
+    <section class="page" id="page-quote" data-page="quote">
       <blockquote class="hero-quote" data-animate="fade-up" data-delay="0">
         <p data-en="So Give Me Coffee And Codes..." data-ar="فقط أعطني القهوة والأكواد...">So Give Me Coffee And Codes...</p>
       </blockquote>
@@ -838,20 +877,17 @@
       <div class="chatbot-header-info">
         <div class="chatbot-avatar">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
         </div>
-        <div>
-          <h4 data-en="FAQs" data-ar="الأسئلة الشائعة">
-            FAQs
-          </h4>
-          <span class="chatbot-status" data-en="" data-ar=""></span>
+        <div class="chatbot-header-text">
+          <h4 data-en="FAQs" data-ar="الأسئلة الشائعة">FAQs</h4>
+          <span class="chatbot-status" data-en="Ask me anything" data-ar="اسألني أي شيء">Ask me anything</span>
         </div>
       </div>
       <button class="chatbot-minimize" id="chatbot-minimize" aria-label="Minimize chatbot">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12" />
+          <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
       </button>
     </div>
@@ -866,6 +902,7 @@
       </div>
     </div>
     <div class="chatbot-faq-container" id="chatbot-faq-container">
+      <p class="chatbot-faq-label" data-en="Quick questions:" data-ar="أسئلة سريعة:">Quick questions:</p>
       <button class="chatbot-faq-btn" data-faq="about">
         <span data-en="About Ashfaaq" data-ar="نبذة عن اشفاق">About Ashfaaq</span>
       </button>
@@ -887,7 +924,7 @@
   <!-- Chatbot Toggle Button -->
   <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open chatbot">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
     <span class="chatbot-notification" id="chatbot-notification"></span>
   </button>

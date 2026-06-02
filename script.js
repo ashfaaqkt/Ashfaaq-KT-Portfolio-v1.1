@@ -118,8 +118,6 @@ const translations = {
       graduation: 'Graduation',
       languages: 'Languages',
       projects: 'Projects',
-      startConversation: 'View Summary',
-      viewProjects: 'View Projects',
       quote: 'So Give Me Coffee And Codes...'
     },
     // About Section
@@ -350,8 +348,6 @@ const translations = {
       graduation: 'التخرج',
       languages: 'اللغات',
       projects: 'المشاريع',
-      startConversation: 'عرض ملخص المحفظة',
-      viewProjects: 'عرض المشاريع',
       quote: 'فقط أعطني القهوة والأكواد...'
     },
     // About Section
@@ -1112,16 +1108,6 @@ function setLanguage(lang) {
     statLabelsFallback[1].textContent = t.hero.graduation;
     statLabelsFallback[2].textContent = t.hero.languages;
     statLabelsFallback[3].textContent = t.hero.projects;
-  }
-
-  const startConvBtn = document.querySelector('#page-home .hero-actions .btn-primary span') || document.querySelector('.hero-actions .btn-primary span');
-  if (startConvBtn) {
-    startConvBtn.textContent = t.hero.startConversation;
-  }
-
-  const viewProjectsBtn = document.querySelector('#page-home .hero-actions .btn-secondary span') || document.querySelector('.hero-actions .btn-secondary span');
-  if (viewProjectsBtn) {
-    viewProjectsBtn.textContent = t.hero.viewProjects;
   }
 
   const heroQuote = document.querySelector('#page-home .hero-quote p') || document.querySelector('.hero-quote p');
@@ -3500,7 +3486,7 @@ function initAuth() {
         const label = currentLanguage === 'ar' ? `مرحباً ${user.name}` : `Hello ${user.name}`;
         authBtn.setAttribute('aria-label', label);
         authBtn.dataset.loggedIn = 'true';
-        authBtn.innerHTML = `${iconLoggedIn}<span class="auth-tooltip">${label}</span>`;
+        authBtn.innerHTML = `${iconLoggedIn}<span class="auth-tooltip">${label}</span><span class="mobile-nav-label">${user.name}</span>`;
         return;
       }
     } catch (err) {
@@ -3508,9 +3494,10 @@ function initAuth() {
       localStorage.removeItem('portfolio_user');
     }
     const label = currentLanguage === 'ar' ? 'تسجيل الدخول' : 'Sign In';
+    const mobileLabel = currentLanguage === 'ar' ? 'تسجيل الدخول / إنشاء حساب' : 'Sign In / Sign Up';
     authBtn.setAttribute('aria-label', label);
     authBtn.dataset.loggedIn = 'false';
-    authBtn.innerHTML = `${iconSignIn}<span class="auth-tooltip">${label}</span>`;
+    authBtn.innerHTML = `${iconSignIn}<span class="auth-tooltip">${label}</span><span class="mobile-nav-label">${mobileLabel}</span>`;
   }
   updateAuthState();
   
