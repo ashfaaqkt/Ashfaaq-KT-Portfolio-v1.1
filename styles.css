@@ -2304,7 +2304,12 @@ html[dir="rtl"] .cv-card-badges {
 /* Desktop only — mobile overrides below with sufficient specificity */
 @media (min-width: 1168px) {
   #page-home .hero-section {
-    padding-top: 0;
+    /* anchor content to top so tall hero-content never overflows upward behind the nav */
+    align-items: start;
+    padding-top: var(--spacing-xl);
+  }
+  #page-home .hero-visual {
+    align-self: center;
   }
 }
 
