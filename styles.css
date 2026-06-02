@@ -2288,9 +2288,8 @@ html[dir="rtl"] .cv-card-badges {
   grid-template-columns: 55fr 45fr;
   gap: var(--spacing-lg);
   align-items: center;
-  /* Exact viewport fit — JS sets --nav-total-height to the real measured value */
-  height: calc(100vh - var(--nav-total-height));
-  min-height: 0;
+  /* min-height so section fills viewport but grows if content is taller */
+  min-height: calc(100vh - var(--nav-total-height));
   padding: 0;
 }
 
