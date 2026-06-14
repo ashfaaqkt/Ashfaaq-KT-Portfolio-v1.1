@@ -528,16 +528,19 @@
   </footer>
 
   <script>
-    /* Theme */
-    const saved = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
+    /* Theme — sync with main site */
+    document.documentElement.setAttribute(
+      'data-theme',
+      localStorage.getItem('portfolio-theme') || 'dark'
+    );
 
-    /* Lang toggle */
+    /* Lang — auto-detect from main site preference */
     const btn = document.getElementById('prv-lang-btn');
-    let lang = localStorage.getItem('language') || 'en';
+    let lang = localStorage.getItem('portfolio-language') || 'en';
 
     function applyLang(l) {
       lang = l;
+      localStorage.setItem('portfolio-language', l);
       if (l === 'ar') {
         document.documentElement.setAttribute('lang', 'ar');
         document.documentElement.setAttribute('dir', 'rtl');
