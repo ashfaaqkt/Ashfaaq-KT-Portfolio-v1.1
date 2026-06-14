@@ -93,8 +93,8 @@ const currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
 document.documentElement.setAttribute('data-theme', currentTheme);
 
 // API configuration
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-  ? 'http://localhost:5000/api' 
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
   : '/api';
 
 const translations = {
@@ -111,9 +111,9 @@ const translations = {
     // Hero Section
     hero: {
       greeting: 'Hello I Am',
-      name: 'ASHFAAQ FEROZ MUHAMMAD',
+      name: 'Ashfaaq KT',
       degree: 'BSc. CS - BITS PILANI',
-      description: 'Tech-driven developer with expertise in MERN full-stack development, cloud integration, UI/UX design, DevOps workflows, and data analysis. Passionate about building fast, scalable, and visually appealing digital experiences. I combine AI-assisted workflows with hands-on development to create efficient, modern software solutions.',
+      description: 'Results driven full-stack developer blending expertise in the MERN stack, seamless cloud integration, and UI/UX design with a strong focus on AI-assisted workflows. Backed by formal training in Computer Science and hands-on experience building scalable, intelligent platforms, I specialize in streamlining DevOps and data analysis to engineer fast, high-performance digital experiences.',
       cgpa: 'CGPA',
       graduation: 'Graduation',
       languages: 'Languages',
@@ -159,7 +159,7 @@ const translations = {
         {
           badge: '2023 — Present',
           title: 'BITS Pilani · B.Sc. Computer Science',
-          subtitle: 'Online Program · CGPA 8.01',
+          subtitle: 'Online Program · CGPA 7.91',
           description: 'Final-year coursework focused on systems architecture, artificial intelligence, database management, and full-stack engineering. Actively building portfolio projects aligned with industry readiness and modern software development practices.',
           links: [
             { text: 'Performance Sheet', href: 'BITS/prfmnc.pdf' },
@@ -200,13 +200,13 @@ const translations = {
         },
         {
           badge: '2026',
-          title: 'Graduation Target',
-          subtitle: 'August 2026',
-          description: 'Actively pursuing internships, AI-assisted collaborations, and real-world client builds leading up to graduation. Building a portfolio that demonstrates technical excellence and industry readiness.',
+          title: '2026 — Graduation Target & Research Pathway',
+          subtitle: 'August 29, 2026',
+          description: 'Finalizing a production-grade multimodal document intelligence pipeline for my BITS Pilani graduation capstone by August 29. Actively scaling zero-shot VLM architecture and schema enforcement protocols to bridge the gap in low-resource Arabic-script document benchmarks. Building a foundational research portfolio to transition directly into fully funded VSRP internships and integrated MS/PhD pathways.',
           milestones: [
-            'Portfolio projects shipped',
-            'AI coding workflows mastered',
-            'Ready for full-time SWE roles'
+            'Multimodal Pipelines Deployed',
+            'VLM Instruction Frameworks Mastered',
+            'Ready for Advanced AI Research & PG Roles'
           ]
         }
       ]
@@ -297,7 +297,7 @@ const translations = {
           </ul>
           <p>He combines AI-assisted workflows with hands-on development to create efficient, modern software solutions.</p>
           <p>Learn more in the <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">About section</a>!</p>`,
-        education: `Ashfaaq is currently pursuing a <strong>B.Sc. Computer Science</strong> degree from <strong>BITS Pilani</strong> (Online Program) with a CGPA of <strong>8.01</strong>. He's in his final year, graduating in <strong>2026</strong>. 
+        education: `Ashfaaq is currently pursuing a <strong>B.Sc. Computer Science</strong> degree from <strong>BITS Pilani</strong> (Online Program) with a CGPA of <strong>7.91</strong>. He's in his final year, graduating in <strong>2026</strong>. 
           <p>Previously, he completed high school at Al-Shatti Secondary School in Dammam, Saudi Arabia with a GPA of 98%.</p>
           <p>Visit the <a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Education section</a> to see detailed timeline and certificates!</p>`,
         projects: `Ashfaaq has <strong>20+ projects</strong> in his portfolio! Here are some highlights:
@@ -341,10 +341,10 @@ const translations = {
     // Hero Section
     hero: {
       greeting: 'مرحباً أنا',
-      name: 'اشفاق فيروز محمد',
+      name: 'اشفاق كي تي',
       degree: 'بكالوريوس علوم الحاسوب - معهد بتس بيلاني التقنية',
-      description: 'مطور تقني متخصص في تطوير MERN الكامل، تكامل السحابة، تصميم واجهة المستخدم/تجربة المستخدم، سير عمل DevOps، وتحليل البيانات. شغوف ببناء تجارب رقمية سريعة وقابلة للتوسع وجذابة بصرياً. أجمع بين سير عمل مدعومة بالذكاء الاصطناعي والتطوير العملي لإنشاء حلول برمجية فعالة وحديثة.',
-      cgpa: 'المعدل التراكمي',
+      description: 'مطور Full-Stack موجه نحو النتائج، يمزج بين الخبرة في MERN stack، والتكامل السلس مع السحابة، وتصميم UI/UX، مع تركيز قوي على سير العمل المدعومة بالذكاء الاصطناعي. مدعومًا بتدريب أكاديمي رسمي في علوم الحاسوب وخبرة عملية في بناء منصات ذكية وقابلة للتوسع، أتخصص في تبسيط DevOps وتحليل البيانات لهندسة تجارب رقمية سريعة وعالية الأداء.',
+      cgpa: 'المعدل',
       graduation: 'التخرج',
       languages: 'اللغات',
       projects: 'المشاريع',
@@ -389,7 +389,7 @@ const translations = {
         {
           badge: '2023 — الحاضر',
           title: 'معهد بتس بيلاني التقنية · بكالوريوس علوم الحاسوب',
-          subtitle: 'اونلاين · المعدل التراكمي 8.01',
+          subtitle: 'اونلاين · المعدل التراكمي 7.91',
           description: 'دورات السنة الأخيرة تركز على هندسة الأنظمة، الذكاء الاصطناعي، إدارة قواعد البيانات، وهندسة المكدس الكامل. بناء مشاريع محفظة نشطة تتماشى مع جاهزية الصناعة وممارسات تطوير البرمجيات الحديثة.',
           links: [
             { text: 'ورقة الأداء', href: 'BITS/prfmnc.pdf' },
@@ -430,13 +430,13 @@ const translations = {
         },
         {
           badge: '2026',
-          title: 'هدف التخرج',
-          subtitle: 'أغسطس 2026',
-          description: 'السعي بنشاط للحصول على التدريبات والتعاون المدعوم بالذكاء الاصطناعي وبناء عملاء حقيقيين قبل التخرج. بناء محفظة تثبت التميز التقني والجاهزية الصناعية.',
+          title: '2026 — هدف التخرج ومسار البحث العلمي',
+          subtitle: '29 أغسطس 2026',
+          description: 'إتمام خط أنابيب ذكاء المستندات متعدد الوسائط على مستوى الإنتاج لمشروع التخرج في معهد بتس بيلاني بحلول 29 أغسطس. التوسع الفعّال في بنية VLM صفرية الطلقات وبروتوكولات فرض المخطط لسد الفجوة في معايير مستندات الخط العربي منخفضة الموارد. بناء محفظة بحثية تأسيسية للانتقال مباشرةً إلى برامج VSRP الممولة بالكامل ومسارات الماجستير/الدكتوراه المتكاملة.',
           milestones: [
-            'مشاريع المحفظة المكتملة',
-            'إتقان سير عمل البرمجة بالذكاء الاصطناعي',
-            'جاهز لأدوار مهندس برمجيات بدوام كامل'
+            'خطوط الأنابيب متعددة الوسائط منشورة',
+            'أطر تعليمات VLM مُتقنة',
+            'جاهز لأدوار البحث المتقدم في الذكاء الاصطناعي والدراسات العليا'
           ]
         }
       ]
@@ -527,7 +527,7 @@ const translations = {
           </ul>
           <p>يجمع بين سير العمل المدعومة بالذكاء الاصطناعي والتطوير العملي لإنشاء حلول برمجية فعالة وحديثة.</p>
           <p>تعرف على المزيد في <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم نبذة</a>!</p>`,
-        education: `اشفاق يتابع حالياً درجة <strong>بكالوريوس علوم الحاسوب</strong> من <strong>معهد بتس بيلاني</strong> (برنامج اونلاين) بمعدل تراكمي <strong>8.01</strong>. هو في سنته الأخيرة، سيتخرج في <strong>2026</strong>. 
+        education: `اشفاق يتابع حالياً درجة <strong>بكالوريوس علوم الحاسوب</strong> من <strong>معهد بتس بيلاني</strong> (برنامج اونلاين) بمعدل تراكمي <strong>7.91</strong>. هو في سنته الأخيرة، سيتخرج في <strong>2026</strong>. 
           <p>سابقاً، أكمل المرحلة الثانوية في مدرسة الشاطئ الثانوية في الدمام، المملكة العربية السعودية بمعدل 98%.</p>
           <p>زر <a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم التعليم</a> لرؤية الجدول الزمني التفصيلي والشهادات!</p>`,
         projects: `اشفاق لديه <strong>أكثر من 20 مشروعاً</strong> في محفظته! إليك أبرزها:
@@ -944,13 +944,15 @@ function initCVModal() {
   function openModal() {
     cvModalOverlay.classList.add('active');
     cvModalOverlay.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
   }
 
   function closeModal() {
     cvModalOverlay.classList.remove('active');
     cvModalOverlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    document.body.classList.remove('no-scroll');
+    document.documentElement.classList.remove('no-scroll');
   }
 
   window.openCVModal = openModal;
@@ -1081,19 +1083,19 @@ function setLanguage(lang) {
   });
 
   // Update hero section - try multiple selector strategies
-  const heroGreeting = document.querySelector('#page-home .hero-greeting') || document.querySelector('.hero-greeting');
-  if (heroGreeting) {
-    heroGreeting.textContent = t.hero.greeting;
+  const heroGreetingText = document.querySelector('#page-home .hero-greeting .hero-greeting-text') || document.querySelector('.hero-greeting .hero-greeting-text');
+  if (heroGreetingText) {
+    heroGreetingText.textContent = t.hero.greeting;
   }
 
-  const heroTitle = document.querySelector('#page-home .hero-title .title-line') || document.querySelector('.hero-title .title-line');
-  if (heroTitle) {
-    heroTitle.textContent = t.hero.name;
+  const titleLine = document.querySelector('#page-home .hero-title .title-line') || document.querySelector('.hero-title .title-line');
+  if (titleLine) {
+    titleLine.textContent = t.hero.name;
   }
 
-  const heroDegree = document.querySelector('#page-home .hero-degree') || document.querySelector('.hero-degree');
-  if (heroDegree) {
-    heroDegree.textContent = t.hero.degree;
+  const heroDegreeText = document.querySelector('#page-home .hero-degree .hero-degree-text') || document.querySelector('.hero-degree .hero-degree-text');
+  if (heroDegreeText) {
+    heroDegreeText.textContent = t.hero.degree;
   }
 
   const heroDescription = document.querySelector('#page-home .hero-description') || document.querySelector('.hero-description');
@@ -3022,7 +3024,6 @@ function populateHobbies() {
 
 function initContactForm() {
   const contactForm = document.getElementById('contact-form');
-  const categoryRadios = document.querySelectorAll('input[name="category"]');
   const otherInputGroup = document.getElementById('other-input-group');
   const otherDetailInput = document.getElementById('other-detail');
 
@@ -3355,8 +3356,7 @@ function initPortfolioSummaryModal() {
   }
 
   // Close modal when sub-links are clicked
-  const summaryLinks = modal.querySelectorAll('.portfolio-summary-link');
-  summaryLinks.forEach(link => {
+  modal.querySelectorAll('.portfolio-summary-link').forEach(link => {
     link.addEventListener('click', closeModal);
   });
 
@@ -3365,14 +3365,6 @@ function initPortfolioSummaryModal() {
     if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
       closeModal();
     }
-  });
-
-  // Close modal when clicking on "Read more" links
-  const readMoreLinks = modal.querySelectorAll('.portfolio-summary-link');
-  readMoreLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeModal();
-    });
   });
 }
 
@@ -3505,13 +3497,14 @@ function initAuth() {
   window.updateAuthLangState = updateAuthState;
   
   function openModal(modalEl) {
-    if(modalEl) {
+    if (modalEl) {
       modalEl.setAttribute('aria-hidden', 'false');
       document.body.classList.add('no-scroll');
+      document.documentElement.classList.add('no-scroll');
     }
   }
   function hideModal(modalEl) {
-    if(modalEl) {
+    if (modalEl) {
       modalEl.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('no-scroll', 'modal-open');
       document.documentElement.classList.remove('no-scroll', 'modal-open');
