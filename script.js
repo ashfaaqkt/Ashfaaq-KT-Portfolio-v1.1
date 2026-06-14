@@ -89,8 +89,7 @@ window.openProtectedPDF = async function(pdfUrl, token) {
 // ============================================
 
 let currentLanguage = localStorage.getItem('portfolio-language') || 'en';
-const currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
-document.documentElement.setAttribute('data-theme', currentTheme);
+document.documentElement.setAttribute('data-theme', localStorage.getItem('portfolio-theme') || 'dark');
 
 // API configuration
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -202,11 +201,25 @@ const translations = {
           badge: '2026',
           title: '2026 — Graduation Target & Research Pathway',
           subtitle: 'August 29, 2026',
-          description: 'Finalizing a production-grade multimodal document intelligence pipeline for my BITS Pilani graduation capstone by August 29. Actively scaling zero-shot VLM architecture and schema enforcement protocols to bridge the gap in low-resource Arabic-script document benchmarks. Building a foundational research portfolio to transition directly into fully funded VSRP internships and integrated MS/PhD pathways.',
+          description: 'Finalizing a production-grade multimodal document intelligence pipeline for my BITS Pilani graduation capstone by August 29. Actively scaling zero-shot VLM architecture and schema enforcement protocols to bridge the gap in low-resource Arabic-script document benchmarks. Building a foundational research portfolio to transition directly into VSRP internships and integrated MS/PhD pathways.',
           milestones: [
             'Multimodal Pipelines Deployed',
             'VLM Instruction Frameworks Mastered',
             'Ready for Advanced AI Research & PG Roles'
+          ]
+        },
+        {
+          badge: '2022 — Present',
+          title: 'Growly Farms · Co-Founder & Director',
+          subtitle: 'Wandoor, Kerala, India · Organic Agriculture',
+          description: 'Co-founded with Nabhan KT, Growly Farms is a 5-acre organic farm in Wandoor, Kerala, cultivating Rambutan, Jackfruit, Dragonfruit, Papaya, and more. Powered by modern drip irrigation and precision nutrient delivery systems from NETFM, the farm blends traditional organic principles with modern agricultural technology. Our vision is HighTech Farm Tourism, hydroponic expansion, and AI/ML-driven crop intelligence — making farming smarter, greener, and more productive.',
+          milestones: [
+            'Organic 5-Acre Multi-Crop Farm Established',
+            'NETFM Drip Irrigation & Supplement Systems Deployed',
+            'Vision: HiTech Farm Tourism · Hydroponics · AI & ML Integration'
+          ],
+          links: [
+            { text: 'Follow on Instagram @growly.kl', href: 'https://www.instagram.com/growly.kl' }
           ]
         }
       ]
@@ -278,53 +291,85 @@ const translations = {
     },
     // Chatbot
     chatbot: {
-      welcomeMessage: 'Hello! I\'m here to help you learn about Ashfaaq KT\'s portfolio. Select a question below or contact directly!',
+      welcomeMessage: 'Hi! 👋 I\'m Ashfaaq\'s portfolio assistant. Tap a question below to learn more about me!',
       faqButtons: {
         about: 'About Ashfaaq',
-        education: 'Education & Background',
-        projects: 'Projects & Portfolio',
-        skills: 'Skills & Expertise',
-        contact: 'Contact Directly'
+        finalProject: 'Final Year Project',
+        education: 'Education',
+        projects: 'Projects',
+        skills: 'Skills',
+        contact: 'Contact'
       },
       answers: {
-        about: `Ashfaaq KT is an <strong>AI-Assisted Developer</strong> and final-year Computer Science student at BITS Pilani. He specializes in:
+        about: `<p><strong>Ashfaaq KT</strong> is a results-driven <strong>AI-Assisted Full-Stack Developer</strong> and final-year B.Sc. Computer Science student at <strong>BITS Pilani</strong> (CGPA 7.91), graduating August 2026.</p>
+          <p>He blends expertise in the <strong>MERN stack</strong>, seamless cloud integration, UI/UX design, and AI-assisted workflows to build fast, scalable, intelligent digital platforms.</p>
           <ul>
-            <li>MERN full-stack development</li>
-            <li>Cloud integration</li>
-            <li>UI/UX design</li>
-            <li>DevOps workflows</li>
-            <li>Data analysis</li>
+            <li>🏢 <strong>Founder & CTO</strong> — AshTech Software Solutions (2024–Present)</li>
+            <li>🌱 <strong>Co-Founder & Director</strong> — Growly Farms, Kerala (2022–Present)</li>
+            <li>🎓 <strong>MERN Full-Stack</strong> — Entri Elevate AI Program (2025–Present)</li>
+            <li>🌍 Comfortable working in <strong>India & GCC</strong> time zones</li>
+            <li>🗣️ Fluent in <strong>Arabic, English & Malayalam</strong></li>
           </ul>
-          <p>He combines AI-assisted workflows with hands-on development to create efficient, modern software solutions.</p>
-          <p>Learn more in the <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">About section</a>!</p>`,
-        education: `Ashfaaq is currently pursuing a <strong>B.Sc. Computer Science</strong> degree from <strong>BITS Pilani</strong> (Online Program) with a CGPA of <strong>7.91</strong>. He's in his final year, graduating in <strong>2026</strong>. 
-          <p>Previously, he completed high school at Al-Shatti Secondary School in Dammam, Saudi Arabia with a GPA of 98%.</p>
-          <p>Visit the <a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Education section</a> to see detailed timeline and certificates!</p>`,
-        projects: `Ashfaaq has <strong>20+ projects</strong> in his portfolio! Here are some highlights:
+          <p>Open to <strong>remote, hybrid & onsite</strong> roles in India and GCC. <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Read more →</a></p>`,
+
+        education: `<p>📚 <strong>Academic & Professional Timeline:</strong></p>
           <ul>
-            <li><strong>Personal Portfolio Website</strong> - HTML, CSS, JavaScript</li>
-            <li><strong>Banking gRPC System</strong> - Python, SQL, gRPC</li>
-            <li><strong>AWS RDS Integration</strong> - SQL, AWS, Cloud</li>
-            <li><strong>Tableau Data Analysis</strong> - Data Visualization</li>
-            <li><strong>DevOps Workflow</strong> - Git, Docker, Flask</li>
+            <li>🎓 <strong>B.Sc. Computer Science — BITS Pilani</strong> (2023–2026)<br>Online Program · CGPA <strong>7.91</strong> · Final Year · Graduating Aug 29, 2026</li>
+            <li>💻 <strong>AI-Based Full-Stack Dev — Entri Elevate</strong> (2025–Present)<br>MERN Stack · Industry-ready program · Kochi</li>
+            <li>🏫 <strong>Al-Shatti Secondary School</strong> — Dammam, Saudi Arabia (2019–2021)<br>Science Track · GPA <strong>98%</strong> · Saudi Ministry of Education</li>
           </ul>
-          <p>Check out all projects in the <a href="#projects" onclick="navigateToPage('projects'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Projects section</a> or visit his <a href="https://github.com/ashfaaqkt" target="_blank">GitHub</a>!</p>`,
-        skills: `Ashfaaq is skilled in multiple areas:
+          <p>📜 <strong>Certifications:</strong> Figma Basics · Introduction to Programming (BITS) · Python (University of Michigan / Coursera) · AWS Assessment (LearnTube)</p>
+          <p><a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">View full timeline & certificates →</a></p>`,
+
+        projects: `<p>🚀 Ashfaaq has <strong>20+ projects</strong> spanning full-stack, AI, data, systems & design:</p>
           <ul>
-            <li><strong>Frontend:</strong> React, HTML, CSS, JavaScript, UI/UX Design</li>
-            <li><strong>Backend:</strong> Python, Node.js, Express.js, Flask, MongoDB, MySQL, AWS RDS</li>
-            <li><strong>Mobile:</strong> Kotlin, Swift</li>
-            <li><strong>AI & Cloud:</strong> LLM Prompt Engineering, AI-Assisted Development, Cloud Services</li>
-            <li><strong>Tools:</strong> Git, GitHub, Docker, Firebase, Tableau, Cursor IDE, VS Code</li>
+            <li>🛍️ <strong>Basket Store</strong> — MERN E-Commerce + Gemini AI chat & product insights</li>
+            <li>📖 <strong>StudyBuddy</strong> — Full-stack EdTech app · JWT auth · AI note summarizer · Pomodoro · Analytics dashboard</li>
+            <li>🌐 <strong>AshTech Solutions</strong> — Live agency website · AI chatbot · Serverless backend</li>
+            <li>🏦 <strong>Banking gRPC System</strong> — Python · SQL · gRPC · Auth layers · Transaction engine</li>
+            <li>☁️ <strong>AWS RDS Integration</strong> — Production DB schemas · Automated backups · High availability</li>
+            <li>📊 <strong>Tableau Dashboards</strong> — Mental Health analysis · Airbnb pricing & occupancy insights</li>
+            <li>⚙️ <strong>DevOps Workflow</strong> — Git · Docker · Flask · CI/CD pipeline</li>
+            <li>🖥️ <strong>HTTP Client in C</strong> — Raw TCP sockets · Network protocol programming</li>
+            <li>📱 <strong>ETTI App UI/UX</strong> — Multi-service delivery app mockup · iPad / MockUp</li>
+            <li>🐍 <strong>Football Player Analysis</strong> — Python · Pandas · EDA · Market valuation</li>
           </ul>
-          <p>See the complete <a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Expertise section</a> for details!</p>`,
-        contact: `You can contact Ashfaaq directly through:
+          <p><a href="#projects" onclick="navigateToPage('projects'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Browse all projects →</a> · <a href="https://github.com/ashfaaqkt" target="_blank">GitHub ↗</a></p>`,
+
+        skills: `<p>💡 <strong>Full skill breakdown from Ashfaaq's ATS CV:</strong></p>
           <ul>
-            <li><strong>Work Email:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
-            <li><strong>Personal Email:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
-            <li><strong>Phone (India):</strong> <a href="tel:+919995032407">+91 99950 32407</a> | <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">WhatsApp</a></li>
+            <li>⚛️ <strong>Frontend:</strong> React · HTML5 · CSS3 · JavaScript · Responsive Design · Web Animations · UI/UX Design</li>
+            <li>🎨 <strong>UI/UX:</strong> Figma · Adobe XD · MockUp (iPad) · Canva Pro · DaVinci Resolve · PicsArt</li>
+            <li>🔧 <strong>Backend:</strong> Node.js · Express.js · Python · Flask · gRPC · C Programming</li>
+            <li>🗄️ <strong>Databases:</strong> MongoDB · MySQL · AWS RDS · Firebase</li>
+            <li>📱 <strong>Mobile:</strong> Kotlin · Swift · Android Studio</li>
+            <li>🤖 <strong>AI & Cloud:</strong> LLM Prompt Engineering · Gemini API · AI-Assisted Development · Cloud Services · Data Analysis & Visualization</li>
+            <li>🛠️ <strong>Tools:</strong> Git · GitHub · Docker · Tableau · Cursor IDE · VS Code · Replit · Framer · Notion · Linux</li>
+            <li>🌿 <strong>Other:</strong> Interior Design · SketchUp / 5D Planner · AutoCAD · Modern Farming · AgriTech</li>
           </ul>
-          <p>You can also <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">visit the Contact section</a> to send a message directly through the form!</p>`
+          <p><a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Explore full expertise →</a></p>`,
+
+        contact: `<p>📬 <strong>Get in touch with Ashfaaq:</strong></p>
+          <ul>
+            <li>💼 <strong>Work Email:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
+            <li>📧 <strong>Personal Email:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
+            <li>📞 <strong>Phone (India):</strong> <a href="tel:+919995032407">+91 99950 32407</a></li>
+            <li>💬 <strong>WhatsApp:</strong> <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">Chat on WhatsApp ↗</a></li>
+            <li>🏢 <strong>AshTech:</strong> <a href="https://www.ashtechnologiesolutions.com/" target="_blank">ashtechnologiesolutions.com ↗</a></li>
+            <li>💻 <strong>GitHub:</strong> <a href="https://github.com/ashfaaqkt" target="_blank">github.com/ashfaaqkt ↗</a></li>
+          </ul>
+          <p>Open to <strong>Remote · Hybrid · Onsite</strong> roles in India & GCC. <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Send a message →</a></p>`,
+
+        finalProject: `<p>🎓 <strong>BITS Pilani Final Year Project (Capstone)</strong></p>
+          <p><strong>Bill Scanning Based Reward & Intelligence System</strong></p>
+          <ul>
+            <li>🧠 <strong>Stack:</strong> MERN · Firebase · Python · Gemini API · AI/ML · React</li>
+            <li>📄 <strong>What it does:</strong> Scans physical bills using AI vision, extracts structured data (items, totals, vendor) via Google Gemini API, and powers a dynamic reward & loyalty engine for end users.</li>
+            <li>⚙️ <strong>Architecture:</strong> Multimodal AI pipeline · Zero-shot document extraction · Serverless Firebase backend · Scalable reward logic</li>
+            <li>🏆 <strong>Phase:</strong> POC Phase 3 — Team ARAJ · Production-grade build</li>
+            <li>📅 <strong>Graduation target:</strong> August 29, 2026 — Aiming for VSRP internships & MS/PhD research pathways in AI</li>
+          </ul>
+          <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">GitHub Repo ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">Live Demo ↗</a></p>`
       }
     }
   },
@@ -438,6 +483,20 @@ const translations = {
             'أطر تعليمات VLM مُتقنة',
             'جاهز لأدوار البحث المتقدم في الذكاء الاصطناعي والدراسات العليا'
           ]
+        },
+        {
+          badge: '٢٠٢٢ — الحاضر',
+          title: 'Growly Farms · مؤسس مشارك ومدير',
+          subtitle: 'واندور، كيرالا، الهند · الزراعة العضوية',
+          description: 'تأسست بالشراكة مع نبهان كي تي، Growly Farms مزرعة عضوية تمتد على ٥ أفدنة في واندور، كيرالا، تزرع الرامبوتان والجاكفروت وفاكهة التنين والبابايا والمزيد. تعمل المزرعة بأنظمة الري بالتنقيط الحديثة وأنظمة توصيل المغذيات الدقيقة من NETFM، تجمع بين المبادئ العضوية التقليدية والتكنولوجيا الزراعية الحديثة. رؤيتنا هي السياحة الزراعية التكنولوجية، والتوسع في الزراعة المائية، وذكاء المحاصيل المدعوم بالذكاء الاصطناعي — لجعل الزراعة أذكى وأخضر وأكثر إنتاجية.',
+          milestones: [
+            'مزرعة عضوية متعددة المحاصيل على ٥ أفدنة',
+            'أنظمة الري بالتنقيط والمغذيات من NETFM منشورة',
+            'الرؤية: سياحة زراعية تكنولوجية · زراعة مائية · تكامل الذكاء الاصطناعي'
+          ],
+          links: [
+            { text: 'تابعنا على Instagram @growly.kl', href: 'https://www.instagram.com/growly.kl' }
+          ]
         }
       ]
     },
@@ -508,57 +567,92 @@ const translations = {
     },
     // Chatbot
     chatbot: {
-      welcomeMessage: 'مرحباً! أنا هنا لمساعدتك في التعرف على محفظة اشفاق كي تي. اختر سؤالاً أدناه أو تواصل مباشرة!',
+      welcomeMessage: 'مرحباً! 👋 أنا مساعد محفظة اشفاق. اضغط على سؤال أدناه لمعرفة المزيد!',
       faqButtons: {
         about: 'نبذة عن اشفاق',
-        education: 'التعليم والخلفية',
-        projects: 'المشاريع والمحفظة',
-        skills: 'المهارات والخبرات',
-        contact: 'تواصل مباشر'
+        finalProject: 'مشروع التخرج',
+        education: 'التعليم',
+        projects: 'المشاريع',
+        skills: 'المهارات',
+        contact: 'التواصل'
       },
       answers: {
-        about: `اشفاق كي تي هو <strong>مطور مدعوم بالذكاء الاصطناعي</strong> وطالب علوم الحاسوب في السنة الأخيرة في معهد بتس بيلاني. يتخصص في:
+        about: `<p><strong>اشفاق كي تي</strong> مطور Full-Stack موجّه نحو النتائج، <strong>مدعوم بالذكاء الاصطناعي</strong>، وطالب سنة أخيرة في بكالوريوس علوم الحاسوب من <strong>معهد بتس بيلاني</strong> (المعدل التراكمي 7.91)، يتخرج في أغسطس 2026.</p>
+          <p>يمزج خبرته في <strong>مكدس MERN</strong> مع التكامل السحابي وتصميم UI/UX وسير العمل المدعومة بالذكاء الاصطناعي لبناء منصات رقمية سريعة وذكية وقابلة للتوسع.</p>
           <ul>
-            <li>تطوير MERN الكامل</li>
-            <li>تكامل السحابة</li>
-            <li>تصميم واجهة المستخدم/تجربة المستخدم</li>
-            <li>سير عمل DevOps</li>
-            <li>تحليل البيانات</li>
+            <li>🏢 <strong>مؤسس ومدير تقني</strong> — آش تك سوليوشنز (2024–الحاضر)</li>
+            <li>🌱 <strong>مؤسس مشارك ومدير</strong> — Growly Farms، كيرالا (2022–الحاضر)</li>
+            <li>🎓 <strong>تطوير Full-Stack بالذكاء الاصطناعي</strong> — إنتراي إلفيت (2025–الحاضر)</li>
+            <li>🌍 مرتاح للعمل في مناطق زمنية <strong>الهند ودول الخليج</strong></li>
+            <li>🗣️ يتقن <strong>العربية والإنجليزية والمالايالامية</strong></li>
           </ul>
-          <p>يجمع بين سير العمل المدعومة بالذكاء الاصطناعي والتطوير العملي لإنشاء حلول برمجية فعالة وحديثة.</p>
-          <p>تعرف على المزيد في <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم نبذة</a>!</p>`,
-        education: `اشفاق يتابع حالياً درجة <strong>بكالوريوس علوم الحاسوب</strong> من <strong>معهد بتس بيلاني</strong> (برنامج اونلاين) بمعدل تراكمي <strong>7.91</strong>. هو في سنته الأخيرة، سيتخرج في <strong>2026</strong>. 
-          <p>سابقاً، أكمل المرحلة الثانوية في مدرسة الشاطئ الثانوية في الدمام، المملكة العربية السعودية بمعدل 98%.</p>
-          <p>زر <a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم التعليم</a> لرؤية الجدول الزمني التفصيلي والشهادات!</p>`,
-        projects: `اشفاق لديه <strong>أكثر من 20 مشروعاً</strong> في محفظته! إليك أبرزها:
+          <p>منفتح على أدوار <strong>عن بُعد وهجينة ومحلية</strong> في الهند ودول مجلس التعاون الخليجي. <a href="#about" onclick="navigateToPage('about'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">اقرأ المزيد →</a></p>`,
+
+        education: `<p>📚 <strong>المسيرة الأكاديمية والمهنية:</strong></p>
           <ul>
-            <li><strong>موقع المحفظة الشخصي</strong> - HTML، CSS، JavaScript</li>
-            <li><strong>نظام Banking gRPC</strong> - Python، SQL، gRPC</li>
-            <li><strong>تكامل AWS RDS</strong> - SQL، AWS، السحابة</li>
-            <li><strong>تحليل بيانات Tableau</strong> - تصور البيانات</li>
-            <li><strong>سير عمل DevOps</strong> - Git، Docker، Flask</li>
+            <li>🎓 <strong>بكالوريوس علوم الحاسوب — معهد بتس بيلاني</strong> (2023–2026)<br>برنامج أونلاين · المعدل التراكمي <strong>7.91</strong> · السنة الأخيرة · التخرج 29 أغسطس 2026</li>
+            <li>💻 <strong>تطوير Full-Stack بالذكاء الاصطناعي — إنتراي إلفيت</strong> (2025–الحاضر)<br>مكدس MERN · برنامج جاهز للصناعة · كوتشي</li>
+            <li>🏫 <strong>مدرسة الشاطئ الثانوية</strong> — الدمام، المملكة العربية السعودية (2019–2021)<br>المسار العلمي · المعدل <strong>98%</strong> · وزارة التعليم السعودية</li>
           </ul>
-          <p>تحقق من جميع المشاريع في <a href="#projects" onclick="navigateToPage('projects'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم المشاريع</a> أو زر <a href="https://github.com/ashfaaqkt" target="_blank">GitHub</a>!</p>`,
-        skills: `اشفاق ماهر في مجالات متعددة:
+          <p>📜 <strong>الشهادات:</strong> أساسيات فيجما · مقدمة في البرمجة (بتس) · Python (جامعة ميشيغان / Coursera) · تقييم AWS (LearnTube)</p>
+          <p><a href="#education" onclick="navigateToPage('education'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">عرض الجدول الزمني الكامل والشهادات →</a></p>`,
+
+        projects: `<p>🚀 لدى اشفاق <strong>أكثر من 20 مشروعاً</strong> تغطي Full-Stack والذكاء الاصطناعي والبيانات والأنظمة والتصميم:</p>
           <ul>
-            <li><strong>الواجهة الأمامية:</strong> React، HTML، CSS، JavaScript، تصميم واجهة المستخدم/تجربة المستخدم</li>
-            <li><strong>الخلفية:</strong> Python، Node.js، Express.js، Flask، MongoDB، MySQL، AWS RDS</li>
-            <li><strong>الجوال:</strong> Kotlin، Swift</li>
-            <li><strong>الذكاء الاصطناعي والسحابة:</strong> هندسة المطالبات LLM، التطوير المدعوم بالذكاء الاصطناعي، خدمات السحابة</li>
-            <li><strong>الأدوات:</strong> Git، GitHub، Docker، Firebase، Tableau، Cursor IDE، VS Code</li>
+            <li>🛍️ <strong>Basket Store</strong> — تجارة إلكترونية MERN + دردشة ورؤى بـ Gemini AI</li>
+            <li>📖 <strong>StudyBuddy</strong> — منصة تعليمية متكاملة · JWT · تلخيص AI · بومودورو · لوحة تحليلات</li>
+            <li>🌐 <strong>آش تك سوليوشنز</strong> — موقع وكالة حي · روبوت محادثة AI · خلفية Serverless</li>
+            <li>🏦 <strong>نظام Banking gRPC</strong> — Python · SQL · gRPC · طبقات المصادقة · محرك معاملات</li>
+            <li>☁️ <strong>تكامل AWS RDS</strong> — مخططات DB للإنتاج · نسخ احتياطي تلقائي · توفر عالٍ</li>
+            <li>📊 <strong>لوحات Tableau</strong> — تحليل الصحة العقلية · تسعير Airbnb وتحليل الإشغال</li>
+            <li>⚙️ <strong>سير عمل DevOps</strong> — Git · Docker · Flask · خط CI/CD</li>
+            <li>🖥️ <strong>عميل HTTP بلغة C</strong> — مقابس TCP خام · برمجة بروتوكولات الشبكة</li>
+            <li>📱 <strong>تصميم UI/UX لتطبيق ETTI</strong> — نموذج تطبيق توصيل متعدد الخدمات · iPad</li>
+            <li>🐍 <strong>تحليل بيانات لاعبي كرة القدم</strong> — Python · Pandas · EDA · تقييم السوق</li>
           </ul>
-          <p>راجع <a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">قسم الخبرات</a> الكامل للتفاصيل!</p>`,
-        contact: `يمكنك التواصل مع اشفاق مباشرة من خلال:
+          <p><a href="#projects" onclick="navigateToPage('projects'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">استعرض جميع المشاريع →</a> · <a href="https://github.com/ashfaaqkt" target="_blank">GitHub ↗</a></p>`,
+
+        skills: `<p>💡 <strong>ملخص المهارات الكامل من السيرة الذاتية:</strong></p>
           <ul>
-            <li><strong>البريد المهني:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
-            <li><strong>البريد الشخصي:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
-            <li><strong>الهاتف (الهند):</strong> <a href="tel:+919995032407">+91 99950 32407</a> | <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">WhatsApp</a></li>
+            <li>⚛️ <strong>الواجهة الأمامية:</strong> React · HTML5 · CSS3 · JavaScript · تصميم متجاوب · رسوم متحركة · UI/UX</li>
+            <li>🎨 <strong>تصميم:</strong> Figma · Adobe XD · MockUp (iPad) · Canva Pro · DaVinci Resolve · PicsArt</li>
+            <li>🔧 <strong>الخلفية:</strong> Node.js · Express.js · Python · Flask · gRPC · لغة C</li>
+            <li>🗄️ <strong>قواعد البيانات:</strong> MongoDB · MySQL · AWS RDS · Firebase</li>
+            <li>📱 <strong>الجوال:</strong> Kotlin · Swift · Android Studio</li>
+            <li>🤖 <strong>الذكاء الاصطناعي والسحابة:</strong> هندسة المطالبات LLM · Gemini API · التطوير بالذكاء الاصطناعي · تحليل البيانات</li>
+            <li>🛠️ <strong>الأدوات:</strong> Git · GitHub · Docker · Tableau · Cursor IDE · VS Code · Replit · Framer · Notion · Linux</li>
+            <li>🌿 <strong>أخرى:</strong> التصميم الداخلي · SketchUp / 5D Planner · AutoCAD · الزراعة الحديثة · تقنيات الزراعة</li>
           </ul>
-          <p>يمكنك أيضاً <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">زيارة قسم التواصل</a> لإرسال رسالة مباشرة من خلال النموذج!</p>`
+          <p><a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">استكشف الخبرات الكاملة →</a></p>`,
+
+        contact: `<p>📬 <strong>تواصل مع اشفاق:</strong></p>
+          <ul>
+            <li>💼 <strong>البريد المهني:</strong> <a href="mailto:hire.me@ashfaaqkt.com">hire.me@ashfaaqkt.com</a></li>
+            <li>📧 <strong>البريد الشخصي:</strong> <a href="mailto:ashfaaqktmail@gmail.com">ashfaaqktmail@gmail.com</a></li>
+            <li>📞 <strong>الهاتف (الهند):</strong> <a href="tel:+919995032407">+91 99950 32407</a></li>
+            <li>💬 <strong>WhatsApp:</strong> <a href="https://wa.me/919995032407?text=Hello%20Ashfaaq" target="_blank">تواصل عبر واتساب ↗</a></li>
+            <li>🏢 <strong>آش تك:</strong> <a href="https://www.ashtechnologiesolutions.com/" target="_blank">ashtechnologiesolutions.com ↗</a></li>
+            <li>💻 <strong>GitHub:</strong> <a href="https://github.com/ashfaaqkt" target="_blank">github.com/ashfaaqkt ↗</a></li>
+          </ul>
+          <p>منفتح على أدوار <strong>عن بُعد وهجينة ومحلية</strong> في الهند ودول مجلس التعاون الخليجي. <a href="#connect" onclick="navigateToPage('connect'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">أرسل رسالة →</a></p>`,
+
+        finalProject: `<p>🎓 <strong>مشروع التخرج النهائي — معهد بتس بيلاني</strong></p>
+          <p><strong>نظام المكافآت والذكاء المعتمد على مسح الفواتير</strong></p>
+          <ul>
+            <li>🧠 <strong>التقنيات:</strong> MERN · Firebase · Python · Gemini API · تعلم الآلة · React</li>
+            <li>📄 <strong>ما يفعله:</strong> يمسح الفواتير باستخدام رؤية الذكاء الاصطناعي، يستخرج بيانات منظمة (المنتجات، الإجماليات، البائع) عبر Google Gemini API، ويشغّل محرك مكافآت وولاء ديناميكي للمستخدمين.</li>
+            <li>⚙️ <strong>البنية:</strong> خط أنابيب AI متعدد الوسائط · استخراج مستندات بدون أمثلة · Firebase Serverless · منطق مكافآت قابل للتوسع</li>
+            <li>🏆 <strong>المرحلة:</strong> POC المرحلة الثالثة — فريق ARAJ · بناء على مستوى الإنتاج</li>
+            <li>📅 <strong>هدف التخرج:</strong> 29 أغسطس 2026 — استهداف برامج VSRP ومسارات الماجستير/الدكتوراه في الذكاء الاصطناعي</li>
+          </ul>
+          <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">مستودع GitHub ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">عرض مباشر ↗</a></p>`
       }
     }
   }
 };
+
+// Expose on window so chatbot and any inline handlers can access translations
+window.translations = translations;
 
 // ============================================
 // INITIALIZATION
@@ -847,6 +941,11 @@ function showToast({ title, sub = '', icon = '👋', type = 'welcome', duration 
       <div class="toast-title">${title}</div>
       ${sub ? `<div class="toast-sub">${sub}</div>` : ''}
     </div>
+    <button class="toast-close" aria-label="Dismiss">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
     <div class="toast-progress"><div class="toast-progress-bar"></div></div>
   `;
   container.appendChild(toast);
@@ -873,6 +972,10 @@ function showToast({ title, sub = '', icon = '👋', type = 'welcome', duration 
     t.classList.add('toast-hiding');
     t.addEventListener('transitionend', () => t.remove(), { once: true });
   }
+
+  // Manual dismiss via X button
+  const closeBtn = toast.querySelector('.toast-close');
+  if (closeBtn) closeBtn.addEventListener('click', () => dismissToast(toast));
 }
 
 function showWelcomeToast(firstName, isNew = false) {
@@ -1020,12 +1123,7 @@ function switchLanguage(newLang) {
   // Update currentLanguage BEFORE calling setLanguage so populateTimeline uses correct language
   currentLanguage = newLang;
   localStorage.setItem('portfolio-language', newLang);
-  // Keep a mirror on window for any code that reads it
-  try {
-    window.currentLanguage = newLang;
-  } catch (e) {
-    // ignore if window is not available (e.g. during SSR, which we don't use here)
-  }
+  window.currentLanguage = newLang;
 
   // Add transition class for animation
   document.body.classList.add('language-transitioning');
@@ -1830,7 +1928,12 @@ function toArabicNumerals(str) {
 }
 
 // Timeline
+// Stop any previously running timeline auto-play before re-rendering
+// to prevent interval leaks when language is switched.
+let _timelineStopFn = null;
+
 function populateTimeline() {
+  if (_timelineStopFn) { _timelineStopFn(); _timelineStopFn = null; }
   const track = document.getElementById('timeline');
   if (!track) return;
 
@@ -1980,8 +2083,10 @@ function populateTimeline() {
   const eduSection = document.getElementById('page-education');
   if (eduSection) {
     document.addEventListener('keydown', (e) => {
-      // Only respond if education page is the active page
-      if (!eduSection.classList.contains('active')) return;
+      // Only respond when education section is in view
+      const rect = eduSection.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
       if (e.key === 'ArrowRight') goTo(current + 1);
       if (e.key === 'ArrowLeft') goTo(current - 1);
     });
@@ -2057,8 +2162,9 @@ function populateTimeline() {
     viewport.addEventListener('touchstart', pauseAndResume, { passive: true });
   }
 
-  // Start auto-play
+  // Start auto-play and register stop handle for cleanup on re-render
   startAuto();
+  _timelineStopFn = stopAuto;
 }
 
 
@@ -3181,17 +3287,13 @@ function initChatbot() {
     }
 
     if (chatbotFaqContainer && t.chatbot.faqButtons) {
-      const faqButtons = chatbotFaqContainer.querySelectorAll('.chatbot-faq-btn');
+      const faqButtons = chatbotFaqContainer.querySelectorAll('.cb-chip');
       faqButtons.forEach(button => {
         const faqType = button.getAttribute('data-faq');
         const buttonText = t.chatbot.faqButtons[faqType];
         if (buttonText) {
-          const span = button.querySelector('span');
-          if (span) {
-            span.textContent = buttonText;
-          } else {
-            button.textContent = buttonText;
-          }
+          const span = button.querySelector('span:not(.cb-chip-icon)');
+          if (span) span.textContent = buttonText;
         }
       });
     }
@@ -3203,64 +3305,51 @@ function initChatbot() {
   const chatbotMinimize = document.getElementById('chatbot-minimize');
   const backToTop = document.getElementById('back-to-top');
 
+  const chatbotBackdrop = document.getElementById('chatbot-backdrop');
+
+  function openChatbot() {
+    chatbotContainer.classList.add('open');
+    chatbotContainer.setAttribute('aria-hidden', 'false');
+    chatbotToggle.classList.add('hidden');
+    if (backToTop) backToTop.classList.add('chatbot-open');
+    // Blur + lock scroll
+    if (chatbotBackdrop) chatbotBackdrop.classList.add('active');
+    document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
+  }
+
+  function closeChatbot() {
+    chatbotContainer.classList.remove('open');
+    chatbotContainer.setAttribute('aria-hidden', 'true');
+    // Remove blur + restore scroll immediately
+    if (chatbotBackdrop) chatbotBackdrop.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+    document.documentElement.classList.remove('no-scroll');
+    // Show toggle after shrink animation
+    setTimeout(() => {
+      chatbotToggle.classList.remove('hidden');
+      if (backToTop) backToTop.classList.remove('chatbot-open');
+    }, 420);
+  }
+
   if (chatbotToggle && chatbotContainer) {
-    chatbotToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      chatbotContainer.classList.add('open');
-      chatbotContainer.setAttribute('aria-hidden', 'false');
-      chatbotToggle.classList.add('hidden');
-      if (backToTop) backToTop.classList.add('chatbot-open');
-    });
-
+    chatbotToggle.addEventListener('click', (e) => { e.preventDefault(); openChatbot(); });
     if (chatbotMinimize) {
-      chatbotMinimize.addEventListener('click', (e) => {
-        e.preventDefault();
-        chatbotContainer.classList.remove('open');
-        chatbotContainer.setAttribute('aria-hidden', 'true');
-        chatbotToggle.classList.remove('hidden');
-        if (backToTop) backToTop.classList.remove('chatbot-open');
-      });
+      chatbotMinimize.addEventListener('click', (e) => { e.preventDefault(); closeChatbot(); });
+    }
+    // Tap backdrop to close
+    if (chatbotBackdrop) {
+      chatbotBackdrop.addEventListener('click', closeChatbot);
     }
   }
 
-  function getFaqAnswers() {
-    if (!window.translations) return {};
-    const lang = window.currentLanguage || 'en';
-    const t = window.translations[lang];
-    if (!t || !t.chatbot) return {};
-    return t.chatbot.answers || {};
-  }
-
-  function addMessage(text, type) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `chatbot-message chatbot-message-${type}`;
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-
-    if (type === 'bot') {
-      contentDiv.innerHTML = text;
-    } else {
-      const p = document.createElement('p');
-      p.textContent = text;
-      contentDiv.appendChild(p);
-    }
-
-    messageDiv.appendChild(contentDiv);
-    chatbotMessages.appendChild(messageDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  // Consistently uses global handler defined below
-
-  // Keep JS listeners as a backup (if inline onclick is disabled)
   if (chatbotFaqContainer) {
-    const faqButtons = chatbotFaqContainer.querySelectorAll('.chatbot-faq-btn');
+    const faqButtons = chatbotFaqContainer.querySelectorAll('.cb-chip');
     faqButtons.forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
         const faqType = button.getAttribute('data-faq');
-        const span = button.querySelector('span');
+        const span = button.querySelector('span:not(.cb-chip-icon)');
         const question = span ? span.textContent.trim() : button.textContent.trim();
         window.chatbotHandleFaqClick && window.chatbotHandleFaqClick(faqType, question);
       });
@@ -3689,7 +3778,6 @@ function initAuth() {
           if (window.pendingPdfLink) {
             const pending = window.pendingPdfLink;
             window.pendingPdfLink = null;
-            if (typeof window.openCVModal === 'function') window.openCVModal();
             window.openProtectedPDF(pending, data.token);
           }
         } else {
@@ -3746,7 +3834,6 @@ function initAuth() {
           if (window.pendingPdfLink) {
             const pending = window.pendingPdfLink;
             window.pendingPdfLink = null;
-            if (typeof window.openCVModal === 'function') window.openCVModal();
             window.openProtectedPDF(pending, data.token);
           }
         } else {

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Great+Vibes&family=Allura&family=Sacramento&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Great+Vibes&family=Allura&family=Sacramento&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
   <link href="https://db.onlinewebfonts.com/c/05e968b76ef45c6b92ca43899f59ed48?family=Aref+Ruqaa" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
@@ -41,20 +41,34 @@
 
       <div class="nav-actions">
         <button class="theme-toggle nav-icon-btn" id="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Toggle theme">
-          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+
+          <!-- ☀️ Colorful Sun — shown in dark mode -->
+          <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="4.8" fill="#FCD34D"/>
+            <line x1="12" y1="2"    x2="12" y2="4.5"  stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="12" y1="19.5" x2="12" y2="22"   stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="2"    y1="12" x2="4.5"  y2="12" stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="19.5" y1="12" x2="22"   y2="12" stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="4.93"  y1="4.93"  x2="6.7"   y2="6.7"   stroke="#FCD34D" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="17.3"  y1="17.3"  x2="19.07" y2="19.07" stroke="#FCD34D" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="19.07" y1="4.93"  x2="17.3"  y2="6.7"   stroke="#FCD34D" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="6.7"   y1="17.3"  x2="4.93"  y2="19.07" stroke="#FCD34D" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+
+          <!-- 🌙 Colorful Moon — shown in light mode -->
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="url(#moonGrad)" stroke="#6366F1" stroke-width="0.4"/>
+            <circle cx="18.5" cy="5.5" r="0.9" fill="#FDE68A"/>
+            <circle cx="20.5" cy="9.5" r="0.55" fill="#FDE68A" opacity="0.8"/>
+            <circle cx="15.5" cy="3.5" r="0.55" fill="#C4B5FD" opacity="0.9"/>
+            <defs>
+              <linearGradient id="moonGrad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#818CF8"/>
+                <stop offset="100%" stop-color="#4F46E5"/>
+              </linearGradient>
+            </defs>
           </svg>
+
         </button>
         <button class="nav-cta-btn" id="cv-modal-btn" aria-label="Open Resume Downloads">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
@@ -866,58 +880,84 @@
   <div class="scroll-progress" id="scroll-progress"></div>
 
   <!-- Chatbot -->
+  <!-- Chatbot Backdrop -->
+  <div class="chatbot-backdrop" id="chatbot-backdrop"></div>
+
+  <!-- Chatbot Panel -->
   <div class="chatbot-container" id="chatbot-container" aria-hidden="true">
-    <div class="chatbot-header">
-      <div class="chatbot-header-info">
-        <div class="chatbot-avatar">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
+
+    <!-- Header -->
+    <div class="cb-header">
+      <div class="cb-header-left">
+        <div class="cb-avatar">
+          <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq" />
+          <span class="cb-online"></span>
         </div>
-        <div class="chatbot-header-text">
-          <h4 data-en="FAQs" data-ar="الأسئلة الشائعة">FAQs</h4>
-          <span class="chatbot-status" data-en="Ask me anything" data-ar="اسألني أي شيء">Ask me anything</span>
+        <div class="cb-header-info">
+          <span class="cb-name" data-en="Ask Ashfaaq" data-ar="اسأل اشفاق">Ask Ashfaaq</span>
+          <span class="cb-status" data-en="Portfolio AI · Online" data-ar="مساعد المحفظة · متاح">Portfolio AI · Online</span>
         </div>
       </div>
-      <button class="chatbot-minimize" id="chatbot-minimize" aria-label="Minimize chatbot">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
+      <button class="cb-close" id="chatbot-minimize" aria-label="Close chatbot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <div class="chatbot-messages" id="chatbot-messages">
+
+    <!-- Messages -->
+    <div class="cb-messages" id="chatbot-messages">
       <div class="chatbot-message chatbot-message-bot">
         <div class="message-content">
-          <p data-en="Hello! I'm here to help you learn about Ashfaaq KT's portfolio. Select a question below or contact directly!"
-            data-ar="مرحباً! أنا هنا لمساعدتك في التعرف على محفظة اشفاق كي تي. اختر سؤالاً أدناه أو تواصل مباشرة!">
-            Hello! I'm here to help you learn about Ashfaaq KT's portfolio. Select a question below or contact directly!
+          <p data-en="Hi! 👋 I'm Ashfaaq's portfolio assistant. Tap a question below to learn more about me!"
+             data-ar="مرحباً! 👋 أنا مساعد محفظة اشفاق. اضغط على سؤال أدناه لمعرفة المزيد!">
+            Hi! 👋 I'm Ashfaaq's portfolio assistant. Tap a question below to learn more about me!
           </p>
         </div>
       </div>
     </div>
-    <div class="chatbot-faq-container" id="chatbot-faq-container">
-      <p class="chatbot-faq-label" data-en="Quick questions:" data-ar="أسئلة سريعة:">Quick questions:</p>
-      <button class="chatbot-faq-btn" data-faq="about">
-        <span data-en="About Ashfaaq" data-ar="نبذة عن اشفاق">About Ashfaaq</span>
-      </button>
-      <button class="chatbot-faq-btn" data-faq="education">
-        <span data-en="Education & Background" data-ar="التعليم والخلفية">Education & Background</span>
-      </button>
-      <button class="chatbot-faq-btn" data-faq="projects">
-        <span data-en="Projects & Portfolio" data-ar="المشاريع والمحفظة">Projects & Portfolio</span>
-      </button>
-      <button class="chatbot-faq-btn" data-faq="skills">
-        <span data-en="Skills & Expertise" data-ar="المهارات والخبرات">Skills & Expertise</span>
-      </button>
-      <button class="chatbot-faq-btn" data-faq="contact">
-        <span data-en="Contact Directly" data-ar="تواصل مباشر">Contact Directly</span>
-      </button>
+
+    <!-- FAQ Chips -->
+    <div class="cb-faq" id="chatbot-faq-container">
+      <p class="cb-faq-label" data-en="Quick Questions" data-ar="أسئلة سريعة">Quick Questions</p>
+      <div class="cb-chips">
+
+        <button class="cb-chip" data-faq="about">
+          <span class="cb-chip-icon">👤</span>
+          <span data-en="About Ashfaaq" data-ar="نبذة عن اشفاق">About Ashfaaq</span>
+        </button>
+
+        <button class="cb-chip" data-faq="finalProject">
+          <span class="cb-chip-icon">🎓</span>
+          <span data-en="Final Year Project" data-ar="مشروع التخرج">Final Year Project</span>
+        </button>
+
+        <button class="cb-chip" data-faq="education">
+          <span class="cb-chip-icon">📚</span>
+          <span data-en="Education" data-ar="التعليم">Education</span>
+        </button>
+
+        <button class="cb-chip" data-faq="projects">
+          <span class="cb-chip-icon">🚀</span>
+          <span data-en="Projects" data-ar="المشاريع">Projects</span>
+        </button>
+
+        <button class="cb-chip" data-faq="skills">
+          <span class="cb-chip-icon">💡</span>
+          <span data-en="Skills" data-ar="المهارات">Skills</span>
+        </button>
+
+        <button class="cb-chip" data-faq="contact">
+          <span class="cb-chip-icon">📞</span>
+          <span data-en="Contact" data-ar="التواصل">Contact</span>
+        </button>
+
+      </div>
     </div>
+
   </div>
 
-  <!-- Chatbot Toggle Button -->
+  <!-- Chatbot Toggle -->
   <button class="chatbot-toggle" id="chatbot-toggle" aria-label="Open chatbot">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
     <span class="chatbot-notification" id="chatbot-notification"></span>
@@ -933,53 +973,194 @@
         </svg>
       </button>
       <div class="portfolio-summary-modal-inner">
-        <h2 class="portfolio-summary-title" data-en="Portfolio in a nutshell" data-ar="نبذة سريعة عن المحفظة">
-          Portfolio in a nutshell
-        </h2>
-        <p class="portfolio-summary-text"
-          data-en="A MERN full‑stack and AI‑assisted developer with a strong academic base, shipped projects, and a balanced skill set across backend, frontend, cloud, and collaboration."
-          data-ar="مطور MERN متكامل ومدعوم بالذكاء الاصطناعي مع أساس أكاديمي قوي، ومشاريع منجزة، ومجموعة مهارات متوازنة بين الخلفية والواجهة والسحابة والعمل التعاوني.">
-          A MERN full‑stack and AI‑assisted developer with a strong academic base, shipped projects, and a balanced
-          skill set across backend, frontend, cloud, and collaboration.
-        </p>
-        <ul class="portfolio-summary-list">
-          <li
-            data-en="Education: B.Sc. Computer Science at BITS Pilani with solid performance and clear graduation roadmap."
-            data-ar="التعليم: بكالوريوس علوم الحاسوب من معهد بتس بيلاني بأداء قوي وخطة تخرج واضحة.">
-            Education: B.Sc. Computer Science at BITS Pilani with solid performance and clear graduation roadmap.
-          </li>
-          <li
-            data-en="Projects: Selected real‑world and experimental builds showcasing clean architecture, performance, and UI/UX focus."
-            data-ar="المشاريع: أعمال حقيقية وتجريبية مختارة تُظهر بنية نظيفة، وأداءً عالياً، وتركيزاً على تجربة المستخدم وواجهة المستخدم.">
-            Projects: Selected real‑world and experimental builds showcasing clean architecture, performance, and UI/UX
-            focus.
-          </li>
-          <li
-            data-en="Expertise: MERN stack, cloud tooling, AI‑assisted workflows, and strong communication in multiple languages."
-            data-ar="الخبرات: مكدس MERN، وأدوات السحابة، وسير عمل مدعومة بالذكاء الاصطناعي، وقدرات تواصل قوية بعدة لغات.">
-            Expertise: MERN stack, cloud tooling, AI‑assisted workflows, and strong communication in multiple languages.
-          </li>
-        </ul>
-        <div class="portfolio-summary-actions">
-          <a href="#education" class="btn btn-outline portfolio-summary-link">
-            <span data-en="Read more about Education" data-ar="اقرأ المزيد عن التعليم">Read more about Education</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-          <a href="#projects" class="btn btn-outline portfolio-summary-link">
-            <span data-en="Read more about Projects" data-ar="اقرأ المزيد عن المشاريع">Read more about Projects</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-          <a href="#expertise" class="btn btn-outline portfolio-summary-link">
-            <span data-en="Read more about Expertise" data-ar="اقرأ المزيد عن الخبرات">Read more about Expertise</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
+
+        <!-- ── Profile Header ── -->
+        <div class="psm-header">
+          <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq KT" class="psm-avatar" />
+          <div class="psm-header-info">
+            <h2 class="psm-name">Ashfaaq KT</h2>
+            <p class="psm-role" data-en="AI-Assisted Full-Stack Developer" data-ar="مطور Full-Stack مدعوم بالذكاء الاصطناعي">AI-Assisted Full-Stack Developer</p>
+            <p class="psm-degree" data-en="B.Sc. CS · BITS Pilani · CGPA 7.91" data-ar="بكالوريوس علوم الحاسوب · بتس بيلاني · المعدل 7.91">B.Sc. CS · BITS Pilani · CGPA 7.91</p>
+          </div>
         </div>
+
+        <!-- ── Stats Row ── -->
+        <div class="psm-stats">
+          <div class="psm-stat">
+            <span class="psm-stat-val">7.91</span>
+            <span class="psm-stat-lbl" data-en="CGPA" data-ar="المعدل">CGPA</span>
+          </div>
+          <div class="psm-stat">
+            <span class="psm-stat-val">20+</span>
+            <span class="psm-stat-lbl" data-en="Projects" data-ar="مشروع">Projects</span>
+          </div>
+          <div class="psm-stat">
+            <span class="psm-stat-val">4</span>
+            <span class="psm-stat-lbl" data-en="Languages" data-ar="لغات">Languages</span>
+          </div>
+          <div class="psm-stat">
+            <span class="psm-stat-val">2026</span>
+            <span class="psm-stat-lbl" data-en="Graduation" data-ar="التخرج">Graduation</span>
+          </div>
+        </div>
+
+        <!-- ── Final Year Project (Featured) ── -->
+        <div class="psm-featured">
+          <div class="psm-featured-header">
+            <span class="psm-featured-badge" data-en="🎓 Final Year Project — BITS Pilani" data-ar="🎓 مشروع السنة الأخيرة — بتس بيلاني">🎓 Final Year Project — BITS Pilani</span>
+          </div>
+          <h3 class="psm-featured-title" data-en="Bill Scanning Based Reward &amp; Intelligence System" data-ar="نظام المكافآت والذكاء المعتمد على مسح الفواتير">Bill Scanning Based Reward &amp; Intelligence System</h3>
+          <p class="psm-featured-desc"
+            data-en="A production-grade multimodal AI platform that scans bills, extracts structured data via Gemini API, and powers a dynamic reward engine — built end-to-end with MERN, Firebase, Python &amp; AI/ML."
+            data-ar="منصة ذكاء اصطناعي متعددة الوسائط على مستوى الإنتاج تمسح الفواتير وتستخرج البيانات عبر Gemini API وتشغّل محرك مكافآت ديناميكي — مبنية بالكامل بتقنيات MERN وFirebase وPython والذكاء الاصطناعي.">
+            A production-grade multimodal AI platform that scans bills, extracts structured data via Gemini API, and powers a dynamic reward engine — built end-to-end with MERN, Firebase, Python &amp; AI/ML.
+          </p>
+          <div class="psm-featured-tags">
+            <span>MERN</span><span>Firebase</span><span>Python</span><span>AI/ML</span><span>Gemini API</span><span>React</span>
+          </div>
+          <div class="psm-featured-actions">
+            <a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank" rel="noopener noreferrer" class="psm-featured-link">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span data-en="GitHub Repo" data-ar="مستودع GitHub">GitHub Repo</span>
+            </a>
+            <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank" rel="noopener noreferrer" class="psm-featured-link psm-featured-link-demo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <span data-en="Live Demo" data-ar="عرض مباشر">Live Demo</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Quick Access Links ── -->
+        <div class="psm-section">
+          <h4 class="psm-section-title" data-en="Quick Access" data-ar="وصول سريع">Quick Access</h4>
+          <div class="psm-links-grid">
+
+            <a href="https://www.ashtechnologiesolutions.com/" target="_blank" rel="noopener noreferrer" class="psm-link-card psm-link-ashtech">
+              <div class="psm-link-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <div class="psm-link-text">
+                <span class="psm-link-name" data-en="AshTech Solutions" data-ar="آش تك سوليوشنز">AshTech Solutions</span>
+                <span class="psm-link-sub" data-en="Software Agency" data-ar="وكالة برمجية">Software Agency</span>
+              </div>
+              <svg class="psm-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+
+            <a href="https://github.com/ashfaaqkt" target="_blank" rel="noopener noreferrer" class="psm-link-card psm-link-github">
+              <div class="psm-link-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              </div>
+              <div class="psm-link-text">
+                <span class="psm-link-name" data-en="GitHub Profile" data-ar="ملف GitHub">GitHub Profile</span>
+                <span class="psm-link-sub">ashfaaqkt</span>
+              </div>
+              <svg class="psm-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+
+            <a href="CV/ASHFAAQ KT ATS CV in En.pdf" target="_blank" rel="noopener noreferrer" class="psm-link-card psm-link-cv">
+              <div class="psm-link-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div class="psm-link-text">
+                <span class="psm-link-name" data-en="English ATS CV" data-ar="السيرة الذاتية ATS">English ATS CV</span>
+                <span class="psm-link-sub" data-en="Machine-readable PDF" data-ar="ملف PDF قابل للقراءة آلياً">Machine-readable PDF</span>
+              </div>
+              <svg class="psm-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+
+            <a href="mailto:ashfaaqktmail@gmail.com" class="psm-link-card psm-link-hire">
+              <div class="psm-link-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="psm-link-text">
+                <span class="psm-link-name" data-en="Hire Me" data-ar="للتوظيف">Hire Me</span>
+                <span class="psm-link-sub">ashfaaqktmail@gmail.com</span>
+              </div>
+              <svg class="psm-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- ── Education Timeline ── -->
+        <div class="psm-section">
+          <h4 class="psm-section-title" data-en="Education &amp; Experience" data-ar="التعليم والخبرة">Education &amp; Experience</h4>
+          <div class="psm-edu-list">
+            <div class="psm-edu-item">
+              <div class="psm-edu-dot psm-dot-blue"></div>
+              <div class="psm-edu-body">
+                <p class="psm-edu-title" data-en="B.Sc. Computer Science — BITS Pilani" data-ar="بكالوريوس علوم الحاسوب — بتس بيلاني">B.Sc. Computer Science — BITS Pilani</p>
+                <p class="psm-edu-sub" data-en="2023 – 2026 · CGPA 7.91 · Final Year" data-ar="٢٠٢٣ – ٢٠٢٦ · المعدل 7.91 · السنة الأخيرة">2023 – 2026 · CGPA 7.91 · Final Year</p>
+              </div>
+            </div>
+            <div class="psm-edu-item">
+              <div class="psm-edu-dot psm-dot-purple"></div>
+              <div class="psm-edu-body">
+                <p class="psm-edu-title" data-en="AI Full-Stack Dev — Entri Elevate" data-ar="تطوير Full-Stack بالذكاء الاصطناعي — إنتراي إلفيت">AI Full-Stack Dev — Entri Elevate</p>
+                <p class="psm-edu-sub" data-en="2025 – Present · MERN Stack" data-ar="٢٠٢٥ – الحاضر · مكدس MERN">2025 – Present · MERN Stack</p>
+              </div>
+            </div>
+            <div class="psm-edu-item">
+              <div class="psm-edu-dot psm-dot-green"></div>
+              <div class="psm-edu-body">
+                <p class="psm-edu-title" data-en="Founder & CTO — AshTech Solutions" data-ar="مؤسس ومدير تقني — آش تك سوليوشنز">Founder &amp; CTO — AshTech Solutions</p>
+                <p class="psm-edu-sub" data-en="2024 – Present · Software Agency" data-ar="٢٠٢٤ – الحاضر · وكالة برمجية">2024 – Present · Software Agency</p>
+              </div>
+            </div>
+            <div class="psm-edu-item">
+              <div class="psm-edu-dot psm-dot-orange"></div>
+              <div class="psm-edu-body">
+                <p class="psm-edu-title" data-en="High School — Al-Shatti Secondary, Dammam" data-ar="الثانوية العامة — مدرسة الشاطئ، الدمام">High School — Al-Shatti Secondary, Dammam</p>
+                <p class="psm-edu-sub" data-en="2019 – 2021 · Science Track · GPA 98%" data-ar="٢٠١٩ – ٢٠٢١ · المسار العلمي · المعدل 98%">2019 – 2021 · Science Track · GPA 98%</p>
+              </div>
+            </div>
+            <div class="psm-edu-item">
+              <div class="psm-edu-dot psm-dot-farm"></div>
+              <div class="psm-edu-body">
+                <p class="psm-edu-title" data-en="Co-Founder &amp; Director — Growly Farms" data-ar="مؤسس مشارك ومدير — مزرعة Growly">Co-Founder &amp; Director — Growly Farms</p>
+                <p class="psm-edu-sub" data-en="2022 – Present · Organic 5-Acre Farm · Wandoor, Kerala" data-ar="٢٠٢٢ – الحاضر · مزرعة عضوية ٥ أفدنة · واندور، كيرالا">2022 – Present · Organic 5-Acre Farm · Wandoor, Kerala</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Core Tech Stack ── -->
+        <div class="psm-section">
+          <h4 class="psm-section-title" data-en="Core Stack" data-ar="المجموعة التقنية الأساسية">Core Stack</h4>
+          <div class="psm-tech-pills">
+            <span>React</span><span>Node.js</span><span>Express</span><span>MongoDB</span>
+            <span>Python</span><span>Firebase</span><span>AWS RDS</span><span>Docker</span>
+            <span>Gemini AI</span><span>Figma</span><span>gRPC</span><span>Tableau</span>
+            <span>Git</span><span>JavaScript</span><span>Kotlin</span><span>Swift</span>
+          </div>
+        </div>
+
+        <!-- ── Graduation Target ── -->
+        <div class="psm-graduation">
+          <div class="psm-grad-icon">🎓</div>
+          <div class="psm-grad-body">
+            <p class="psm-grad-title"
+              data-en="Graduation Target · August 29, 2026"
+              data-ar="هدف التخرج · ٢٩ أغسطس ٢٠٢٦">
+              Graduation Target · August 29, 2026
+            </p>
+            <p class="psm-grad-sub"
+              data-en="Finalizing a production-grade multimodal document intelligence pipeline for BITS Pilani capstone. Targeting VSRP internships &amp; MS/PhD pathways in AI research."
+              data-ar="إتمام خط أنابيب ذكاء المستندات متعدد الوسائط على مستوى الإنتاج لمشروع تخرج بتس بيلاني. استهداف برامج VSRP ومسارات الماجستير/الدكتوراه في أبحاث الذكاء الاصطناعي.">
+              Finalizing a production-grade multimodal document intelligence pipeline for BITS Pilani capstone. Targeting VSRP internships &amp; MS/PhD pathways in AI research.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Navigate to Sections ── -->
+        <div class="psm-nav-links">
+          <a href="#about" class="psm-nav-link portfolio-summary-link" data-en="About" data-ar="نبذة">About</a>
+          <a href="#education" class="psm-nav-link portfolio-summary-link" data-en="Education" data-ar="التعليم">Education</a>
+          <a href="#projects" class="psm-nav-link portfolio-summary-link" data-en="Projects" data-ar="المشاريع">Projects</a>
+          <a href="#expertise" class="psm-nav-link portfolio-summary-link" data-en="Expertise" data-ar="الخبرات">Expertise</a>
+          <a href="#connect" class="psm-nav-link portfolio-summary-link" data-en="Contact" data-ar="التواصل">Contact</a>
+        </div>
+
       </div>
     </div>
   </div>

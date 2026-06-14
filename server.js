@@ -1,4 +1,5 @@
 require('dotenv').config();
+const crypto = require('crypto');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -36,12 +37,15 @@ const uploadPp   = multer({ storage: ppStorage,  limits: { fileSize: 10 * 1024 *
 
 const app = express();
 
-// Allow same-origin and any explicitly configured origin
+// Require CORS_ORIGIN in production — open wildcard + credentials is a security risk
 const allowedOrigin = process.env.CORS_ORIGIN || null;
+if (!allowedOrigin && process.env.NODE_ENV === 'production') {
+  console.warn('WARNING: CORS_ORIGIN is not set — all origins are permitted in production.');
+}
 app.use(cors({
   origin: allowedOrigin
     ? allowedOrigin
-    : (origin, cb) => cb(null, true),   // allow all in dev; set CORS_ORIGIN in prod
+    : (origin, cb) => cb(null, true), // allow all in dev; always set CORS_ORIGIN in prod
   credentials: true
 }));
 
@@ -138,8 +142,8 @@ app.post('/api/auth/register', async (req, res) => {
       return res.status(400).json({ message: 'Password must be at least 8 characters.' });
     }
 
-    // Check if user already exists
-    let user = await User.findOne({ email });
+    // Check if user already exists — cast to string to prevent NoSQL injection
+    let user = await User.findOne({ email: String(email) });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
     // Hash password
@@ -157,7 +161,7 @@ app.post('/api/auth/register', async (req, res) => {
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
 
   } catch (err) {
-    console.error(err);
+    console.error('[POST /api/auth/register]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -167,7 +171,7 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: String(email) });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -177,7 +181,7 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
 
   } catch (err) {
-    console.error(err);
+    console.error('[POST /api/auth/login]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -185,12 +189,18 @@ app.post('/api/auth/login', async (req, res) => {
 // Admin Login
 app.post('/api/admin/login', (req, res) => {
   const { password } = req.body;
-  if (password === ADMIN_PASSWORD) {
-    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
-    return res.json({ token });
-  } else {
+  if (typeof password !== 'string' || !password) {
     return res.status(401).json({ message: 'Invalid admin password' });
   }
+  // Timing-safe comparison to prevent side-channel attacks
+  const a = Buffer.from(password);
+  const b = Buffer.from(ADMIN_PASSWORD);
+  const match = a.length === b.length && crypto.timingSafeEqual(a, b);
+  if (match) {
+    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
+    return res.json({ token });
+  }
+  return res.status(401).json({ message: 'Invalid admin password' });
 });
 
 // --- Admin Routes ---
@@ -217,7 +227,7 @@ app.get('/api/admin/users', verifyAdmin, async (req, res) => {
     const users = await User.find().select('-password').sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {
-    console.error(err);
+    console.error('[GET /api/admin/users]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -229,7 +239,7 @@ app.delete('/api/admin/users/:id', verifyAdmin, async (req, res) => {
     if (!deleted) return res.status(404).json({ message: 'User not found' });
     res.json({ message: 'User deleted' });
   } catch (err) {
-    console.error(err);
+    console.error('[DELETE /api/admin/users/:id]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -242,29 +252,34 @@ app.get('/api/timeline', async (req, res) => {
     const items = await Timeline.find().sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
-    console.error(err);
+    console.error('[GET /api/timeline]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 app.post('/api/admin/timeline', verifyAdmin, async (req, res) => {
   try {
-    const item = new Timeline(req.body);
+    const { title, titleAr, company, period, type, description, descriptionAr, pdfPath } = req.body;
+    if (!title) return res.status(400).json({ message: 'Title is required' });
+    const item = new Timeline({ title, titleAr, company, period, type, description, descriptionAr, pdfPath });
     await item.save();
     res.status(201).json(item);
   } catch (err) {
-    console.error(err);
+    console.error('[POST /api/admin/timeline]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 app.put('/api/admin/timeline/:id', verifyAdmin, async (req, res) => {
   try {
-    const item = await Timeline.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const { title, titleAr, company, period, type, description, descriptionAr, pdfPath } = req.body;
+    const update = { title, titleAr, company, period, type, description, descriptionAr };
+    if (pdfPath) update.pdfPath = pdfPath;
+    const item = await Timeline.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
     if (!item) return res.status(404).json({ message: 'Entry not found' });
     res.json(item);
   } catch (err) {
-    console.error(err);
+    console.error('[PUT /api/admin/timeline/:id]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -275,7 +290,7 @@ app.delete('/api/admin/timeline/:id', verifyAdmin, async (req, res) => {
     if (!item) return res.status(404).json({ message: 'Entry not found' });
     res.json({ message: 'Deleted' });
   } catch (err) {
-    console.error(err);
+    console.error('[DELETE /api/admin/timeline/:id]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -294,7 +309,7 @@ app.get('/api/projects', async (req, res) => {
     const items = await Project.find().sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
-    console.error(err);
+    console.error('[GET /api/projects]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -316,7 +331,7 @@ app.post('/api/admin/projects', verifyAdmin, uploadImg.single('image'), async (r
     await project.save();
     res.status(201).json(project);
   } catch (err) {
-    console.error(err);
+    console.error('[POST /api/admin/projects]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -340,7 +355,7 @@ app.put('/api/admin/projects/:id', verifyAdmin, uploadImg.single('image'), async
     if (!project) return res.status(404).json({ message: 'Project not found' });
     res.json(project);
   } catch (err) {
-    console.error(err);
+    console.error('[PUT /api/admin/projects/:id]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -351,7 +366,7 @@ app.delete('/api/admin/projects/:id', verifyAdmin, async (req, res) => {
     if (!project) return res.status(404).json({ message: 'Project not found' });
     res.json({ message: 'Deleted' });
   } catch (err) {
-    console.error(err);
+    console.error('[DELETE /api/admin/projects/:id]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -18,7 +18,7 @@ function esc(str) {
 
 /* ── Theme ── */
 function applyTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
+  const saved = localStorage.getItem('portfolio-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
 }
 applyTheme();
