@@ -12,7 +12,17 @@
       "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'grep -v \"Co-Authored-By:\"' 04eabd607e75e9696cf5060f774a60a573b1eea7^..HEAD)",
       "Bash(git update-ref *)",
       "Bash(git reflog *)",
-      "Bash(git gc *)"
+      "Bash(git gc *)",
+      "Bash(node server.js)",
+      "Bash(kill %1)",
+      "Bash(node -e ' *)",
+      "Bash(awk NR>=7440 && NR<=7460 {print NR\": \"$0} *)",
+      "Bash(awk NR>=7460 && NR<=7490 {print NR\": \"$0} *)",
+      "Bash(awk -F: '$2>7420 && $2<8000')",
+      "Bash(awk -F: 'int\\($1\\)>7420 && int\\($1\\)<8100')",
+      "Bash(awk -F: 'int\\($1\\)>7060 && int\\($1\\)<7525')",
+      "Bash(awk -F: 'int\\($1\\)>7521 && int\\($1\\)<7800')",
+      "Bash(awk *)"
     ]
   }
 }
