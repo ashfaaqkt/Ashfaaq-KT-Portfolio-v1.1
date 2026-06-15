@@ -92,9 +92,7 @@ let currentLanguage = localStorage.getItem('portfolio-language') || 'en';
 document.documentElement.setAttribute('data-theme', localStorage.getItem('portfolio-theme') || 'dark');
 
 // API configuration
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:5000/api'
-  : '/api';
+const API_BASE_URL = '/api';
 
 const translations = {
   en: {
@@ -104,6 +102,7 @@ const translations = {
       about: 'About',
       education: 'Education',
       projects: 'Projects',
+      fyp: 'FYP',
       expertise: 'Expertise',
       connect: 'Connect'
     },
@@ -366,7 +365,7 @@ const translations = {
             <li>🧠 <strong>Stack:</strong> MERN · Firebase · Python · Gemini API · AI/ML · React</li>
             <li>📄 <strong>What it does:</strong> Scans physical bills using AI vision, extracts structured data (items, totals, vendor) via Google Gemini API, and powers a dynamic reward & loyalty engine for end users.</li>
             <li>⚙️ <strong>Architecture:</strong> Multimodal AI pipeline · Zero-shot document extraction · Serverless Firebase backend · Scalable reward logic</li>
-            <li>🏆 <strong>Phase:</strong> POC Phase 3 — Team ARAJ · Production-grade build</li>
+            <li>🏆 <strong>Phase:</strong> PoC Phase 3 — Team ARAJ · Production-grade build</li>
             <li>📅 <strong>Graduation target:</strong> August 29, 2026 — Aiming for VSRP internships & MS/PhD research pathways in AI</li>
           </ul>
           <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">GitHub Repo ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">Live Demo ↗</a></p>`
@@ -380,6 +379,7 @@ const translations = {
       about: 'نبذة',
       education: 'التعليم',
       projects: 'المشاريع',
+      fyp: 'التخرج',
       expertise: 'الخبرات',
       connect: 'التواصل'
     },
@@ -642,7 +642,7 @@ const translations = {
             <li>🧠 <strong>التقنيات:</strong> MERN · Firebase · Python · Gemini API · تعلم الآلة · React</li>
             <li>📄 <strong>ما يفعله:</strong> يمسح الفواتير باستخدام رؤية الذكاء الاصطناعي، يستخرج بيانات منظمة (المنتجات، الإجماليات، البائع) عبر Google Gemini API، ويشغّل محرك مكافآت وولاء ديناميكي للمستخدمين.</li>
             <li>⚙️ <strong>البنية:</strong> خط أنابيب AI متعدد الوسائط · استخراج مستندات بدون أمثلة · Firebase Serverless · منطق مكافآت قابل للتوسع</li>
-            <li>🏆 <strong>المرحلة:</strong> POC المرحلة الثالثة — فريق ARAJ · بناء على مستوى الإنتاج</li>
+            <li>🏆 <strong>المرحلة:</strong> PoC المرحلة الثالثة — فريق ARAJ · بناء على مستوى الإنتاج</li>
             <li>📅 <strong>هدف التخرج:</strong> 29 أغسطس 2026 — استهداف برامج VSRP ومسارات الماجستير/الدكتوراه في الذكاء الاصطناعي</li>
           </ul>
           <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">مستودع GitHub ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">عرض مباشر ↗</a></p>`
@@ -692,6 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeInit('contactForm', initContactForm);
   safeInit('chatbot', initChatbot);
   safeInit('portfolioSummaryModal', initPortfolioSummaryModal);
+  safeInit('fypModal', initFYPModal);
 
   // Initialize animations
   initScrollAnimations();
@@ -743,18 +744,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 
 function initThemeToggle() {
-  const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  if (!themeToggleBtn) return;
+  const btns = [
+    document.getElementById('theme-toggle-btn'),
+    document.getElementById('msm-theme-btn')
+  ].filter(Boolean);
 
-  themeToggleBtn.addEventListener('click', () => {
-    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const newTheme = isLight ? 'dark' : 'light';
+  if (btns.length === 0) return;
 
-    // Smooth transition: briefly add class so all elements animate theme properties
-    document.documentElement.classList.add('theme-switching');
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('portfolio-theme', newTheme);
-    setTimeout(() => document.documentElement.classList.remove('theme-switching'), 400);
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const newTheme = isLight ? 'dark' : 'light';
+
+      // Smooth transition: briefly add class so all elements animate theme properties
+      document.documentElement.classList.add('theme-switching');
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('portfolio-theme', newTheme);
+      setTimeout(() => document.documentElement.classList.remove('theme-switching'), 400);
+    });
   });
 }
 
@@ -778,7 +785,7 @@ function initNavigation() {
   const nav = document.getElementById('main-nav');
   const navToggle = document.getElementById('nav-toggle');
   const navMenu = document.getElementById('nav-menu');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = document.querySelectorAll('.nav-link, .msm-link');
   const sections = document.querySelectorAll('.page');
   let activeSectionId = 'home';
 
@@ -824,31 +831,60 @@ function initNavigation() {
   });
 
   // Mobile menu toggle
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-      const isOpen = navMenu.classList.toggle('open');
-      navToggle.classList.toggle('active');
-      
-      // Prevent background scroll when mobile menu is open
-      if (isOpen) {
-        document.body.classList.add('no-scroll', 'modal-open');
-        document.documentElement.classList.add('no-scroll', 'modal-open');
-      } else {
-        document.body.classList.remove('no-scroll', 'modal-open');
-        document.documentElement.classList.remove('no-scroll', 'modal-open');
-      }
-    });
+  const appContainer = document.getElementById('app-container');
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && navMenu.classList.contains('open')) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        document.body.classList.remove('no-scroll', 'modal-open');
-        document.documentElement.classList.remove('no-scroll', 'modal-open');
+  function openMobileSideMenu() {
+    document.documentElement.classList.add('menu-open');
+    if (navToggle) navToggle.classList.add('active');
+  }
+
+  function closeMobileSideMenu() {
+    document.documentElement.classList.remove('menu-open');
+    if (navToggle) navToggle.classList.remove('active');
+  }
+
+  window.closeMobileSideMenu = closeMobileSideMenu;
+
+  if (navToggle) {
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = document.documentElement.classList.contains('menu-open');
+      if (isOpen) {
+        closeMobileSideMenu();
+      } else {
+        openMobileSideMenu();
       }
     });
   }
+
+  const msmCloseBtn = document.getElementById('msm-close-btn');
+  if (msmCloseBtn) {
+    msmCloseBtn.addEventListener('click', () => {
+      closeMobileSideMenu();
+    });
+  }
+
+  // Close menu when clicking outside on the minimized app-container
+  if (appContainer) {
+    appContainer.addEventListener('click', (e) => {
+      if (document.documentElement.classList.contains('menu-open')) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMobileSideMenu();
+      }
+    });
+  }
+
+  // Close menu when clicking outside the navbar
+  document.addEventListener('click', (e) => {
+    const mobileSideMenu = document.getElementById('mobile-side-menu');
+    const isClickInsideMenu = mobileSideMenu && mobileSideMenu.contains(e.target);
+    const isClickInsideToggle = navToggle && navToggle.contains(e.target);
+    
+    if (!isClickInsideMenu && !isClickInsideToggle && document.documentElement.classList.contains('menu-open')) {
+      closeMobileSideMenu();
+    }
+  });
 
   // Handle navigation clicks
   navLinks.forEach(link => {
@@ -856,14 +892,7 @@ function initNavigation() {
       e.preventDefault();
       const targetPage = link.getAttribute('data-page');
       navigateToPage(targetPage);
-
-      // Close mobile menu
-      if (navMenu) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        document.body.classList.remove('no-scroll', 'modal-open');
-        document.documentElement.classList.remove('no-scroll', 'modal-open');
-      }
+      closeMobileSideMenu();
     });
   });
 
@@ -877,10 +906,14 @@ function initNavigation() {
 function navigateToPage(pageId) {
   const navLinks = document.querySelectorAll('.nav-link');
   const targetId = pageId || 'home';
-  const targetSection = document.querySelector(`#page-${targetId}`);
+
+  // FYP is a sub-section inside the projects page (id="fyp"), not a full .page
+  const targetSection = targetId === 'fyp'
+    ? document.getElementById('fyp')
+    : document.querySelector(`#page-${targetId}`);
 
   if (!targetSection) {
-    console.warn('Target section not found:', `#page-${targetId}`);
+    console.warn('Target section not found:', targetId);
     return;
   }
 
@@ -1102,8 +1135,12 @@ function updateCVModalLabels() {
 // ============================================
 
 function initLanguageSystem() {
-  const langToggle = document.getElementById('lang-toggle');
-  if (!langToggle) return;
+  const btns = [
+    document.getElementById('lang-toggle'),
+    document.getElementById('msm-lang-btn')
+  ].filter(Boolean);
+
+  if (btns.length === 0) return;
 
   // Set initial language - use a small delay to ensure DOM is fully ready
   setTimeout(() => {
@@ -1111,9 +1148,11 @@ function initLanguageSystem() {
   }, 50);
 
   // Toggle language on button click
-  langToggle.addEventListener('click', () => {
-    const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-    switchLanguage(newLang);
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+      switchLanguage(newLang);
+    });
   });
 }
 
@@ -1152,12 +1191,17 @@ function setLanguage(lang) {
   if (langToggle) {
     const tooltip = langToggle.querySelector('.lang-tooltip');
     if (lang === 'en') {
-      langToggle.setAttribute('aria-label', 'Switch to Arabic');
-      if (tooltip) tooltip.textContent = 'Switch to Arabic';
+      langToggle.setAttribute('aria-label', 'العربية');
+      if (tooltip) tooltip.textContent = 'العربية';
     } else {
-      langToggle.setAttribute('aria-label', 'Switch to English');
-      if (tooltip) tooltip.textContent = 'Switch to English';
+      langToggle.setAttribute('aria-label', 'English');
+      if (tooltip) tooltip.textContent = 'English';
     }
+  }
+
+  const msmLangBtn = document.getElementById('msm-lang-btn');
+  if (msmLangBtn) {
+    msmLangBtn.setAttribute('aria-label', lang === 'en' ? 'العربية' : 'English');
   }
 
   // Notify any listeners (e.g., CV dropdown) that language has changed
@@ -1174,7 +1218,7 @@ function setLanguage(lang) {
 
   // Update navigation links
   document.querySelectorAll('.nav-link-text').forEach((link, index) => {
-    const keys = ['home', 'about', 'education', 'projects', 'expertise', 'connect'];
+    const keys = ['home', 'about', 'education', 'projects', 'fyp', 'expertise', 'connect'];
     if (keys[index]) {
       link.textContent = t.nav[keys[index]];
     }
@@ -3408,6 +3452,47 @@ window.chatbotHandleFaqClick = function (faqType, questionText) {
 // PORTFOLIO SUMMARY MODAL
 // ============================================
 
+function initFYPModal() {
+  const overlay  = document.getElementById('fyp-modal-overlay');
+  const closeBtn = document.getElementById('fyp-modal-close');
+  const openBtn  = document.getElementById('fyp-readmore-btn');
+  if (!overlay || !openBtn) return;
+
+  function openFYP() {
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    document.documentElement.classList.add('no-scroll');
+  }
+
+  function closeFYP() {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    document.documentElement.classList.remove('no-scroll');
+  }
+
+  openBtn.addEventListener('click', openFYP);
+  if (closeBtn) closeBtn.addEventListener('click', closeFYP);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeFYP();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeFYP();
+  });
+
+  // Sync data-en/data-ar labels inside modal on language change
+  document.addEventListener('languageChanged', () => {
+    const lang = currentLanguage || 'en';
+    overlay.querySelectorAll('[data-en][data-ar]').forEach(el => {
+      const text = el.getAttribute(lang === 'ar' ? 'data-ar' : 'data-en');
+      if (text && el.children.length === 0) el.textContent = text;
+    });
+  });
+}
+
 function initPortfolioSummaryModal() {
   const modal = document.getElementById('portfolio-summary-modal');
   const modalBtn = document.getElementById('portfolio-summary-btn');
@@ -3558,6 +3643,9 @@ function initAuth() {
 
   // Set auth state — icon-only button with tooltip
   function updateAuthState() {
+    const msmAuthBtn = document.getElementById('msm-auth-btn');
+    const msmLabelEl = msmAuthBtn ? msmAuthBtn.querySelector('.msm-auth-label') : null;
+
     if (!authBtn) return;
     try {
       const token = localStorage.getItem('portfolio_token');
@@ -3568,6 +3656,12 @@ function initAuth() {
         authBtn.setAttribute('aria-label', label);
         authBtn.dataset.loggedIn = 'true';
         authBtn.innerHTML = `${iconLoggedIn}<span class="auth-tooltip">${label}</span><span class="mobile-nav-label">${user.name}</span>`;
+        
+        if (msmAuthBtn) {
+          msmAuthBtn.setAttribute('aria-label', label);
+          msmAuthBtn.dataset.loggedIn = 'true';
+          if (msmLabelEl) msmLabelEl.textContent = user.name;
+        }
         return;
       }
     } catch (err) {
@@ -3579,6 +3673,12 @@ function initAuth() {
     authBtn.setAttribute('aria-label', label);
     authBtn.dataset.loggedIn = 'false';
     authBtn.innerHTML = `${iconSignIn}<span class="auth-tooltip">${label}</span><span class="mobile-nav-label">${mobileLabel}</span>`;
+    
+    if (msmAuthBtn) {
+      msmAuthBtn.setAttribute('aria-label', label);
+      msmAuthBtn.dataset.loggedIn = 'false';
+      if (msmLabelEl) msmLabelEl.textContent = label;
+    }
   }
   updateAuthState();
   
@@ -3616,6 +3716,29 @@ function initAuth() {
       e.stopPropagation();
       if (authBtn.dataset.loggedIn === 'true') {
         // Already logged in — clicking signs out
+        try {
+          const u = JSON.parse(localStorage.getItem('portfolio_user') || '{}');
+          const firstName = (u.name || '').split(' ')[0];
+          if (firstName) showGoodbyeToast(firstName);
+        } catch (_) {}
+        localStorage.removeItem('portfolio_token');
+        localStorage.removeItem('portfolio_user');
+        updateAuthState();
+      } else {
+        openModal(authModal);
+      }
+    });
+  }
+
+  const msmAuthBtn = document.getElementById('msm-auth-btn');
+  if (msmAuthBtn) {
+    msmAuthBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof window.closeMobileSideMenu === 'function') {
+        window.closeMobileSideMenu();
+      }
+      if (msmAuthBtn.dataset.loggedIn === 'true') {
         try {
           const u = JSON.parse(localStorage.getItem('portfolio_user') || '{}');
           const firstName = (u.name || '').split(' ')[0];

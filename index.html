@@ -24,8 +24,9 @@
     <div class="bg-gradient-orb orb-3"></div>
   </div>
 
-  <!-- Navigation System -->
-  <nav class="main-nav" id="main-nav">
+  <div class="app-container" id="app-container">
+    <!-- Navigation System -->
+    <nav class="main-nav" id="main-nav">
     <div class="nav-container">
       <div class="nav-brand">
         <a href="#home" class="brand-logo-link">
@@ -80,20 +81,11 @@
           <span class="nav-cta-label-desktop" data-en="Resume" data-ar="السيرة الذاتية">Resume</span>
           <span class="nav-cta-label-mobile" data-en="CV" data-ar="CV">CV</span>
         </button>
-        <!-- Modern nav toggle: 2×3 dot grid → X -->
+        <!-- Modern animated nav toggle -->
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-          <svg class="icon-grid" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="8" cy="5" r="1.8"/>
-            <circle cx="16" cy="5" r="1.8"/>
-            <circle cx="8" cy="12" r="1.8"/>
-            <circle cx="16" cy="12" r="1.8"/>
-            <circle cx="8" cy="19" r="1.8"/>
-            <circle cx="16" cy="19" r="1.8"/>
-          </svg>
-          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" xmlns="http://www.w3.org/2000/svg">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+          <span class="nt-line nt-line-1"></span>
+          <span class="nt-line nt-line-2"></span>
+          <span class="nt-line nt-line-3"></span>
         </button>
       </div>
     </div>
@@ -117,9 +109,9 @@
         <span class="nav-link-indicator"></span>
       </a>
       <a href="#education" class="nav-link" data-page="education">
-        <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
         </svg>
         <span class="nav-link-text">Education</span>
         <span class="nav-link-indicator"></span>
@@ -132,6 +124,16 @@
         <span class="nav-link-text">Projects</span>
         <span class="nav-link-indicator"></span>
       </a>
+      <div class="sub-nav-divider sub-nav-divider-fyp sub-nav-divider-fyp-before" aria-hidden="true"></div>
+      <a href="#fyp" class="nav-link nav-link-fyp" data-page="fyp">
+        <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        <span class="nav-link-text">FYP</span>
+        <span class="nav-link-indicator"></span>
+      </a>
+      <div class="sub-nav-divider sub-nav-divider-fyp sub-nav-divider-fyp-after" aria-hidden="true"></div>
       <a href="#expertise" class="nav-link" data-page="expertise">
         <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -163,8 +165,8 @@
           <path d="M22 22l-5-10-5 10"/>
           <path d="M14 18h6"/>
         </svg>
-        <span class="lang-tooltip" data-en="Switch to Arabic" data-ar="Switch to English">Switch to Arabic</span>
-        <span class="mobile-nav-label" data-en="Change Language" data-ar="تغيير اللغة">Change Language</span>
+        <span class="lang-tooltip" data-en="العربية" data-ar="English">العربية</span>
+        <span class="mobile-nav-label" data-en="العربية" data-ar="English">العربية</span>
       </button>
 
       <!-- Auth icon — rightmost in LTR, leftmost in RTL -->
@@ -592,8 +594,61 @@
             </svg>
           </a>
         </div>
+
+        <!-- ── AI/ML FYP & Research Section ── -->
+        <div class="fyp-section" id="fyp" data-animate="fade-up" data-delay="200">
+          <div class="fyp-section-header">
+            <div class="fyp-section-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              <span data-en="AI/ML · FYP &amp; Research" data-ar="الذكاء الاصطناعي · مشروع التخرج والبحث">AI/ML · FYP &amp; Research</span>
+            </div>
+            <h3 class="fyp-section-title" data-en="Final Year Project — BITS Pilani" data-ar="مشروع السنة الأخيرة — معهد بتس بيلاني">Final Year Project — BITS Pilani</h3>
+            <p class="fyp-section-sub" data-en="Production-grade AI research capstone · Graduating August 2026" data-ar="مشروع بحثي ذكاء اصطناعي على مستوى الإنتاج · التخرج أغسطس ٢٠٢٦">Production-grade AI research capstone · Graduating August 2026</p>
+          </div>
+
+          <!-- FYP Card -->
+          <div class="fyp-card">
+            <div class="fyp-card-glow"></div>
+
+            <div class="fyp-card-top">
+              <div class="fyp-card-meta">
+                <span class="fyp-badge-pill fyp-badge-fyp">🎓 FYP</span>
+                <span class="fyp-badge-pill fyp-badge-team">Team ARAJ</span>
+                <span class="fyp-badge-pill fyp-badge-bits">BITS Pilani</span>
+              </div>
+              <h4 class="fyp-card-title" data-en="Bill Scanning Based Reward &amp; Intelligence System" data-ar="نظام المكافآت والذكاء المعتمد على مسح الفواتير">Bill Scanning Based Reward &amp; Intelligence System</h4>
+              <p class="fyp-card-desc"
+                data-en="A production-grade multimodal AI platform engineered by Team ARAJ as the BITS Pilani Final Year capstone. At its core sits a multilayer OCR system — a custom-trained ML model built on the CORD and SROIE datasets, combined with 200+ manually collected and annotated real-world receipts/images — working hand-in-hand with Google Gemini's multimodal API and a Python Flask microservice to extract structured bill data with exceptional accuracy. The result powers a dynamic reward intelligence engine that turns every receipt scan into instant loyalty value."
+                data-ar="منصة ذكاء اصطناعي متعددة الوسائط على مستوى الإنتاج، صمّمها فريق ARAJ كمشروع تخرج نهائي لمعهد بتس بيلاني. في صميمها نظام OCR متعدد الطبقات — نموذج تعلم آلي مدرّب على مجموعتي بيانات CORD و SROIE، بالإضافة إلى أكثر من ٢٠٠ إيصال وصورة حقيقية مجمّعة ومصنّفة يدوياً — يعمل جنباً إلى جنب مع واجهة Google Gemini متعددة الوسائط وخدمة Python Flask المصغّرة لاستخراج بيانات الفواتير بدقة استثنائية، مما يُشغّل محرك ذكاء مكافآت ديناميكي يحوّل كل مسح لإيصال إلى قيمة ولاء فورية.">
+                A production-grade multimodal AI platform engineered by Team ARAJ as the BITS Pilani Final Year capstone. At its core sits a multilayer OCR system — a custom-trained ML model built on the CORD and SROIE datasets, combined with 200+ manually collected and annotated real-world receipts/images — working hand-in-hand with Google Gemini's multimodal API and a Python Flask microservice to extract structured bill data with exceptional accuracy. The result powers a dynamic reward intelligence engine that turns every receipt scan into instant loyalty value.
+              </p>
+
+              <div class="fyp-tech-row">
+                <span>MERN</span><span>Firebase</span><span>Python</span><span>Flask</span>
+                <span>Gemini API</span><span>ML Model</span><span>CORD &amp; SROIE</span><span>OCR</span><span>React</span><span>Node.js</span>
+              </div>
+            </div>
+
+            <div class="fyp-card-actions">
+              <a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-Final-Project-Team-ARAJ" target="_blank" rel="noopener noreferrer" class="fyp-btn fyp-btn-git">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                <span data-en="GitHub" data-ar="GitHub">GitHub</span>
+              </a>
+              <a href="https://drive.google.com/file/d/1loYtGc66bu3yF7Xkgka_RDp3yvDJOA0g/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="fyp-btn fyp-btn-brochure">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span data-en="Brochure" data-ar="الكتيب">Brochure</span>
+              </a>
+              <button class="fyp-btn fyp-btn-readmore" id="fyp-readmore-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span data-en="Read More" data-ar="اقرأ المزيد">Read More</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
+
 
     <!-- Page: Expertise -->
     <section class="page" id="page-expertise" data-page="expertise">
@@ -962,6 +1017,82 @@
     </svg>
     <span class="chatbot-notification" id="chatbot-notification"></span>
   </button>
+  </div><!-- /app-container -->
+
+  <!-- Dedicated Mobile Side Menu (off-canvas scaling menu) -->
+  <div class="mobile-side-menu" id="mobile-side-menu" aria-hidden="true">
+    <div class="msm-inner">
+      <!-- Logo or Brand Header -->
+      <div class="msm-header">
+        <button class="msm-close-btn" id="msm-close-btn" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <img class="msm-logo" src="PP/akl.svg" alt="Logo" />
+      </div>
+      
+      <!-- Nav Links -->
+      <div class="msm-links">
+        <a href="#home" class="msm-link active" data-page="home">
+          <span class="msm-icon">🏠</span>
+          <span class="msm-text" data-en="Home" data-ar="الرئيسية">Home</span>
+        </a>
+        <a href="#about" class="msm-link" data-page="about">
+          <span class="msm-icon">👤</span>
+          <span class="msm-text" data-en="About" data-ar="من أنا">About</span>
+        </a>
+        <a href="#education" class="msm-link" data-page="education">
+          <span class="msm-icon">📚</span>
+          <span class="msm-text" data-en="Education" data-ar="التعليم">Education</span>
+        </a>
+        <a href="#projects" class="msm-link" data-page="projects">
+          <span class="msm-icon">💻</span>
+          <span class="msm-text" data-en="Projects" data-ar="المشاريع">Projects</span>
+        </a>
+        <a href="#fyp" class="msm-link msm-link-fyp" data-page="fyp">
+          <span class="msm-icon">🎓</span>
+          <span class="msm-text" data-en="FYP &amp; Research" data-ar="مشروع التخرج">FYP &amp; Research</span>
+        </a>
+        <a href="#expertise" class="msm-link" data-page="expertise">
+          <span class="msm-icon">⭐</span>
+          <span class="msm-text" data-en="Expertise" data-ar="الخبرات">Expertise</span>
+        </a>
+        <a href="#connect" class="msm-link" data-page="connect">
+          <span class="msm-icon">✉️</span>
+          <span class="msm-text" data-en="Connect" data-ar="التواصل">Connect</span>
+        </a>
+      </div>
+
+      <!-- Action Footer (Language & Theme / Auth) -->
+      <div class="msm-footer">
+        <button class="msm-action-btn" id="msm-lang-btn">
+          <svg class="msm-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/>
+          </svg>
+          <span data-en="العربية" data-ar="English">العربية</span>
+        </button>
+        
+        <button class="msm-action-btn" id="msm-theme-btn">
+          <svg class="msm-action-icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="msm-action-icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span data-en="Toggle Theme" data-ar="تغيير المظهر">Toggle Theme</span>
+        </button>
+
+        <button class="msm-action-btn msm-auth-btn" id="msm-auth-btn" data-logged-in="false">
+          <svg class="msm-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="msm-auth-label">Sign In</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Portfolio Summary Modal -->
   <div class="portfolio-summary-modal" id="portfolio-summary-modal" aria-hidden="true">
@@ -1490,6 +1621,266 @@
 
     </div><!-- /cv-modal -->
   </div><!-- /cv-modal-overlay -->
+
+
+  <!-- ── FYP Report Modal (direct child of body for correct stacking context) ── -->
+  <!-- ── FYP Report Modal ── -->
+  <div class="fyp-modal-overlay" id="fyp-modal-overlay" aria-hidden="true">
+    <div class="fyp-modal" id="fyp-modal" role="dialog" aria-modal="true" aria-labelledby="fyp-modal-heading">
+    <button class="fyp-modal-close" id="fyp-modal-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="fyp-modal-inner">
+
+      <!-- Header -->
+      <div class="fyp-report-header">
+        <div class="fyp-report-badges">
+          <span class="fyp-badge-pill fyp-badge-fyp">🎓 Final Year Project</span>
+          <span class="fyp-badge-pill fyp-badge-bits">BITS Pilani · 2026</span>
+          <span class="fyp-badge-pill fyp-badge-team">Team ARAJ</span>
+        </div>
+        <h2 id="fyp-modal-heading" class="fyp-report-title"
+            data-en="Bill Scanning Based Reward &amp; Intelligence System"
+            data-ar="نظام المكافآت والذكاء المعتمد على مسح الفواتير">
+          Bill Scanning Based Reward &amp; Intelligence System
+        </h2>
+        <p class="fyp-report-sub"
+           data-en="A multilayer OCR + Gemini multimodal AI capstone by Team ARAJ — turning every receipt scan into instant reward intelligence."
+           data-ar="مشروع تخرج نهائي من فريق ARAJ يجمع OCR متعدد الطبقات وذكاء Gemini متعدد الوسائط — يحوّل كل مسح إيصال إلى ذكاء مكافآت فوري.">
+          A multilayer OCR + Gemini multimodal AI capstone by Team ARAJ — turning every receipt scan into instant reward intelligence.
+        </p>
+        <div class="fyp-report-links">
+          <a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-Final-Project-Team-ARAJ" target="_blank" rel="noopener noreferrer" class="fyp-rlink">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            <span data-en="Final Project Repo" data-ar="مستودع المشروع النهائي">Final Project Repo</span>
+          </a>
+          <a href="https://drive.google.com/file/d/1loYtGc66bu3yF7Xkgka_RDp3yvDJOA0g/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="fyp-rlink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span data-en="Project Brochure" data-ar="كتيب المشروع">Project Brochure</span>
+          </a>
+          <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank" rel="noopener noreferrer" class="fyp-rlink fyp-rlink-poc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            <span data-en="PoC Phase 3 — Live Demo" data-ar="PoC المرحلة ٣ — عرض مباشر">PoC Phase 3 — Live Demo</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Overview -->
+      <div class="fyp-report-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">🎯</span>
+          <h3 class="fyp-rs-title" data-en="Project Overview" data-ar="نظرة عامة على المشروع">Project Overview</h3>
+        </div>
+        <p class="fyp-rs-body"
+           data-en="Engineered by Team ARAJ as the BITS Pilani Final Year capstone, this full-stack AI platform bridges physical commerce and digital loyalty. Its intelligence core is a multilayer OCR pipeline: a custom ML model trained on the CORD and SROIE datasets, combined with 200+ manually collected and annotated real-world receipts/images, performs first-pass structure detection, then hands off to a Python Flask microservice that calls Google Gemini multimodal API for second-pass semantic enrichment — extracting vendor names, itemised products, quantities, and totals with exceptional accuracy. The clean structured output feeds a dynamic reward intelligence engine that awards loyalty points, tracks spending patterns, and surfaces personalised analytics on each user's dashboard."
+           data-ar="صمّمها فريق ARAJ كمشروع تخرج نهائي لمعهد بتس بيلاني، تجمع هذه المنصة المتكاملة بين التجارة المادية والولاء الرقمي. تعتمد على خط أنابيب OCR متعدد الطبقات: نموذج تعلم آلي مخصص مدرّب على مجموعتي بيانات CORD و SROIE، بالإضافة إلى أكثر من ٢٠٠ إيصال وصورة حقيقية مجمّعة ومصنّفة يدوياً، يُجري المسح الأول، ثم يُمرر النتائج إلى خدمة Python Flask التي تستدعي واجهة Google Gemini متعددة الوسائط لإثراء دلالي — لاستخراج أسماء البائعين والمنتجات والكميات والإجماليات بدقة استثنائية، ويُغذّي الناتج محرك ذكاء مكافآت ديناميكي.">
+          Engineered by Team ARAJ as the BITS Pilani Final Year capstone, this full-stack AI platform bridges physical commerce and digital loyalty. Its intelligence core is a multilayer OCR pipeline: a custom ML model trained on the CORD and SROIE datasets, combined with 200+ manually collected and annotated real-world receipts/images, performs first-pass structure detection, then hands off to a Python Flask microservice that calls Google Gemini multimodal API for second-pass semantic enrichment — extracting vendor names, itemised products, quantities, and totals with exceptional accuracy. The clean structured output feeds a dynamic reward intelligence engine that awards loyalty points, tracks spending patterns, and surfaces personalised analytics on each user's dashboard.
+        </p>
+      </div>
+
+      <!-- Problem & Solution -->
+      <div class="fyp-report-ps-grid">
+        <div class="fyp-report-section fyp-ps-card">
+          <div class="fyp-rs-head">
+            <span class="fyp-rs-icon">⚡</span>
+            <h3 class="fyp-rs-title" data-en="Problem" data-ar="المشكلة">Problem</h3>
+          </div>
+          <ul class="fyp-rs-list">
+            <li data-en="Manual loyalty programmes are friction-heavy and prone to human error" data-ar="برامج الولاء اليدوية مرهقة وعرضة للأخطاء البشرية">Manual loyalty programmes are friction-heavy and prone to human error</li>
+            <li data-en="Physical receipts are discarded, leaving spending data inaccessible" data-ar="يتم التخلص من الإيصالات المادية مما يجعل بيانات الإنفاق غير متاحة">Physical receipts are discarded, leaving spending data inaccessible</li>
+            <li data-en="Small businesses lack affordable AI-powered customer retention tools" data-ar="تفتقر الشركات الصغيرة إلى أدوات ذكاء اصطناعي ميسورة لاستبقاء العملاء">Small businesses lack affordable AI-powered customer retention tools</li>
+          </ul>
+        </div>
+        <div class="fyp-report-section fyp-ps-card">
+          <div class="fyp-rs-head">
+            <span class="fyp-rs-icon">✅</span>
+            <h3 class="fyp-rs-title" data-en="Solution" data-ar="الحل">Solution</h3>
+          </div>
+          <ul class="fyp-rs-list">
+            <li data-en="Multilayer OCR (ML Model + CORD &amp; SROIE Datasets + 200+ manual images) + Gemini multimodal second pass" data-ar="OCR متعدد الطبقات (نموذج ML + بيانات CORD و SROIE + ٢٠٠+ صورة يدوية) + مسح ثانٍ بـ Gemini">Multilayer OCR (ML Model + CORD &amp; SROIE Datasets + 200+ manual images) + Gemini multimodal second pass</li>
+            <li data-en="Python Flask microservice bridges the ML model and Gemini API seamlessly" data-ar="خدمة Python Flask المصغّرة تربط نموذج ML وواجهة Gemini بسلاسة">Python Flask microservice bridges the ML model and Gemini API seamlessly</li>
+            <li data-en="Scalable MERN + Firebase reward engine for any retail or service business" data-ar="محرك مكافآت MERN + Firebase قابل للتوسع لأي تجارة أو خدمة">Scalable MERN + Firebase reward engine for any retail or service business</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- System Architecture -->
+      <div class="fyp-report-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">🏗️</span>
+          <h3 class="fyp-rs-title" data-en="System Architecture" data-ar="بنية النظام">System Architecture</h3>
+        </div>
+        <div class="fyp-arch-flow">
+
+          <div class="fyp-arch-step">
+            <div class="fyp-arch-icon">📷</div>
+            <span data-en="Bill Capture" data-ar="التقاط الفاتورة">Bill Capture</span>
+            <small data-en="Camera / Upload" data-ar="كاميرا / رفع">Camera / Upload</small>
+          </div>
+          <div class="fyp-arch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 20 12 13 18"/></svg></div>
+
+          <div class="fyp-arch-step fyp-arch-step-highlight">
+            <div class="fyp-arch-icon">🔍</div>
+            <span data-en="Multilayer OCR" data-ar="OCR متعدد الطبقات">Multilayer OCR</span>
+            <small data-en="ML · CORD &amp; SROIE" data-ar="نموذج ML · CORD و SROIE">ML · CORD &amp; SROIE</small>
+          </div>
+          <div class="fyp-arch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 20 12 13 18"/></svg></div>
+
+          <div class="fyp-arch-step fyp-arch-step-highlight">
+            <div class="fyp-arch-icon">🤖</div>
+            <span data-en="Gemini Enrichment" data-ar="إثراء Gemini">Gemini AI</span>
+            <small>Python Flask</small>
+          </div>
+          <div class="fyp-arch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 20 12 13 18"/></svg></div>
+
+          <div class="fyp-arch-step">
+            <div class="fyp-arch-icon">📋</div>
+            <span data-en="Structured Data" data-ar="بيانات منظمة">Structured Data</span>
+            <small>MongoDB · Firebase</small>
+          </div>
+          <div class="fyp-arch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 20 12 13 18"/></svg></div>
+
+          <div class="fyp-arch-step">
+            <div class="fyp-arch-icon">⚙️</div>
+            <span data-en="Reward Engine" data-ar="محرك المكافآت">Reward Engine</span>
+            <small>Node.js · Express</small>
+          </div>
+          <div class="fyp-arch-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 20 12 13 18"/></svg></div>
+
+          <div class="fyp-arch-step">
+            <div class="fyp-arch-icon">📊</div>
+            <span data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</span>
+            <small>React · Firebase</small>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Technology Stack -->
+      <div class="fyp-report-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">🛠️</span>
+          <h3 class="fyp-rs-title" data-en="Technology Stack" data-ar="المجموعة التقنية">Technology Stack</h3>
+        </div>
+        <div class="fyp-tech-grid">
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Frontend" data-ar="الواجهة الأمامية">Frontend</span><span class="fyp-ti-val">React.js · Vite</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Backend" data-ar="الخلفية">Backend</span><span class="fyp-ti-val">Node.js · Express</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="AI Service" data-ar="خدمة الذكاء الاصطناعي">AI Service</span><span class="fyp-ti-val">Python · Flask</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="ML / OCR" data-ar="ML / OCR">ML / OCR</span><span class="fyp-ti-val">Custom Model · CORD &amp; SROIE</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Multimodal AI" data-ar="ذكاء متعدد الوسائط">Multimodal AI</span><span class="fyp-ti-val">Google Gemini API</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Database" data-ar="قاعدة البيانات">Database</span><span class="fyp-ti-val">MongoDB · Firebase</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Auth" data-ar="المصادقة">Auth</span><span class="fyp-ti-val">JWT · Firebase Auth</span></div>
+          <div class="fyp-tech-item"><span class="fyp-ti-cat" data-en="Deployment" data-ar="النشر">Deployment</span><span class="fyp-ti-val">Vercel · GitHub</span></div>
+        </div>
+      </div>
+
+      <!-- Key Features -->
+      <div class="fyp-report-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">✨</span>
+          <h3 class="fyp-rs-title" data-en="Key Features" data-ar="الميزات الرئيسية">Key Features</h3>
+        </div>
+        <div class="fyp-features-grid">
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">📸</span>
+            <div>
+              <strong data-en="Multilayer OCR Scan" data-ar="مسح OCR متعدد الطبقات">Multilayer OCR Scan</strong>
+              <p data-en="ML model on CORD &amp; SROIE datasets does first-pass detection; Gemini API does second-pass enrichment" data-ar="نموذج ML على بيانات CORD و SROIE يُجري الكشف الأول؛ Gemini API يُجري الإثراء الثاني">ML model on CORD &amp; SROIE datasets does first-pass; Gemini API does second-pass enrichment</p>
+            </div>
+          </div>
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">🏷️</span>
+            <div>
+              <strong data-en="Structured Data Extraction" data-ar="استخراج بيانات منظمة">Structured Data Extraction</strong>
+              <p data-en="Vendor, items, quantities, prices and totals extracted automatically via Python Flask + Gemini" data-ar="يتم استخراج البائع والمنتجات والكميات والأسعار تلقائياً عبر Python Flask + Gemini">Vendor, items, quantities, prices and totals extracted via Python Flask + Gemini</p>
+            </div>
+          </div>
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">🎁</span>
+            <div>
+              <strong data-en="Dynamic Reward Engine" data-ar="محرك مكافآت ديناميكي">Dynamic Reward Engine</strong>
+              <p data-en="Configurable point rules per category, vendor tier, and spend threshold" data-ar="قواعد نقاط قابلة للتهيئة حسب الفئة ومستوى البائع">Configurable point rules per category, vendor tier, and spend threshold</p>
+            </div>
+          </div>
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">📈</span>
+            <div>
+              <strong data-en="Analytics Dashboard" data-ar="لوحة تحليلات">Analytics Dashboard</strong>
+              <p data-en="Spending trends, reward history, and personalised insights per user" data-ar="اتجاهات الإنفاق وتاريخ المكافآت والرؤى الشخصية">Spending trends, reward history, and personalised insights per user</p>
+            </div>
+          </div>
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">🔐</span>
+            <div>
+              <strong data-en="Secure Auth" data-ar="مصادقة آمنة">Secure Auth</strong>
+              <p data-en="JWT + Firebase Auth with role-based access for users and admins" data-ar="JWT + Firebase Auth مع وصول قائم على الأدوار">JWT + Firebase Auth with role-based access</p>
+            </div>
+          </div>
+          <div class="fyp-feature">
+            <span class="fyp-feat-icon">📱</span>
+            <div>
+              <strong data-en="Responsive UI" data-ar="واجهة متجاوبة">Responsive UI</strong>
+              <p data-en="Mobile-first React interface optimised for scanning and browsing" data-ar="واجهة React تُعطي الأولوية للجوال محسّنة للمسح والتصفح">Mobile-first React interface optimised for scanning and browsing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PoC Phase 3 -->
+      <div class="fyp-report-section fyp-poc-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">🔬</span>
+          <h3 class="fyp-rs-title" data-en="PoC — Phase 3" data-ar="PoC — المرحلة الثالثة">PoC — Phase 3</h3>
+        </div>
+        <p class="fyp-rs-body"
+           data-en="Before the final build, Team ARAJ completed a validated PoC Phase 3 as a BITS Pilani study project. The PoC demonstrated core bill-scanning feasibility using the Gemini API, established the multilayer OCR pipeline concept, and validated the end-to-end user flow — forming the research foundation for the full Final Year Project."
+           data-ar="قبل البناء النهائي، أكمل فريق ARAJ نسخة PoC معتمدة (المرحلة الثالثة) كمشروع دراسي في بتس بيلاني. أثبتت الـ PoC جدوى مسح الفواتير باستخدام Gemini API، وأرست مفهوم خط أنابيب OCR متعدد الطبقات، وتحققت من تدفق المستخدم الشامل — مما شكّل الأساس البحثي لمشروع السنة الأخيرة الكامل.">
+          Before the final build, Team ARAJ completed a validated PoC Phase 3 as a BITS Pilani study project. The PoC demonstrated core bill-scanning feasibility using the Gemini API, established the multilayer OCR pipeline concept, and validated the end-to-end user flow — forming the research foundation for the full Final Year Project.
+        </p>
+        <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank" rel="noopener noreferrer" class="fyp-poc-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          <span data-en="Launch PoC Phase 3 Demo" data-ar="تشغيل عرض PoC المرحلة ٣">Launch PoC Phase 3 Demo</span>
+        </a>
+      </div>
+
+      <!-- Team -->
+      <div class="fyp-report-section fyp-team-section">
+        <div class="fyp-rs-head">
+          <span class="fyp-rs-icon">👥</span>
+          <h3 class="fyp-rs-title" data-en="Team ARAJ · BITS Pilani" data-ar="فريق ARAJ · بتس بيلاني">Team ARAJ · BITS Pilani</h3>
+        </div>
+        <div class="fyp-team-card">
+          <img src="PP/ashfaaq-profile.jpg" alt="Ashfaaq KT" class="fyp-team-avatar" />
+          <div class="fyp-team-info">
+            <strong>Ashfaaq KT</strong>
+            <span data-en="Co-Founder · Full-Stack &amp; AI/ML Lead" data-ar="مؤسس مشارك · قائد Full-Stack والذكاء الاصطناعي">Co-Founder · Full-Stack &amp; AI/ML Lead</span>
+            <span class="fyp-team-sub" data-en="B.Sc. Computer Science · BITS Pilani · CGPA 7.91" data-ar="بكالوريوس علوم الحاسوب · بتس بيلاني · المعدل 7.91">B.Sc. Computer Science · BITS Pilani · CGPA 7.91</span>
+          </div>
+        </div>
+
+        <!-- FYP Advisor -->
+        <div class="fyp-advisor-divider">
+          <span data-en="Faculty Advisor" data-ar="المشرف الأكاديمي">Faculty Advisor</span>
+        </div>
+        <div class="fyp-team-card fyp-advisor-card">
+          <div class="fyp-advisor-avatar">👨‍🏫</div>
+          <div class="fyp-team-info">
+            <strong>Prof. Uma Sankara Rao</strong>
+            <span data-en="FYP Advisor · BITS Pilani" data-ar="مشرف مشروع التخرج · بتس بيلاني">FYP Advisor · BITS Pilani</span>
+            <a href="mailto:umasankara.rao@online.bits-pilani.ac.in" class="fyp-advisor-email">umasankara.rao@online.bits-pilani.ac.in</a>
+            <p class="fyp-advisor-bio"
+               data-en="A PhD-qualified researcher specializing in cloud security, blockchain, AI, ML, and emerging technologies — committed to advancing innovation through impactful, industry-focused research and development."
+               data-ar="باحث حاصل على الدكتوراه متخصص في أمن السحابة والبلوكتشين والذكاء الاصطناعي والتعلم الآلي والتقنيات الناشئة — ملتزم بدفع الابتكار من خلال بحث وتطوير مؤثر وموجّه نحو الصناعة.">
+              A PhD-qualified researcher specializing in cloud security, blockchain, AI, ML, and emerging technologies — committed to advancing innovation through impactful, industry-focused research and development.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /fyp-modal-inner -->
+    </div><!-- /fyp-modal -->
+  </div><!-- /fyp-modal-overlay -->
 
   <script src="./script.js"></script>
 </body>

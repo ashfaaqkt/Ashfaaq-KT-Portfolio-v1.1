@@ -2,9 +2,7 @@
    ADMIN PANEL — admin.js
 ═══════════════════════════════════════════ */
 
-const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:5000/api'
-  : '/api';
+const API = '/api';
 
 /* ── XSS protection ── */
 function esc(str) {

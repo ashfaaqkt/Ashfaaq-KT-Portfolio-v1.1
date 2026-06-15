@@ -124,8 +124,33 @@ app.get('/:folder/:filename', (req, res, next) => {
   });
 });
 
-// Serve uploaded project images and other static files
+// Serve uploaded project images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Middleware to block direct static access to sensitive files and folders
+app.use((req, res, next) => {
+  const blockedFiles = ['.env', 'package.json', 'package-lock.json', 'server.js', 'vercel.json', '.gitignore'];
+  const blockedFolders = ['models', 'lib', 'api', 'server', '.git', '.github', '.claude'];
+  
+  // Normalize the request path to prevent path traversal bypasses
+  const normalizedPath = path.normalize(req.path).replace(/^(\.\.(\/|\\|$))+/, '');
+  const pathParts = normalizedPath.split(/[/\\]/).filter(Boolean);
+  
+  if (pathParts.length > 0) {
+    const fileName = pathParts[pathParts.length - 1].toLowerCase();
+    // Block sensitive files
+    if (blockedFiles.includes(fileName)) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    // Block sensitive folders
+    if (pathParts.some(part => blockedFolders.includes(part.toLowerCase()))) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+  }
+  next();
+});
+
+// Serve root static files (index.html, styles.css, script.js, etc.)
 app.use(express.static(__dirname));
 
 // --- Auth Routes ---
@@ -192,10 +217,10 @@ app.post('/api/admin/login', (req, res) => {
   if (typeof password !== 'string' || !password) {
     return res.status(401).json({ message: 'Invalid admin password' });
   }
-  // Timing-safe comparison to prevent side-channel attacks
-  const a = Buffer.from(password);
-  const b = Buffer.from(ADMIN_PASSWORD);
-  const match = a.length === b.length && crypto.timingSafeEqual(a, b);
+  // Timing-safe comparison using SHA-256 hashes to prevent length leaks and side-channel timing attacks
+  const hashedInput = crypto.createHash('sha256').update(password).digest();
+  const hashedSecret = crypto.createHash('sha256').update(ADMIN_PASSWORD).digest();
+  const match = crypto.timingSafeEqual(hashedInput, hashedSecret);
   if (match) {
     const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
     return res.json({ token });
