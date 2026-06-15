@@ -130,7 +130,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Middleware to block direct static access to sensitive files and folders
 app.use((req, res, next) => {
   const blockedFiles = ['.env', 'package.json', 'package-lock.json', 'server.js', 'vercel.json', '.gitignore'];
-  const blockedFolders = ['models', 'lib', 'api', 'server', '.git', '.github', '.claude'];
+  const blockedFolders = ['models', 'lib', 'server', '.git', '.github', '.claude'];
   
   // Normalize the request path to prevent path traversal bypasses
   const normalizedPath = path.normalize(req.path).replace(/^(\.\.(\/|\\|$))+/, '');
@@ -144,6 +144,10 @@ app.use((req, res, next) => {
     }
     // Block sensitive folders
     if (pathParts.some(part => blockedFolders.includes(part.toLowerCase()))) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    // Specifically block static access to files within the api folder (like api/index.js)
+    if (pathParts[0].toLowerCase() === 'api' && pathParts.length > 1 && fileName.endsWith('.js')) {
       return res.status(403).json({ message: 'Forbidden' });
     }
   }
@@ -405,7 +409,7 @@ app.post('/api/admin/profile-picture', verifyAdmin, uploadPp.single('photo'), (r
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module) {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 }
 
