@@ -124,6 +124,36 @@ app.get('/:folder/:filename', (req, res, next) => {
   });
 });
 
+// --- Protected OCC sub-folder: Entri & NSDC certificates ---
+// Must be before express.static so direct URL access is intercepted first.
+app.use((req, res, next) => {
+  const decodedPath = decodeURIComponent(req.path);
+  // Only protect the Entri & NSDC subfolder inside OCC
+  if (!decodedPath.toLowerCase().startsWith('/occ/entri')) return next();
+
+  verifyToken(req, res, () => {
+    const relativePath = decodedPath.replace(/^\//, '');
+    const safePath = path.normalize(relativePath);
+
+    // Prevent path traversal
+    if (safePath.includes('..')) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const basePath = path.join(__dirname, 'OCC');
+    const filePath = path.join(__dirname, safePath);
+
+    // Ensure resolved path stays inside OCC/
+    if (!filePath.startsWith(basePath + path.sep)) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    res.sendFile(filePath, (err) => {
+      if (err) res.status(404).json({ message: 'File not found' });
+    });
+  });
+});
+
 // Serve uploaded project images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

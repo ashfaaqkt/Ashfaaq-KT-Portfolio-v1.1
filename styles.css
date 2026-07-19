@@ -3321,6 +3321,111 @@ html[dir="rtl"] .hero-quote.animated p {
 }
 
 /* ============================================
+   LOGO CAROUSEL
+   ============================================ */
+
+.logo-carousel-section {
+  width: 100%;
+  padding: var(--spacing-xl) 0 var(--spacing-2xl);
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+}
+
+.logo-carousel-label {
+  text-align: center;
+  font-family: var(--font-primary);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.7;
+}
+
+.logo-carousel-track-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--spacing-md) 0;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* fade edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+[data-theme="light"] .logo-carousel-track-wrapper {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.logo-carousel-track-wrapper:hover .logo-carousel-track {
+  animation-play-state: paused;
+}
+
+@keyframes logoScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.logo-carousel-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: logoScroll 28s linear infinite;
+}
+
+.logo-carousel-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 68px;
+  /* margin-right creates equal space after every item, including the last,
+     so translateX(-50%) lands exactly at the seam between the two sets */
+  margin-right: 56px;
+  opacity: 0.85;
+  filter: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logo-carousel-item:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.logo-carousel-item img {
+  height: 100%;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  display: block;
+}
+
+/* RTL: keep scroll direction consistent */
+html[dir="rtl"] .logo-carousel-track {
+  animation-direction: reverse;
+}
+
+@media (max-width: 600px) {
+  .logo-carousel-item {
+    height: 48px;
+    margin-right: 36px;
+  }
+
+  .logo-carousel-track {
+    animation-duration: 20s;
+  }
+}
+
+/* ============================================
    BUTTONS
    ============================================ */
 

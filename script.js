@@ -43,8 +43,12 @@ window.openProtectedPDF = async function(pdfUrl, token) {
 
     if (isPDF) {
       // LOCKED if it's NOT in /OCC/ or explicitly whitelisted
-      // EXCEPT for specific high school/AIU certificates which should ALWAYS be locked
+      // EXCEPT for specific certificates which should ALWAYS be locked
+      const decodedUrl = decodeURIComponent(url);
+      // Entri & NSDC subfolder is protected regardless of /occ/ prefix
+      const isProtectedOCCPath = decodedUrl.includes('/occ/entri');
       const isCertificate = (url.includes('/occ/') || link.classList.contains('certificate-link')) &&
+                            !isProtectedOCCPath &&
                             !url.includes('hscertificate') &&
                             !url.includes('high%20school') &&
                             !url.includes('aiu%20certificate');
@@ -131,7 +135,7 @@ const translations = {
       },
       card2: {
         title: 'MERN Full-Stack Development',
-        subtitle: 'Entri Elevate - Kochi',
+        subtitle: 'Entri Elevate, Kochi · A+ Grade · NSDC Certified',
         description: 'Building end-to-end applications with modern frameworks. From responsive UIs that delight users to robust APIs that handle scale. Every layer is crafted with attention to performance, security, and user experience.'
       },
       card3: {
@@ -169,10 +173,14 @@ const translations = {
           ]
         },
         {
-          badge: '2025 — Present',
+          badge: '2025 — 2026',
           title: 'Entri Elevate · AI-Based Full Stack Development',
-          subtitle: 'Online Program · MERN',
-          description: 'Pursuing an AI-powered MERN stack program, gaining industry-ready full stack expertise through hands-on projects covering MongoDB, Express, React, and Node.js.'
+          subtitle: 'Kochi, Kerala · MERN Stack · A+ Grade',
+          description: 'Completed an intensive AI-powered full-stack development program at Entri Elevate, Kochi. Mastered the complete MERN stack — MongoDB, Express.js, React, and Node.js — through rigorous hands-on projects covering RESTful API design, JWT authentication, cloud deployment, and AI-integrated workflows. Graduated with an A+ Grade and earned dual certification from Entri and NSDC (National Skill Development Corporation), validating industry-ready competency in modern web development.',
+          links: [
+            { text: 'Entri Certificate', href: 'OCC/Entri & NSDC/Ashfaaq Entri cer.pdf' },
+            { text: 'NSDC Certificate', href: "OCC/Entri & NSDC/Ashfaaq's NSDC.pdf" }
+          ]
         },
         {
           badge: '2019 — 2021',
@@ -314,7 +322,7 @@ const translations = {
         education: `<p>📚 <strong>Academic & Professional Timeline:</strong></p>
           <ul>
             <li>🎓 <strong>B.Sc. Computer Science — BITS Pilani</strong> (2023–2026)<br>Online Program · CGPA <strong>7.91</strong> · Final Year · Graduating Aug 29, 2026</li>
-            <li>💻 <strong>AI-Based Full-Stack Dev — Entri Elevate</strong> (2025–Present)<br>MERN Stack · Industry-ready program · Kochi</li>
+            <li>💻 <strong>AI-Based Full-Stack Dev — Entri Elevate</strong> (2025–2026)<br>MERN Stack · A+ Grade · Dual certified by Entri & NSDC · Kochi</li>
             <li>🏫 <strong>Al-Shatti Secondary School</strong> — Dammam, Saudi Arabia (2019–2021)<br>Science Track · GPA <strong>98%</strong> · Saudi Ministry of Education</li>
           </ul>
           <p>📜 <strong>Certifications:</strong> Figma Basics · Introduction to Programming (BITS) · Python (University of Michigan / Coursera) · AWS Assessment (LearnTube)</p>
@@ -408,7 +416,7 @@ const translations = {
       },
       card2: {
         title: 'تطوير MERN الكامل',
-        subtitle: 'إنتراي إلفيت - كوتشي',
+        subtitle: 'إنتراي إلفيت، كوتشي · تقدير A+ · معتمد من NSDC',
         description: 'بناء تطبيقات شاملة بإطارات حديثة. من واجهات المستخدم المتجاوبة التي تسعد المستخدمين إلى واجهات برمجة التطبيقات القوية التي تتعامل مع الحجم. كل طبقة مصممة بعناية للأداء والأمان وتجربة المستخدم.'
       },
       card3: {
@@ -446,10 +454,14 @@ const translations = {
           ]
         },
         {
-          badge: '2025 — الحاضر',
+          badge: '2025 — 2026',
           title: 'إنتراي إلفيت · تطوير الويب الكامل القائم على الذكاء الاصطناعي',
-          subtitle: 'برنامج أونلاين · MERN',
-          description: 'متابعة برنامج MERN stack المدعوم بالذكاء الاصطناعي، واكتساب خبرة تطوير كاملة جاهزة للصناعة من خلال مشاريع عملية تغطي MongoDB و Express و React و Node.js.'
+          subtitle: 'كوتشي، كيرالا · مكدس MERN · تقدير A+',
+          description: 'أتممت برنامجاً مكثفاً لتطوير الويب الكامل المدعوم بالذكاء الاصطناعي في إنتراي إلفيت، كوتشي. أتقنت مكدس MERN الكامل — MongoDB و Express.js و React و Node.js — من خلال مشاريع عملية متقدمة تغطي تصميم RESTful API ومصادقة JWT والنشر السحابي وسير العمل المدمجة بالذكاء الاصطناعي. تخرجت بتقدير A+ وحصلت على شهادة مزدوجة من إنتراي و NSDC (المجلس القومي لتنمية المهارات).',
+          links: [
+            { text: 'شهادة إنتراي', href: 'OCC/Entri & NSDC/Ashfaaq Entri cer.pdf' },
+            { text: 'شهادة NSDC', href: "OCC/Entri & NSDC/Ashfaaq's NSDC.pdf" }
+          ]
         },
         {
           badge: '2019 — 2021',
@@ -582,7 +594,7 @@ const translations = {
           <ul>
             <li>🏢 <strong>مؤسس ومدير تقني</strong> — آش تك سوليوشنز (2024–الحاضر)</li>
             <li>🌱 <strong>مؤسس مشارك ومدير</strong> — Growly Farms، كيرالا (2022–الحاضر)</li>
-            <li>🎓 <strong>تطوير Full-Stack بالذكاء الاصطناعي</strong> — إنتراي إلفيت (2025–الحاضر)</li>
+            <li>🎓 <strong>تطوير Full-Stack بالذكاء الاصطناعي</strong> — إنتراي إلفيت (2025–2026) · تقدير A+</li>
             <li>🌍 مرتاح للعمل في مناطق زمنية <strong>الهند ودول الخليج</strong></li>
             <li>🗣️ يتقن <strong>العربية والإنجليزية والمالايالامية</strong></li>
           </ul>
@@ -591,7 +603,7 @@ const translations = {
         education: `<p>📚 <strong>المسيرة الأكاديمية والمهنية:</strong></p>
           <ul>
             <li>🎓 <strong>بكالوريوس علوم الحاسوب — معهد بتس بيلاني</strong> (2023–2026)<br>برنامج أونلاين · المعدل التراكمي <strong>7.91</strong> · السنة الأخيرة · التخرج 29 أغسطس 2026</li>
-            <li>💻 <strong>تطوير Full-Stack بالذكاء الاصطناعي — إنتراي إلفيت</strong> (2025–الحاضر)<br>مكدس MERN · برنامج جاهز للصناعة · كوتشي</li>
+            <li>💻 <strong>تطوير Full-Stack بالذكاء الاصطناعي — إنتراي إلفيت</strong> (2025–2026)<br>مكدس MERN · تقدير A+ · معتمد من إنتراي و NSDC · كوتشي</li>
             <li>🏫 <strong>مدرسة الشاطئ الثانوية</strong> — الدمام، المملكة العربية السعودية (2019–2021)<br>المسار العلمي · المعدل <strong>98%</strong> · وزارة التعليم السعودية</li>
           </ul>
           <p>📜 <strong>الشهادات:</strong> أساسيات فيجما · مقدمة في البرمجة (بتس) · Python (جامعة ميشيغان / Coursera) · تقييم AWS (LearnTube)</p>
