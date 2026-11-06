@@ -52,6 +52,16 @@
   --pink-light: color-mix(in srgb, var(--pink) 22%, var(--sticker-paper));
   --shadow-soft: 0 6px 16px var(--nb-drop), 0 1px 2px var(--nb-drop);
 
+  /* iPhone notch / Dynamic Island / home-indicator insets
+     (non-zero only with viewport-fit=cover on a device that has them) */
+  --nb-safe-top: env(safe-area-inset-top, 0px);
+  --nb-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --nb-safe-left: env(safe-area-inset-left, 0px);
+  --nb-safe-right: env(safe-area-inset-right, 0px);
+  /* styles.css offsets the page by this; include the status-bar strip so
+     content starts below the taller navbar (see "Safe areas" below) */
+  --nav-top-height: calc(108px + var(--nb-safe-top));
+
   /* Fonts — Reem Kufi stays in every stack so Arabic glyphs fall back cleanly */
   --nb-pixel: 'Pixelify Sans', 'Silkscreen', 'Reem Kufi', ui-monospace, monospace;
   --nb-hand: 'Gaegu', 'Caveat', 'Reem Kufi', cursive;
@@ -260,26 +270,68 @@ html:not(#nb) {
      button to 16px from the edge at ≤768px but leaves back-to-top at its
      desktop offset there, so the two drift apart on tablets. */
   @media (max-width: 768px) {
+    .chatbot-toggle {
+      bottom: calc(16px + var(--nb-safe-bottom));
+      right: calc(16px + var(--nb-safe-right));
+    }
+    &[dir="rtl"] .chatbot-toggle { right: auto; left: calc(16px + var(--nb-safe-left)); }
     .back-to-top,
     .back-to-top.chatbot-open {
-      right: 19px;                              /* 16px + (54px chat − 48px) / 2 */
+      right: calc(19px + var(--nb-safe-right)); /* 16px + (54px chat − 48px) / 2 */
       left: auto;
     }
-    .back-to-top { bottom: calc(16px + 54px + 12px); }
+    .back-to-top { bottom: calc(16px + 54px + 12px + var(--nb-safe-bottom)); }
     &[dir="rtl"] .back-to-top,
-    &[dir="rtl"] .back-to-top.chatbot-open { right: auto; left: 19px; }
+    &[dir="rtl"] .back-to-top.chatbot-open { right: auto; left: calc(19px + var(--nb-safe-left)); }
   }
   @media (max-width: 480px) {
     .back-to-top,
     .back-to-top.chatbot-open {
-      right: 18px;                              /* 16px + (52px chat − 48px) / 2 */
-      bottom: calc(16px + 52px + 10px);
+      right: calc(18px + var(--nb-safe-right)); /* 16px + (52px chat − 48px) / 2 */
+      bottom: calc(16px + 52px + 10px + var(--nb-safe-bottom));
     }
     &[dir="rtl"] .back-to-top,
-    &[dir="rtl"] .back-to-top.chatbot-open { right: auto; left: 18px; }
+    &[dir="rtl"] .back-to-top.chatbot-open { right: auto; left: calc(18px + var(--nb-safe-left)); }
   }
 
   ::-webkit-scrollbar-track { background: var(--paper-line); border: 0; border-radius: 0; }
+
+  /* ---- Safe areas (iPhone notch / Dynamic Island) ----------------------
+     With viewport-fit=cover the page runs edge to edge. Each top bar grows
+     by the status-bar inset so its paper fills the strip around the camera
+     (nothing scrolls through it any more); content and floating buttons
+     stay clear of the notch and home indicator.                          */
+  body { padding-left: var(--nb-safe-left); padding-right: var(--nb-safe-right); }
+  .main-nav {
+    padding-top: var(--nb-safe-top);
+    padding-left: var(--nb-safe-left);
+    padding-right: var(--nb-safe-right);
+  }
+  .scroll-progress { top: var(--nb-safe-top); }
+  .adm-nav {
+    height: calc(64px + var(--nb-safe-top));
+    padding-top: var(--nb-safe-top);
+  }
+  .adm-main { padding-top: calc(80px + var(--nb-safe-top)); }
+  /* privacy.html's bar is meant to be sticky, but styles.css's overflow rules
+     stop that working — pin it instead and start the sheet below it */
+  .prv-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(62px + var(--nb-safe-top));
+    padding-top: var(--nb-safe-top);
+  }
+  .adm-footer { padding-bottom: calc(18px + var(--nb-safe-bottom)); }
+  .prv-footer { padding-bottom: calc(20px + var(--nb-safe-bottom)); }
+  .main-footer { padding-bottom: var(--nb-safe-bottom); }
+  @media (max-width: 1167px) {
+    .mobile-side-menu {
+      padding-top: calc(40px + var(--nb-safe-top));
+      padding-bottom: calc(40px + var(--nb-safe-bottom));
+    }
+  }
   ::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 0; box-shadow: none; border: 2px solid var(--paper-line); }
 
 
@@ -2633,7 +2685,8 @@ html:not(#nb) {
   /* the page itself is the ruled notebook sheet */
   .prv-main {
     max-width: 860px;
-    margin-block: 32px 48px;
+    margin-top: calc(62px + var(--nb-safe-top) + 32px);   /* below the pinned bar */
+    margin-bottom: 48px;
     background-color: var(--paper);
     background-image: var(--nb-rule);
     box-shadow: 0 0 0 1px var(--ink-soft), 0 12px 40px var(--nb-drop);
