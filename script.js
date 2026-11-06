@@ -160,16 +160,17 @@ const translations = {
         },
         {
           badge: '2023 — Present',
-          title: 'BITS Pilani · B.Sc. Computer Science',
-          subtitle: 'Online Program · CGPA 7.91',
-          description: 'Final-year coursework focused on systems architecture, artificial intelligence, database management, and full-stack engineering. Actively building portfolio projects aligned with industry readiness and modern software development practices.',
+          title: 'BITS Pilani · B.Sc. Computer Science (Honours)',
+          subtitle: 'Online Program · 4th Year (Honours) · CGPA 7.95',
+          description: 'Completed all six semesters of the B.Sc. Computer Science core, including the Final Year Project graded Excellent (EX). Now in the Honours year (2026–27) with coursework in Machine Learning, Artificial Intelligence, Backend & API Development, Calculus, and Microprocessor Programming & Interfacing — graduating August 2027.',
           links: [
             { text: 'Performance Sheet', href: 'BITS/prfmnc.pdf' },
             { text: 'SEM 1 Grades', href: 'BITS/SEM1.pdf' },
             { text: 'SEM 2 Grades', href: 'BITS/SEM2.pdf' },
             { text: 'SEM 3 Grades', href: 'BITS/SEM3.pdf' },
             { text: 'SEM 4 Grades', href: 'BITS/SEM4.pdf' },
-            { text: 'SEM 5 Grades', href: 'BITS/SEM5.pdf' }
+            { text: 'SEM 5 Grades', href: 'BITS/SEM5.pdf' },
+            { text: 'SEM 6 Grades', href: 'BITS/SEM6.pdf' }
           ]
         },
         {
@@ -205,14 +206,14 @@ const translations = {
           ]
         },
         {
-          badge: '2026',
-          title: '2026 — Graduation Target & Research Pathway',
-          subtitle: 'August 29, 2026',
-          description: 'Finalizing a production-grade multimodal document intelligence pipeline for my BITS Pilani graduation capstone by August 29. Actively scaling zero-shot VLM architecture and schema enforcement protocols to bridge the gap in low-resource Arabic-script document benchmarks. Building a foundational research portfolio to transition directly into VSRP internships and integrated MS/PhD pathways.',
+          badge: '2027',
+          title: '2027 — Honours Graduation & Research Pathway',
+          subtitle: 'August 2027',
+          description: 'Completed my BITS Pilani Final Year Project — a production-grade multimodal document intelligence pipeline — with an Excellent (EX) grade. Now in the Honours year, deepening ML and AI foundations while scaling zero-shot VLM architecture and schema enforcement protocols for low-resource Arabic-script document benchmarks. Preparing for industry experience, PG programs, and research programs at leading GCC institutions such as KAUST, KFUPM, Qatar University, and Lusail University.',
           milestones: [
-            'Multimodal Pipelines Deployed',
-            'VLM Instruction Frameworks Mastered',
-            'Ready for Advanced AI Research & PG Roles'
+            'Final Year Project Completed · Excellent (EX)',
+            'Honours Year · ML & AI Coursework',
+            'Targeting GCC Research Programs, PG & Industry Roles'
           ]
         },
         {
@@ -308,7 +309,7 @@ const translations = {
         contact: 'Contact'
       },
       answers: {
-        about: `<p><strong>Ashfaaq KT</strong> is a results-driven <strong>AI-Assisted Full-Stack Developer</strong> and final-year B.Sc. Computer Science student at <strong>BITS Pilani</strong> (CGPA 7.91), graduating August 2026.</p>
+        about: `<p><strong>Ashfaaq KT</strong> is a results-driven <strong>AI-Assisted Full-Stack Developer</strong> and 4th-year B.Sc. Computer Science (Honours) student at <strong>BITS Pilani</strong> (CGPA 7.95), graduating August 2027.</p>
           <p>He blends expertise in the <strong>MERN stack</strong>, seamless cloud integration, UI/UX design, and AI-assisted workflows to build fast, scalable, intelligent digital platforms.</p>
           <ul>
             <li>🏢 <strong>Founder & CTO</strong> — AshTech Software Solutions (2024–Present)</li>
@@ -321,7 +322,7 @@ const translations = {
 
         education: `<p>📚 <strong>Academic & Professional Timeline:</strong></p>
           <ul>
-            <li>🎓 <strong>B.Sc. Computer Science — BITS Pilani</strong> (2023–2026)<br>Online Program · CGPA <strong>7.91</strong> · Final Year · Graduating Aug 29, 2026</li>
+            <li>🎓 <strong>B.Sc. Computer Science (Honours) — BITS Pilani</strong> (2023–2027)<br>Online Program · CGPA <strong>7.95</strong> · 4th Year (Honours) · FYP graded Excellent (EX) · Graduating Aug 2027</li>
             <li>💻 <strong>AI-Based Full-Stack Dev — Entri Elevate</strong> (2025–2026)<br>MERN Stack · A+ Grade · Dual certified by Entri & NSDC · Kochi</li>
             <li>🏫 <strong>Al-Shatti Secondary School</strong> — Dammam, Saudi Arabia (2019–2021)<br>Science Track · GPA <strong>98%</strong> · Saudi Ministry of Education</li>
           </ul>
@@ -373,8 +374,8 @@ const translations = {
             <li>🧠 <strong>Stack:</strong> MERN · Firebase · Python · Gemini API · AI/ML · React</li>
             <li>📄 <strong>What it does:</strong> Scans physical bills using AI vision, extracts structured data (items, totals, vendor) via Google Gemini API, and powers a dynamic reward & loyalty engine for end users.</li>
             <li>⚙️ <strong>Architecture:</strong> Multimodal AI pipeline · Zero-shot document extraction · Serverless Firebase backend · Scalable reward logic</li>
-            <li>🏆 <strong>Phase:</strong> PoC Phase 3 — Team ARAJ · Production-grade build</li>
-            <li>📅 <strong>Graduation target:</strong> August 29, 2026 — Aiming for VSRP internships & MS/PhD research pathways in AI</li>
+            <li>🏆 <strong>Result:</strong> Completed with an <strong>Excellent (EX)</strong> grade — Team ARAJ · Production-grade build (after PoC Phase 3)</li>
+            <li>📅 <strong>Next:</strong> Honours year, graduating August 2027 — preparing for industry roles and research programs at KAUST, KFUPM, Qatar University, Lusail University & more across the GCC</li>
           </ul>
           <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">GitHub Repo ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">Live Demo ↗</a></p>`
       }
@@ -441,16 +442,17 @@ const translations = {
         },
         {
           badge: '2023 — الحاضر',
-          title: 'معهد بتس بيلاني التقنية · بكالوريوس علوم الحاسوب',
-          subtitle: 'اونلاين · المعدل التراكمي 7.91',
-          description: 'دورات السنة الأخيرة تركز على هندسة الأنظمة، الذكاء الاصطناعي، إدارة قواعد البيانات، وهندسة المكدس الكامل. بناء مشاريع محفظة نشطة تتماشى مع جاهزية الصناعة وممارسات تطوير البرمجيات الحديثة.',
+          title: 'معهد بتس بيلاني التقنية · بكالوريوس علوم الحاسوب (مرتبة الشرف)',
+          subtitle: 'اونلاين · السنة الرابعة (مرتبة الشرف) · المعدل التراكمي 7.95',
+          description: 'أتممت الفصول الستة لبرنامج بكالوريوس علوم الحاسوب، بما في ذلك مشروع التخرج بتقدير ممتاز (EX). أدرس حالياً سنة مرتبة الشرف (2026–27) بمقررات في تعلم الآلة، الذكاء الاصطناعي، تطوير الخلفية وواجهات API، التفاضل والتكامل، وبرمجة المعالجات الدقيقة — التخرج في أغسطس 2027.',
           links: [
             { text: 'ورقة الأداء', href: 'BITS/prfmnc.pdf' },
             { text: 'درجات الفصل الأول', href: 'BITS/SEM1.pdf' },
             { text: 'درجات الفصل الثاني', href: 'BITS/SEM2.pdf' },
             { text: 'درجات الفصل الثالث', href: 'BITS/SEM3.pdf' },
             { text: 'درجات الفصل الرابع', href: 'BITS/SEM4.pdf' },
-            { text: 'درجات الفصل الخامس', href: 'BITS/SEM5.pdf' }
+            { text: 'درجات الفصل الخامس', href: 'BITS/SEM5.pdf' },
+            { text: 'درجات الفصل السادس', href: 'BITS/SEM6.pdf' }
           ]
         },
         {
@@ -486,14 +488,14 @@ const translations = {
           ]
         },
         {
-          badge: '2026',
-          title: '2026 — هدف التخرج ومسار البحث العلمي',
-          subtitle: '29 أغسطس 2026',
-          description: 'إتمام خط أنابيب ذكاء المستندات متعدد الوسائط على مستوى الإنتاج لمشروع التخرج في معهد بتس بيلاني بحلول 29 أغسطس. التوسع الفعّال في بنية VLM صفرية الطلقات وبروتوكولات فرض المخطط لسد الفجوة في معايير مستندات الخط العربي منخفضة الموارد. بناء محفظة بحثية تأسيسية للانتقال مباشرةً إلى برامج VSRP الممولة بالكامل ومسارات الماجستير/الدكتوراه المتكاملة.',
+          badge: '2027',
+          title: '2027 — التخرج بمرتبة الشرف ومسار البحث العلمي',
+          subtitle: 'أغسطس 2027',
+          description: 'أتممت مشروع التخرج في معهد بتس بيلاني — خط أنابيب ذكاء المستندات متعدد الوسائط على مستوى الإنتاج — بتقدير ممتاز (EX). أدرس حالياً سنة مرتبة الشرف، مع تعميق أسس تعلم الآلة والذكاء الاصطناعي والتوسع في بنية VLM صفرية الطلقات وبروتوكولات فرض المخطط لمعايير مستندات الخط العربي منخفضة الموارد. أستعد للخبرة الصناعية وبرامج الدراسات العليا والبرامج البحثية في مؤسسات الخليج الرائدة مثل كاوست، جامعة الملك فهد للبترول والمعادن، جامعة قطر، وجامعة لوسيل.',
           milestones: [
-            'خطوط الأنابيب متعددة الوسائط منشورة',
-            'أطر تعليمات VLM مُتقنة',
-            'جاهز لأدوار البحث المتقدم في الذكاء الاصطناعي والدراسات العليا'
+            'مشروع التخرج مكتمل · تقدير ممتاز (EX)',
+            'سنة مرتبة الشرف · مقررات تعلم الآلة والذكاء الاصطناعي',
+            'استهداف البرامج البحثية والدراسات العليا والأدوار الصناعية في الخليج'
           ]
         },
         {
@@ -589,7 +591,7 @@ const translations = {
         contact: 'التواصل'
       },
       answers: {
-        about: `<p><strong>اشفاق كي تي</strong> مطور Full-Stack موجّه نحو النتائج، <strong>مدعوم بالذكاء الاصطناعي</strong>، وطالب سنة أخيرة في بكالوريوس علوم الحاسوب من <strong>معهد بتس بيلاني</strong> (المعدل التراكمي 7.91)، يتخرج في أغسطس 2026.</p>
+        about: `<p><strong>اشفاق كي تي</strong> مطور Full-Stack موجّه نحو النتائج، <strong>مدعوم بالذكاء الاصطناعي</strong>، وطالب في السنة الرابعة ببكالوريوس علوم الحاسوب (مرتبة الشرف) من <strong>معهد بتس بيلاني</strong> (المعدل التراكمي 7.95)، يتخرج في أغسطس 2027.</p>
           <p>يمزج خبرته في <strong>مكدس MERN</strong> مع التكامل السحابي وتصميم UI/UX وسير العمل المدعومة بالذكاء الاصطناعي لبناء منصات رقمية سريعة وذكية وقابلة للتوسع.</p>
           <ul>
             <li>🏢 <strong>مؤسس ومدير تقني</strong> — آش تك سوليوشنز (2024–الحاضر)</li>
@@ -602,7 +604,7 @@ const translations = {
 
         education: `<p>📚 <strong>المسيرة الأكاديمية والمهنية:</strong></p>
           <ul>
-            <li>🎓 <strong>بكالوريوس علوم الحاسوب — معهد بتس بيلاني</strong> (2023–2026)<br>برنامج أونلاين · المعدل التراكمي <strong>7.91</strong> · السنة الأخيرة · التخرج 29 أغسطس 2026</li>
+            <li>🎓 <strong>بكالوريوس علوم الحاسوب (مرتبة الشرف) — معهد بتس بيلاني</strong> (2023–2027)<br>برنامج أونلاين · المعدل التراكمي <strong>7.95</strong> · السنة الرابعة (مرتبة الشرف) · مشروع التخرج بتقدير ممتاز (EX) · التخرج أغسطس 2027</li>
             <li>💻 <strong>تطوير Full-Stack بالذكاء الاصطناعي — إنتراي إلفيت</strong> (2025–2026)<br>مكدس MERN · تقدير A+ · معتمد من إنتراي و NSDC · كوتشي</li>
             <li>🏫 <strong>مدرسة الشاطئ الثانوية</strong> — الدمام، المملكة العربية السعودية (2019–2021)<br>المسار العلمي · المعدل <strong>98%</strong> · وزارة التعليم السعودية</li>
           </ul>
@@ -654,8 +656,8 @@ const translations = {
             <li>🧠 <strong>التقنيات:</strong> MERN · Firebase · Python · Gemini API · تعلم الآلة · React</li>
             <li>📄 <strong>ما يفعله:</strong> يمسح الفواتير باستخدام رؤية الذكاء الاصطناعي، يستخرج بيانات منظمة (المنتجات، الإجماليات، البائع) عبر Google Gemini API، ويشغّل محرك مكافآت وولاء ديناميكي للمستخدمين.</li>
             <li>⚙️ <strong>البنية:</strong> خط أنابيب AI متعدد الوسائط · استخراج مستندات بدون أمثلة · Firebase Serverless · منطق مكافآت قابل للتوسع</li>
-            <li>🏆 <strong>المرحلة:</strong> PoC المرحلة الثالثة — فريق ARAJ · بناء على مستوى الإنتاج</li>
-            <li>📅 <strong>هدف التخرج:</strong> 29 أغسطس 2026 — استهداف برامج VSRP ومسارات الماجستير/الدكتوراه في الذكاء الاصطناعي</li>
+            <li>🏆 <strong>النتيجة:</strong> مكتمل بتقدير <strong>ممتاز (EX)</strong> — فريق ARAJ · بناء على مستوى الإنتاج (بعد PoC المرحلة الثالثة)</li>
+            <li>📅 <strong>التالي:</strong> سنة مرتبة الشرف، التخرج أغسطس 2027 — الاستعداد للأدوار الصناعية والبرامج البحثية في كاوست، جامعة الملك فهد للبترول والمعادن، جامعة قطر، جامعة لوسيل وغيرها في الخليج</li>
           </ul>
           <p><a href="https://github.com/ashfaaqkt/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ" target="_blank">مستودع GitHub ↗</a> &nbsp;·&nbsp; <a href="https://ashfaaqkt.github.io/Bill-Scanning-Based-Reward-Intelligence-System-study-project-bits-poc-phase-3-Team-ARAJ/public/index.html" target="_blank">عرض مباشر ↗</a></p>`
       }
