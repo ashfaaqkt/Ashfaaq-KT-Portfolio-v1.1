@@ -45,7 +45,8 @@
   /* Derived from the tokens above (no new hues) */
   --nb-link: var(--blue);
   --nb-drop: color-mix(in srgb, var(--ink) 24%, transparent);   /* big soft drop shadows */
-  --nb-scrim: var(--nb-scrim);  /* modal backdrops */
+  --nb-scrim: color-mix(in srgb, var(--ink) 30%, transparent);  /* modal backdrops (tint under the blur) */
+  --nb-blur: blur(7px) saturate(0.9);
   --ink-muted: color-mix(in srgb, var(--ink) 74%, var(--paper));    /* ≈ 8.6:1 on paper */
   --ink-soft: color-mix(in srgb, var(--ink) 18%, transparent);
   --paper-on-ink: color-mix(in srgb, var(--paper) 80%, var(--ink)); /* ≈ 11:1 on ink */
@@ -127,7 +128,7 @@
   --nb-grid-line: color-mix(in srgb, var(--ink) 7%, transparent);
   --nb-link: color-mix(in srgb, var(--blue) 40%, var(--sticker-paper));   /* ≈ 7:1 on dark paper */
   --nb-drop: color-mix(in srgb, var(--frame) 85%, transparent);
-  --nb-scrim: color-mix(in srgb, var(--frame) 72%, transparent);
+  --nb-scrim: color-mix(in srgb, var(--frame) 55%, transparent);
   color-scheme: dark;
 }
 
@@ -560,7 +561,7 @@ html:not(#nb) {
     box-shadow: none;
   }
   .msm-action-btn:hover { background: var(--yellow); color: var(--ink); }
-  html.menu-open #app-container::after { background: var(--nb-scrim); }
+  &.menu-open #app-container::after { background: var(--nb-scrim); backdrop-filter: var(--nb-blur); -webkit-backdrop-filter: var(--nb-blur); }
 
 
   /* ========================================================================
@@ -1524,7 +1525,7 @@ html:not(#nb) {
   .fyp-btn svg { display: none; }
 
   /* Report modal */
-  .fyp-modal-overlay { background: var(--nb-scrim); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .fyp-modal-overlay { background: var(--nb-scrim); backdrop-filter: var(--nb-blur); -webkit-backdrop-filter: var(--nb-blur); }
   .fyp-modal {
     background-color: var(--paper);
     background-image: var(--nb-rule);
@@ -1939,6 +1940,38 @@ html:not(#nb) {
   .footer-bottom { border-top: 1px dashed color-mix(in srgb, var(--paper) 30%, transparent); }
   .footer-signature-img { filter: invert(1) grayscale(1); mix-blend-mode: screen; opacity: 0.85; }
 
+  /* Signature sits on the reading-start side at every size:
+     left in English, right in Arabic (wider screens: styles.css pins it
+     absolutely; these lines just make the side explicit). */
+  .footer-signature-img { left: 0; right: auto; }
+  &[dir="rtl"] .footer-signature-img { left: auto; right: 0; }
+
+  /* Phones: copyright on two lines, signature underneath on the start side */
+  @media (max-width: 600px) {
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px 0 22px;
+    }
+    /* font-size 0 hides the loose " · " text between the spans;
+       each part gets its size back */
+    .footer-copy { font-size: 0; line-height: 1.7; }
+    .footer-copy > * { font-size: 0.78rem; }
+    .footer-copy > span:first-child { display: block; }          /* "Ashfaaq KT © 2026" */
+    .footer-copy > span:nth-child(2) { margin-inline-end: 0.4em; } /* "Built By" … "AshTech" */
+    .footer-signature-img,
+    &[dir="rtl"] .footer-signature-img {
+      position: static;
+      transform: none;
+      height: 30px;
+    }
+    /* start of the line: left in English, right in Arabic (the column's
+       cross axis follows the text direction) */
+    .footer-signature-img,
+    &[dir="rtl"] .footer-signature-img { align-self: flex-start; }
+    .footer-signature-img:hover { transform: scale(1.06); }
+  }
+
   /* ---- Dark-mode specifics ---- */
   &[data-theme="dark"] {
     /* light-on-dark artwork needs no inverting on the night page */
@@ -2005,8 +2038,8 @@ html:not(#nb) {
   .cv-modal-overlay,
   .chatbot-backdrop {
     background: var(--nb-scrim);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: var(--nb-blur);
+    -webkit-backdrop-filter: var(--nb-blur);
   }
 
   /* Notebook-page modal shell */
@@ -2273,25 +2306,165 @@ html:not(#nb) {
   .cv-card-action { font-family: var(--nb-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
   .cv-modal-note { font-family: var(--nb-hand); font-size: 1.1rem; color: var(--ink-muted); }
 
-  /* Toasts → sticky notes */
+  /* ---- Toasts → paper admission tickets ---------------------------------
+     A coloured stub (the icon) torn off by a dashed perforation, punched
+     half-circle notches where stub meets body, a faint security pattern,
+     a serial line per type and a tear-off countdown strip.
+     Types from script.js: .toast-hint (sign-in), .toast-welcome, .toast-bye */
+  #toast-container {
+    /* the hard shadow follows the notched ticket outline */
+    filter: drop-shadow(3px 3px 0 var(--ink));
+  }
   .toast {
-    background: var(--yellow);
+    --tk-stub: 58px;                      /* stub width */
+    --tk-stub-x: var(--tk-stub);          /* where the perforation sits */
+    --tk-notch: 8px;                      /* punch-hole radius */
+    --tk-stub-bg: var(--yellow);
+    --tk-pad-y: 14px;
+    --tk-pad-x: 18px;
+    --tk-serial: 'ADMIT ONE';
+    padding: var(--tk-pad-y) var(--tk-pad-x);
+    gap: 14px;
     color: var(--ink);
+    background-color: var(--paper);
+    background-image: repeating-linear-gradient(135deg,
+      transparent 0 7px,
+      color-mix(in srgb, var(--ink) 5%, transparent) 7px 8px);
     border: 0;
     border-radius: 0;
-    box-shadow: var(--shadow-hard);
+    box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    rotate: -0.8deg;
+    /* punch notches top + bottom on the perforation line */
+    -webkit-mask:
+      radial-gradient(circle var(--tk-notch) at var(--tk-stub-x) 0, transparent calc(var(--tk-notch) - 0.5px), #000 var(--tk-notch)) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--tk-notch) at var(--tk-stub-x) 100%, transparent calc(var(--tk-notch) - 0.5px), #000 var(--tk-notch)) bottom / 100% 51% no-repeat;
+            mask:
+      radial-gradient(circle var(--tk-notch) at var(--tk-stub-x) 0, transparent calc(var(--tk-notch) - 0.5px), #000 var(--tk-notch)) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--tk-notch) at var(--tk-stub-x) 100%, transparent calc(var(--tk-notch) - 0.5px), #000 var(--tk-notch)) bottom / 100% 51% no-repeat;
   }
-  .toast-success { background: var(--green); }
-  .toast-error { background: var(--pink-light); border: 1.5px solid var(--pink); }
-  .toast::before { background: var(--ink); }
-  .toast-title,
-  .toast-sub { color: var(--ink); }
-  .toast-link { color: var(--ink); text-decoration: underline; font-weight: 700; }
-  .toast-close { color: var(--ink); background: transparent; border-radius: 0; }
-  .toast-progress { background: var(--ink-soft); }
+  &[dir="rtl"] .toast { --tk-stub-x: calc(100% - var(--tk-stub)); rotate: 0.8deg; }
+
+  .toast-hint    { --tk-stub-bg: var(--blue);   --tk-serial: 'ACCESS TOKEN · Nº 0001'; }
+  .toast-welcome { --tk-stub-bg: var(--yellow); --tk-serial: 'GUEST PASS · ADMIT ONE'; }
+  .toast-bye     { --tk-stub-bg: var(--pink);   --tk-serial: 'SEE YOU SOON'; }
+
+  /* the stub: the icon cell stretched to the ticket's edge */
+  .toast-icon {
+    align-self: stretch;
+    display: grid;
+    place-items: center;
+    flex: 0 0 var(--tk-stub);
+    margin-block: calc(var(--tk-pad-y) * -1);
+    margin-inline-start: calc(var(--tk-pad-x) * -1);
+    font-size: 1.55rem;
+    background: var(--tk-stub-bg);
+    border-inline-end: 2px dashed var(--ink);   /* perforation */
+  }
+
+  .toast-body { padding-bottom: 14px; }        /* room for the serial line */
+  .toast-title {
+    font-family: var(--nb-body);
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .toast-sub { color: var(--ink-muted); }
+  .toast-link {
+    color: var(--ink);
+    font-family: var(--nb-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-decoration: underline;
+    text-decoration-color: var(--pink);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .toast-link:hover { color: var(--ink); text-decoration-color: var(--blue); opacity: 1; }
+
+  /* serial line printed bottom-end (re-uses the old accent bar) */
+  .toast::before,
+  &[dir="rtl"] .toast::before {
+    content: var(--tk-serial);
+    position: absolute;
+    inset: auto;
+    bottom: 9px;
+    inset-inline-end: 14px;
+    width: auto;
+    background: none;
+    border-radius: 0;
+    font-family: var(--nb-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  .toast-close {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    border-radius: 0;
+  }
+  .toast-close:hover { background: var(--pink); color: var(--ink); border-color: var(--ink); transform: none; }
+
+  /* tear-off countdown strip along the bottom */
+  .toast-progress {
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--ink-soft) 0 6px, transparent 6px 10px);
+  }
   .toast-progress-bar { background: var(--ink); }
+
+  /* Phones: compact "ticket stub" version.
+     - docked on the reading-start side so the chat / back-to-top column
+       on the other edge stays free
+     - serial line becomes a small eyebrow above the title (no overlap)
+     - slimmer stub, smaller punch, flat (no tilt), tighter type        */
+  @media (max-width: 530px) {
+    #toast-container {
+      left: calc(12px + var(--nb-safe-left));
+      right: auto;
+      bottom: calc(16px + var(--nb-safe-bottom));
+      transform: none;
+      width: calc(100vw - 12px - 80px - var(--nb-safe-left) - var(--nb-safe-right));
+      align-items: stretch;
+      gap: 8px;
+      filter: drop-shadow(2px 2px 0 var(--ink));
+    }
+    &[dir="rtl"] #toast-container {
+      left: auto;
+      right: calc(12px + var(--nb-safe-right));
+    }
+    .toast,
+    &[dir="rtl"] .toast {
+      --tk-stub: 42px;
+      --tk-notch: 6px;
+      --tk-pad-y: 10px;
+      --tk-pad-x: 12px;
+      gap: 10px;
+      rotate: 0deg;
+    }
+    .toast-icon { font-size: 1.15rem; }
+    .toast-body { padding-top: 13px; padding-bottom: 2px; padding-inline-end: 22px; }
+    .toast::before,
+    &[dir="rtl"] .toast::before {
+      top: 9px;
+      bottom: auto;
+      inset-inline-start: calc(var(--tk-stub) + 10px);
+      inset-inline-end: auto;
+      font-size: 8px;
+      letter-spacing: 0.14em;
+    }
+    .toast-title { font-size: 0.84rem; line-height: 1.25; margin-bottom: 1px; }
+    .toast-sub { font-size: 0.74rem; line-height: 1.35; }
+    .toast-link { font-size: 10px; margin-top: 4px; }
+    .toast-close { top: 6px; inset-inline-end: 6px; width: 20px; height: 20px; }
+    &[dir="rtl"] .toast-close { right: auto; left: 6px; }
+    .toast-close svg { width: 10px; height: 10px; }
+  }
 
   /* "Ask Ashfaaq" chat */
   .chatbot-toggle {
@@ -2324,6 +2497,9 @@ html:not(#nb) {
   .cb-online { background: var(--green); border-color: var(--ink); }
   .cb-name { font-family: var(--nb-pixel); font-weight: 600; color: var(--paper); }
   .cb-status { font-family: var(--nb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--paper-on-ink); }
+  /* Arabic: hug the name + status to the right, beside the avatar.
+     (styles.css uses flex-end, which is the LEFT edge in an RTL column) */
+  &[dir="rtl"] .cb-header-info { align-items: flex-start; text-align: start; }
   .cb-close { background: transparent; color: var(--paper); border: 1.5px solid var(--paper); border-radius: 0; }
   .cb-close:hover { background: var(--pink); color: var(--ink); border-color: var(--pink); }
   .cb-messages { background: transparent; }
