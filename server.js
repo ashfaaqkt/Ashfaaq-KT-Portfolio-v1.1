@@ -12,6 +12,7 @@ const User = require('./models/User');
 const Timeline = require('./models/Timeline');
 const Project = require('./models/Project');
 const connectDB = require('./lib/db');
+const { rateLimit, normalizeEmail, validateRegistration } = require('./lib/security');
 
 /* ── Multer storage configs ── */
 const pdfStorage = multer.diskStorage({
@@ -49,7 +50,19 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
+app.disable('x-powered-by');
+app.use(express.json({ limit: '100kb' }));
+
+// Basic security headers on every response
+app.use((req, res, next) => {
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'SAMEORIGIN',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+  });
+  next();
+});
 
 const PORT = process.env.PORT || 5000;
 
@@ -63,6 +76,10 @@ if (!process.env.ADMIN_PASSWORD) {
   process.exit(1);
 }
 const JWT_SECRET = process.env.JWT_SECRET;
+if (JWT_SECRET.length < 32) {
+  console.warn('WARNING: JWT_SECRET is shorter than 32 characters — use a long random value.');
+}
+const JWT_ALGS = { algorithms: ['HS256'] };
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // Database connection middleware (Ensures connection before processing any API route)
@@ -87,7 +104,7 @@ const verifyToken = (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Access denied. Please log in.' });
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET, JWT_ALGS);
     req.user = decoded;
     next();
   } catch (err) {
@@ -189,56 +206,95 @@ app.use(express.static(__dirname));
 
 // --- Auth Routes ---
 
-// Register
-app.post('/api/auth/register', async (req, res) => {
+// Auth helpers
+const BCRYPT_ROUNDS = 12;
+const MAX_FAILED_LOGINS = 5;
+const LOCK_MINUTES = 15;
+// Compared against when the email doesn't exist, so response time doesn't reveal whether an account exists
+const DUMMY_HASH = bcrypt.hashSync('dummy-password-for-timing', BCRYPT_ROUNDS);
+const CASE_INSENSITIVE = { locale: 'en', strength: 2 };
+
+const signUserToken = (user) =>
+  jwt.sign({ id: user._id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '7d', algorithm: 'HS256' });
+
+const publicUser = (user) => ({ id: user._id, name: user.name, email: user.email, role: user.role });
+
+// Register — max 5 sign-ups per IP per hour
+app.post('/api/auth/register',
+  rateLimit({ name: 'register', max: 5, windowMs: 60 * 60 * 1000, message: 'Too many sign-up attempts. Please try again in an hour.' }),
+  async (req, res) => {
   try {
-    const { name, email, phone, category, company, password } = req.body;
-
-    if (!name || !email || !password || !category) {
-      return res.status(400).json({ message: 'Name, email, category, and password are required.' });
-    }
-    if (typeof password !== 'string' || password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters.' });
+    // Honeypot: real users never see or fill this field; bots usually do
+    if (req.body && typeof req.body.website === 'string' && req.body.website.trim() !== '') {
+      return res.status(400).json({ code: 'INVALID', message: 'Unable to create account.' });
     }
 
-    // Check if user already exists — cast to string to prevent NoSQL injection
-    let user = await User.findOne({ email: String(email) });
-    if (user) return res.status(400).json({ message: 'User already exists' });
+    const { error, data } = validateRegistration(req.body);
+    if (error) return res.status(400).json({ code: 'INVALID', message: error });
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const existing = await User.findOne({ email: data.email }).collation(CASE_INSENSITIVE);
+    if (existing) {
+      return res.status(409).json({ code: 'EMAIL_EXISTS', message: 'An account with this email already exists. Please sign in.' });
+    }
 
-    user = new User({
-      name, email, phone, category, company, password: hashedPassword
+    const hashedPassword = await bcrypt.hash(data.password, BCRYPT_ROUNDS);
+    const user = new User({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      category: data.category,
+      company: data.company,
+      password: hashedPassword
     });
-
     await user.save();
 
-    // Create JWT
-    const token = jwt.sign({ id: user._id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
-
+    res.json({ token: signUserToken(user), user: publicUser(user) });
   } catch (err) {
+    if (err && err.code === 11000) {
+      return res.status(409).json({ code: 'EMAIL_EXISTS', message: 'An account with this email already exists. Please sign in.' });
+    }
     console.error('[POST /api/auth/register]', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Login
-app.post('/api/auth/login', async (req, res) => {
+// Login — max 10 attempts per IP per 15 min, plus per-account lockout
+app.post('/api/auth/login',
+  rateLimit({ name: 'login', max: 10, windowMs: 15 * 60 * 1000, message: 'Too many sign-in attempts. Please try again in 15 minutes.' }),
+  async (req, res) => {
+  const INVALID = { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password.' };
   try {
-    const { email, password } = req.body;
+    const email = normalizeEmail(req.body?.email);
+    const password = req.body?.password;
+    if (!email || typeof password !== 'string' || !password || password.length > 200) {
+      return res.status(400).json(INVALID);
+    }
 
-    const user = await User.findOne({ email: String(email) });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    const user = await User.findOne({ email }).collation(CASE_INSENSITIVE);
+    if (!user) {
+      await bcrypt.compare(password, DUMMY_HASH);
+      return res.status(400).json(INVALID);
+    }
+
+    if (user.lockUntil && user.lockUntil > new Date()) {
+      return res.status(429).json({ code: 'ACCOUNT_LOCKED', message: `Too many failed attempts. Please try again in ${LOCK_MINUTES} minutes.` });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      const attempts = (user.failedLoginAttempts || 0) + 1;
+      const update = attempts >= MAX_FAILED_LOGINS
+        ? { failedLoginAttempts: 0, lockUntil: new Date(Date.now() + LOCK_MINUTES * 60 * 1000) }
+        : { failedLoginAttempts: attempts };
+      await User.updateOne({ _id: user._id }, { $set: update });
+      return res.status(400).json(INVALID);
+    }
 
-    const token = jwt.sign({ id: user._id, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    if (user.failedLoginAttempts || user.lockUntil) {
+      await User.updateOne({ _id: user._id }, { $set: { failedLoginAttempts: 0, lockUntil: null } });
+    }
 
+    res.json({ token: signUserToken(user), user: publicUser(user) });
   } catch (err) {
     console.error('[POST /api/auth/login]', err);
     res.status(500).json({ message: 'Server error' });
@@ -246,7 +302,9 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // Admin Login
-app.post('/api/admin/login', (req, res) => {
+app.post('/api/admin/login',
+  rateLimit({ name: 'admin-login', max: 5, windowMs: 15 * 60 * 1000, message: 'Too many attempts. Please try again in 15 minutes.' }),
+  (req, res) => {
   const { password } = req.body;
   if (typeof password !== 'string' || !password) {
     return res.status(401).json({ message: 'Invalid admin password' });
@@ -256,7 +314,7 @@ app.post('/api/admin/login', (req, res) => {
   const hashedSecret = crypto.createHash('sha256').update(ADMIN_PASSWORD).digest();
   const match = crypto.timingSafeEqual(hashedInput, hashedSecret);
   if (match) {
-    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
     return res.json({ token });
   }
   return res.status(401).json({ message: 'Invalid admin password' });
@@ -270,7 +328,7 @@ const verifyAdmin = (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET, JWT_ALGS);
     if (decoded.role !== 'admin') {
       return res.status(403).json({ message: 'Not authorized as admin' });
     }
@@ -283,7 +341,7 @@ const verifyAdmin = (req, res, next) => {
 // Get all users
 app.get('/api/admin/users', verifyAdmin, async (req, res) => {
   try {
-    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    const users = await User.find().select('-password -failedLoginAttempts -lockUntil').sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {
     console.error('[GET /api/admin/users]', err);

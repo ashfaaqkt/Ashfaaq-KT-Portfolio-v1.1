@@ -3887,6 +3887,30 @@ function initAuth() {
     });
   }
   
+  // Translate server auth errors for the Arabic UI; falls back to the server's English text
+  const AUTH_ERRORS_AR = {
+    'Invalid email or password.': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+    'An account with this email already exists. Please sign in.': 'يوجد حساب بهذا البريد الإلكتروني بالفعل. يرجى تسجيل الدخول.',
+    'Too many sign-in attempts. Please try again in 15 minutes.': 'محاولات تسجيل دخول كثيرة. يرجى المحاولة بعد 15 دقيقة.',
+    'Too many failed attempts. Please try again in 15 minutes.': 'محاولات فاشلة كثيرة. يرجى المحاولة بعد 15 دقيقة.',
+    'Too many sign-up attempts. Please try again in an hour.': 'محاولات إنشاء حساب كثيرة. يرجى المحاولة بعد ساعة.',
+    'Please enter a valid name (letters only, max 80 characters).': 'يرجى إدخال اسم صحيح (أحرف فقط، 80 حرفاً كحد أقصى).',
+    'Please enter a valid email address.': 'يرجى إدخال بريد إلكتروني صحيح.',
+    'Please enter a valid phone number.': 'يرجى إدخال رقم هاتف صحيح.',
+    'Please select a category.': 'يرجى اختيار الفئة.',
+    'Please enter a valid category (max 50 characters).': 'يرجى إدخال فئة صحيحة (50 حرفاً كحد أقصى).',
+    'Please enter a valid firm name (max 100 characters).': 'يرجى إدخال اسم شركة صحيح (100 حرف كحد أقصى).',
+    'Password must be at least 8 characters.': 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.',
+    'Password is too long (max 72 characters).': 'كلمة المرور طويلة جداً (72 حرفاً كحد أقصى).',
+    'Password must contain at least one letter and one number.': 'يجب أن تحتوي كلمة المرور على حرف ورقم على الأقل.',
+    'Password must not contain your email.': 'يجب ألا تحتوي كلمة المرور على بريدك الإلكتروني.',
+    'Password must not contain your name.': 'يجب ألا تحتوي كلمة المرور على اسمك.',
+    'This password is too common. Please choose another.': 'كلمة المرور هذه شائعة جداً. يرجى اختيار أخرى.',
+    'Server error. Please try again.': 'خطأ في الخادم. يرجى المحاولة مرة أخرى.'
+  };
+  const authMsg = (msg) => (currentLanguage === 'ar' && AUTH_ERRORS_AR[msg]) || msg;
+  const readJson = async (res) => { try { return await res.json(); } catch { return {}; } };
+
   // Form Submit Login
   if (formLogin) {
     formLogin.addEventListener('submit', async (e) => {
@@ -3902,9 +3926,9 @@ function initAuth() {
       try {
         const res = await fetch(`${API_BASE_URL}/auth/login`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ email, password: pw })
+          body: JSON.stringify({ email: email.trim(), password: pw })
         });
-        const data = await res.json();
+        const data = await readJson(res);
         if (res.ok) {
           localStorage.setItem('portfolio_token', data.token);
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
@@ -3918,10 +3942,10 @@ function initAuth() {
             window.openProtectedPDF(pending, data.token);
           }
         } else {
-          errorEl.textContent = data.message;
+          errorEl.textContent = authMsg(data.message || 'Server error. Please try again.');
         }
       } catch (err) {
-        errorEl.textContent = 'Server error. Is the backend running?';
+        errorEl.textContent = authMsg('Server error. Please try again.');
       } finally {
         submitBtn.classList.remove('btn-loading');
       }
@@ -3950,6 +3974,16 @@ function initAuth() {
       
       const company = document.getElementById('reg-company').value;
       const pw = document.getElementById('reg-password').value;
+      const website = document.getElementById('reg-website')?.value || '';
+
+      if (pw.length < 8) {
+        errorEl.textContent = authMsg('Password must be at least 8 characters.');
+        return;
+      }
+      if (!/[A-Za-z]/.test(pw) || !/\d/.test(pw)) {
+        errorEl.textContent = authMsg('Password must contain at least one letter and one number.');
+        return;
+      }
       
       const submitBtn = formRegister.querySelector('button[type="submit"]');
       errorEl.textContent = '';
@@ -3958,9 +3992,9 @@ function initAuth() {
       try {
         const res = await fetch(`${API_BASE_URL}/auth/register`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ name, email, phone, category, company, password: pw })
+          body: JSON.stringify({ name, email, phone, category, company, password: pw, website })
         });
-        const data = await res.json();
+        const data = await readJson(res);
         if (res.ok) {
           localStorage.setItem('portfolio_token', data.token);
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
@@ -3974,10 +4008,10 @@ function initAuth() {
             window.openProtectedPDF(pending, data.token);
           }
         } else {
-          errorEl.textContent = data.message;
+          errorEl.textContent = authMsg(data.message || 'Server error. Please try again.');
         }
       } catch (err) {
-        errorEl.textContent = 'Server error. Is the backend running?';
+        errorEl.textContent = authMsg('Server error. Please try again.');
       } finally {
         submitBtn.classList.remove('btn-loading');
       }
