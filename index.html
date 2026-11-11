@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="notebook-theme.css">
   <link rel="stylesheet" href="cv-generator.css">
+  <link rel="stylesheet" href="chat-ai.css">
 </head>
 
 <body>
@@ -986,12 +987,12 @@
     </div>
 
     <!-- Messages -->
-    <div class="cb-messages" id="chatbot-messages">
+    <div class="cb-messages" id="chatbot-messages" role="log" aria-live="polite" aria-relevant="additions">
       <div class="chatbot-message chatbot-message-bot">
         <div class="message-content">
-          <p data-en="Hi! 👋 I'm Ashfaaq's portfolio assistant. Tap a question below to learn more about me!"
-             data-ar="مرحباً! 👋 أنا مساعد محفظة اشفاق. اضغط على سؤال أدناه لمعرفة المزيد!">
-            Hi! 👋 I'm Ashfaaq's portfolio assistant. Tap a question below to learn more about me!
+          <p data-en="Hi! 👋 I'm Ashfaaq's portfolio assistant. Ask me anything about his skills, projects or experience, or tap a quick question below."
+             data-ar="مرحباً! 👋 أنا مساعد محفظة اشفاق. اسألني عن مهاراته أو مشاريعه أو خبراته، أو اضغط على سؤال سريع أدناه.">
+            Hi! 👋 I'm Ashfaaq's portfolio assistant. Ask me anything about his skills, projects or experience, or tap a quick question below.
           </p>
         </div>
       </div>
@@ -1034,6 +1035,20 @@
 
       </div>
     </div>
+
+    <!-- Ask anything (AI, answers only about Ashfaaq — chat-ai.js) -->
+    <form class="cb-input" id="cb-form" novalidate hidden>
+      <label class="cb-sr-only" for="cb-text" data-en="Your question about Ashfaaq" data-ar="سؤالك عن اشفاق">Your question about Ashfaaq</label>
+      <textarea id="cb-text" rows="1" maxlength="500" dir="auto" autocomplete="off" enterkeyhint="send"
+        placeholder="Ask about Ashfaaq…" data-placeholder-en="Ask about Ashfaaq…" data-placeholder-ar="اسأل عن اشفاق…"></textarea>
+      <button type="submit" class="cb-send" id="cb-send" aria-label="Send" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="cb-note">
+        <span data-en="AI answers from his portfolio only · may be imperfect · " data-ar="إجابات ذكاء اصطناعي من محفظته فقط · قد لا تكون دقيقة تماماً · ">AI answers from his portfolio only · may be imperfect · </span><a href="privacy.html#chatbot" target="_blank" rel="noopener" data-en="Privacy" data-ar="الخصوصية">Privacy</a>
+        <span class="cb-count" id="cb-count" aria-live="polite"></span>
+      </p>
+    </form>
 
   </div>
 
@@ -1936,6 +1951,7 @@
 
   <script src="./script.js"></script>
   <script src="./cv-generator.js" defer></script>
+  <script src="./chat-ai.js" defer></script>
 </body>
 
 </html>

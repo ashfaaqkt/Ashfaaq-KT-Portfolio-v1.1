@@ -299,7 +299,7 @@ const translations = {
     },
     // Chatbot
     chatbot: {
-      welcomeMessage: 'Hi! 👋 I\'m Ashfaaq\'s portfolio assistant. Tap a question below to learn more about me!',
+      welcomeMessage: 'Hi! 👋 I\'m Ashfaaq\'s portfolio assistant. Ask me anything about his skills, projects or experience, or tap a quick question below.',
       faqButtons: {
         about: 'About Ashfaaq',
         finalProject: 'Final Year Project',
@@ -581,7 +581,7 @@ const translations = {
     },
     // Chatbot
     chatbot: {
-      welcomeMessage: 'مرحباً! 👋 أنا مساعد محفظة اشفاق. اضغط على سؤال أدناه لمعرفة المزيد!',
+      welcomeMessage: 'مرحباً! 👋 أنا مساعد محفظة اشفاق. اسألني عن مهاراته أو مشاريعه أو خبراته، أو اضغط على سؤال سريع أدناه.',
       faqButtons: {
         about: 'نبذة عن اشفاق',
         finalProject: 'مشروع التخرج',

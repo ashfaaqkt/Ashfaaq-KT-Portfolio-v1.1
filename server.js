@@ -17,7 +17,8 @@ const { getProfileSnapshot } = require('./lib/profile');
 const gemini = require('./lib/gemini');
 const { generateCv, renderCvPdf, newRef, CvError } = require('./lib/cv');
 const { validateCvRequest } = require('./lib/cvRequest');
-const { getClientIp } = require('./lib/security');
+const { getClientIp, hitLimit } = require('./lib/security');
+const { chatReply, validateChatRequest, MAX_MESSAGE: MAX_CHAT_MESSAGE } = require('./lib/chat');
 const CvGeneration = require('./models/CvGeneration');
 
 /* ── Multer storage configs ── */
@@ -385,6 +386,37 @@ app.get('/api/admin/ai/profile-snapshot', verifyAdmin, (req, res) => {
     res.status(500).json({ message: 'Could not build profile snapshot' });
   }
 });
+
+// ─── "Ask Ashfaaq" chatbot (public, no sign-in) ─────────────────────────────
+
+const CHAT_DAILY_CAP = Math.max(1, Number(process.env.CHAT_DAILY_CAP) || 1500);   // site-wide safety cap
+const chatEnabled = () => process.env.CHAT_ENABLED !== 'false' && gemini.isConfigured();
+
+app.get('/api/chat/status', (req, res) => {
+  res.json({ enabled: chatEnabled(), maxMessage: MAX_CHAT_MESSAGE });
+});
+
+app.post('/api/chat',
+  rateLimit({ name: 'chat-burst', max: 15, windowMs: 5 * 60e3, message: 'You are sending messages too quickly. Please wait a few minutes.' }),
+  rateLimit({ name: 'chat-day', max: 120, windowMs: 24 * 60 * 60e3, message: 'Daily message limit reached. Please try again tomorrow.' }),
+  async (req, res) => {
+    if (!chatEnabled()) return res.status(503).json({ code: 'OFF', message: 'The assistant is unavailable right now.' });
+    const v = validateChatRequest(req.body);
+    if (v.error) return res.status(400).json({ code: v.error, message: 'Invalid message.' });
+    try {
+      const { limited } = await hitLimit('chat-global', CHAT_DAILY_CAP, 24 * 60 * 60e3);
+      if (limited) return res.status(503).json({ code: 'BUSY', message: 'The assistant is busy today. Please try again later.' });
+    } catch (err) { console.error('[chat cap]', err.message); }
+    try {
+      const reply = await chatReply(v);
+      res.json({ reply });
+    } catch (err) {
+      const code = err instanceof gemini.GeminiError ? err.code : 'SERVER';
+      if (!(err instanceof gemini.GeminiError)) console.error('[POST /api/chat]', err.message);
+      const status = code === 'RATE_LIMITED' ? 429 : code === 'BLOCKED' ? 422 : 502;
+      res.status(status).json({ code, message: 'The assistant could not answer. Please try again.' });
+    }
+  });
 
 // ─── Tailored CV Generator ──────────────────────────────────────────────────
 
