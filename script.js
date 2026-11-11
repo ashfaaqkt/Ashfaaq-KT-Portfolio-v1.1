@@ -9,6 +9,8 @@
 // Fetches a protected PDF via Authorization header and opens it as a blob URL.
 // Defined on window so the IIFE shield and post-login handlers can both call it.
 window.openProtectedPDF = async function(pdfUrl, token) {
+  // Documents open in the in-page preview (optional download) instead of a new tab
+  if (typeof window.previewPDF === 'function') return window.previewPDF(pdfUrl, token);
   try {
     const response = await fetch(pdfUrl, {
       headers: { 'Authorization': 'Bearer ' + token }
@@ -34,53 +36,59 @@ window.openProtectedPDF = async function(pdfUrl, token) {
 };
 
 (function() {
+  // Document folders on this site. CV, BITS grade sheets, school certificates and
+  // the Entri & NSDC certificates need sign-in; the other OCC certificates are public.
+  const DOC_PATH = /^\/(cv|bits|hscertificate|occ)\/.+\.(pdf|png|jpe?g|webp)$/;
+  const isProtectedPath = (p) => /^\/(cv|bits|hscertificate)\//.test(p) || p.startsWith('/occ/entri');
+
   const handleGlobalClick = (e) => {
     const link = e.target.closest('a');
     if (!link || !link.href) return;
 
-    const url = link.href.toLowerCase();
-    const isPDF = url.includes('.pdf');
+    let u;
+    try { u = new URL(link.href, location.href); } catch (err) { return; }
+    if (u.origin !== location.origin) return;
+    let path = u.pathname;
+    try { path = decodeURIComponent(path); } catch (err) { /* keep raw */ }
+    path = path.toLowerCase();
+    if (!DOC_PATH.test(path)) return;
 
-    if (isPDF) {
-      // LOCKED if it's NOT in /OCC/ or explicitly whitelisted
-      // EXCEPT for specific certificates which should ALWAYS be locked
-      const decodedUrl = decodeURIComponent(url);
-      // Entri & NSDC subfolder is protected regardless of /occ/ prefix
-      const isProtectedOCCPath = decodedUrl.includes('/occ/entri');
-      const isCertificate = (url.includes('/occ/') || link.classList.contains('certificate-link')) &&
-                            !isProtectedOCCPath &&
-                            !url.includes('hscertificate') &&
-                            !url.includes('high%20school') &&
-                            !url.includes('aiu%20certificate');
+    const isProtected = isProtectedPath(path);
+    // Public certificates: Ctrl/Cmd/Shift-click still opens a new tab as usual
+    if (!isProtected && (e.ctrlKey || e.metaKey || e.shiftKey)) return;
 
-      if (!isCertificate) {
-        // Always intercept — authenticated users also go through the secure fetch path
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
 
-        const token = localStorage.getItem('portfolio_token');
-        const isValid = token && token !== 'null' && token !== 'undefined' && token.length > 20;
+    const token = localStorage.getItem('portfolio_token');
+    const isValid = token && token !== 'null' && token !== 'undefined' && token.length > 20;
 
-        if (!isValid) {
-          console.warn('PDF Shield: Blocked unauthenticated access to', url);
-          window.pendingPdfLink = link.href;
-          if (typeof window.openAuthModal === 'function') {
-            window.openAuthModal('signup');
-          } else {
-            // Fallback if global function isn't ready
-            const modal = document.getElementById('auth-modal');
-            if (modal) {
-              modal.setAttribute('aria-hidden', 'false');
-              document.body.classList.add('no-scroll');
-              document.documentElement.classList.add('no-scroll');
-            }
-          }
-        } else {
-          // Authenticated — open via secure backend route (sends JWT, gets blob)
-          window.openProtectedPDF(link.href, token);
+    if (isProtected && !isValid) {
+      console.warn('PDF Shield: Blocked unauthenticated access to', u.pathname);
+      window.pendingPdfLink = link.href;
+      if (typeof window.openAuthModal === 'function') {
+        window.openAuthModal('signup');
+      } else {
+        // Fallback if global function isn't ready
+        const modal = document.getElementById('auth-modal');
+        if (modal) {
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('no-scroll');
+          document.documentElement.classList.add('no-scroll');
         }
       }
+      return;
+    }
+
+    // CV cards hold several labels — let the preview build their title from the card
+    const title = link.closest('.cv-modal-card') ? '' : link.textContent.replace(/\s+/g, ' ').trim();
+    if (typeof window.previewPDF === 'function') {
+      window.previewPDF(link.href, isProtected ? token : null, { title });
+    } else if (isProtected) {
+      window.openProtectedPDF(link.href, token);
+    } else {
+      window.open(link.href, '_blank', 'noopener');
     }
   };
 
@@ -151,7 +159,7 @@ const translations = {
       timeline: [
         {
           badge: '2024 — Present',
-          title: 'AshTech Solutions · Founder & Full-Stack Developer',
+          title: 'AshTech Solutions · Founder & CTO',
           subtitle: 'Software Solutions Agency',
           description: 'Architected and deployed a production-ready agency website with an integrated AI chatbot, serverless backend, and custom domain routing. Building software solutions for clients globally.',
           links: [
@@ -353,6 +361,7 @@ const translations = {
             <li>📱 <strong>Mobile:</strong> Kotlin · Swift · Android Studio</li>
             <li>🤖 <strong>AI & Cloud:</strong> LLM Prompt Engineering · Gemini API · AI-Assisted Development · Cloud Services · Data Analysis & Visualization</li>
             <li>🛠️ <strong>Tools:</strong> Git · GitHub · Docker · Tableau · Cursor IDE · VS Code · Replit · Framer · Notion · Linux</li>
+            <li>📎 <strong>Productivity:</strong> Microsoft 365 · Microsoft Office · Excel · PowerPoint</li>
             <li>🌿 <strong>Other:</strong> Interior Design · SketchUp / 5D Planner · AutoCAD · Modern Farming · AgriTech</li>
           </ul>
           <p><a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">Explore full expertise →</a></p>`,
@@ -433,7 +442,7 @@ const translations = {
       timeline: [
         {
           badge: '2024 — الحاضر',
-          title: 'حلول آش تك · مؤسس ومطور Full-Stack',
+          title: 'حلول آش تك · مؤسس ومدير تقني',
           subtitle: 'وكالة حلول برمجية',
           description: 'تصميم ونشر موقع وكالة جاهز للإنتاج مع برنامج دردشة آلي مدمج، وخلفية بدون خادم، وتوجيه نطاق مخصص. بناء حلول برمجية للعملاء عالمياً.',
           links: [
@@ -635,6 +644,7 @@ const translations = {
             <li>📱 <strong>الجوال:</strong> Kotlin · Swift · Android Studio</li>
             <li>🤖 <strong>الذكاء الاصطناعي والسحابة:</strong> هندسة المطالبات LLM · Gemini API · التطوير بالذكاء الاصطناعي · تحليل البيانات</li>
             <li>🛠️ <strong>الأدوات:</strong> Git · GitHub · Docker · Tableau · Cursor IDE · VS Code · Replit · Framer · Notion · Linux</li>
+            <li>📎 <strong>أدوات الإنتاجية:</strong> Microsoft 365 · Microsoft Office · Excel · PowerPoint</li>
             <li>🌿 <strong>أخرى:</strong> التصميم الداخلي · SketchUp / 5D Planner · AutoCAD · الزراعة الحديثة · تقنيات الزراعة</li>
           </ul>
           <p><a href="#expertise" onclick="navigateToPage('expertise'); setTimeout(() => document.getElementById('chatbot-minimize').click(), 500);">استكشف الخبرات الكاملة →</a></p>`,
@@ -1766,11 +1776,18 @@ function populateDynamicContent() {
 
 // Custom SVG Logos
 const customSVGLogos = {
+  // No brand icon exists for these — simple built-in line icons
+  'Responsive Design': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="48" width="48" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h6M9 14v4"/><rect x="17" y="9" width="5" height="10" rx="1"/><path d="M19.5 16.5h0"/></svg>`,
+  'Modern Farming': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="48" width="48" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4 3-7 8-7 0 5-3 7-8 7z"/><path d="M12 15c0-3-2.5-5.5-7-5.5 0 4 2.5 5.5 7 5.5z"/><path d="M5 21h14"/></svg>`,
   'gRPC': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 96 96" height="48" width="48"><path fill="#244b5a" d="M11.4052 61.9509c.6979.9285 1.6048 1.6794 2.6473 2.1918 1.1274.5584 2.3714.8408 3.6294.8238 1.0172.0266 2.0297-.1461 2.9805-.5084.7605-.2988 1.4394-.7734 1.9811-1.385.5084-.5959.8795-1.2963 1.0871-2.0515.2264-.8163.3384-1.66.333-2.507v-2.9454h-.0699c-.6593 1.045-1.6103 1.8739-2.7355 2.3844-1.0728.4671-2.2311.7059-3.4012.7013-1.1465.0086-2.2838-.2057-3.3485-.6311-1.0082-.4003-1.9306-.9894-2.7177-1.7358-.781-.7499-1.4014-1.6507-1.8235-2.6478-.44911-1.0526-.67592-2.1866-.6662-3.331-.00969-1.1411.20483-2.2729.63137-3.3313.40313-1.0013.99203-1.9174 1.73553-2.6999.7434-.7761 1.6387-1.3909 2.63-1.806 1.0608-.441 2.2001-.6617 3.3488-.6486.5231.003 1.045.0499 1.5602.14.5666.099 1.1197.2638 1.6481.4911 1.2545.5437 2.3389 1.4161 3.1386 2.525h.0699v-2.7354h2.3146v16.2705c-.0079.956-.1197 1.9083-.3333 2.8402-.2234 1.0076-.6664 1.9534-1.2973 2.7701-.7179.901-1.6366 1.6216-2.6826 2.1043-1.1457.5608-2.6419.8411-4.4886.8411-1.5001.0256-2.9902-.2485-4.383-.8063-1.3326-.5708-2.5279-1.4196-3.50622-2.4894l1.71802-1.8237Zm.4207-11.7116c-.0058.8357.1552 1.6641.4735 2.4368.3035.7415.7435 1.4195 1.2971 1.9986.5504.5741 1.2049 1.0382 1.9287 1.3678.754.3426 1.5738.5162 2.402.5083 1.6401.0059 3.2206-.6149 4.4182-1.7355.5881-.555 1.0488-1.2311 1.3502-1.9816.3247-.825.4741-1.7086.4384-2.5944.0059-.831-.1366-1.6564-.4209-2.4373-.2701-.7422-.6876-1.4221-1.2274-1.9987-.5548-.5845-1.223-1.0498-1.9636-1.3675-.82-.3485-1.7039-.5218-2.5949-.5086-.8282-.0076-1.648.166-2.402.5086-.7236.3299-1.378.7939-1.9287 1.3675-.5535.5794-.9935 1.2573-1.2974 1.9987-.3181.7729-.479 1.6014-.4732 2.4373Zm23.9844 8.4156h-2.5245V33.8282H40.93c2.5247 0 4.5175.5493 5.9786 1.6481 1.4608 1.099 2.1914 2.7588 2.1917 4.9793.0445 1.6118-.5403 3.1776-1.6305 4.3656-1.0872 1.1807-2.6593 1.8645-4.7163 2.0512l7.1534 11.7825h-3.086l-6.8024-11.5367h-4.208l-.0002 11.5367Zm0-13.851h4.4886c.9644.0203 1.9268-.0978 2.8577-.3508.6809-.182 1.3186-.4978 1.8761-.929.4497-.3619.7997-.8326 1.0167-1.3675.2134-.5415.3205-1.119.3157-1.701.0026-.5702-.1046-1.1356-.3157-1.6654-.2196-.5384-.5688-1.0143-1.0167-1.3852-.5521-.4398-1.1917-.7566-1.8761-.9293-.933-.2402-1.8945-.3522-2.8577-.333h-4.4886v8.6612Zm18.4441-10.9757h7.2238c2.5245 0 4.5173.5494 5.9783 1.6483 1.4608 1.0991 2.1914 2.7589 2.1918 4.9794 0 2.2212-.7306 3.8867-2.1918 4.9967-1.461 1.1106-3.4538 1.6658-5.9783 1.6656h-4.6988v11.5367h-2.525V33.8282Zm2.5252 10.9759h4.0677c.9644.0203 1.9268-.0978 2.8577-.3507.6808-.1821 1.3186-.498 1.8761-.9291.4497-.3619.7996-.8326 1.0167-1.3675.2135-.5414.3206-1.1189.3157-1.7009.0027-.5703-.1045-1.1357-.3157-1.6654-.2196-.5385-.5688-1.0143-1.0167-1.3853-.5521-.4396-1.1917-.7565-1.8761-.9293-.933-.2401-1.8945-.3522-2.8577-.3329h-4.0679l.0002 8.6611ZM95 54.7276c-.4443.6582-.9682 1.2589-1.56 1.7884-.6406.5755-1.3539 1.0647-2.1216 1.4549-.8196.4185-1.6842.7421-2.5771.9646-.9579.2378-1.9415.3555-2.9284.3505-1.7604.0165-3.5065-.3172-5.1368-.9816-3.1091-1.2564-5.5719-3.7256-6.8204-6.8379-.6681-1.66-1.0017-3.4357-.9816-5.225-.02-1.7892.3136-3.5649.9816-5.2249 1.2484-3.1122 3.7113-5.5813 6.8204-6.8374 1.6302-.6646 3.3764-.9984 5.1368-.9819 1.5867.0085 3.1574.3178 4.6288.9115 1.5694.628 2.9388 1.6704 3.9622 3.0158l-2.2088 1.6481c-.2968-.442-.6506-.843-1.0523-1.1923-.464-.4109-.976-.764-1.5249-1.0518-.5864-.3089-1.2035-.5557-1.8412-.7364-.6383-.1847-1.2994-.2791-1.9638-.2806-1.4729-.0242-2.9332.2751-4.2779.8766-1.2199.5535-2.3122 1.3533-3.2083 2.3492-.8868.9987-1.5716 2.1599-2.0166 3.4192-.9349 2.6431-.9349 5.5268 0 8.1699.4449 1.2593 1.1297 2.4204 2.0166 3.4189.8958.9962 1.9882 1.7962 3.2083 2.3494 1.3446.602 2.8049.9014 4.2779.8769.6527.0003 1.3041-.0584 1.9462-.1753.6533-.1202 1.2893-.3204 1.8937-.5961.637-.2922 1.2277-.6763 1.7533-1.14.5904-.5274 1.1038-1.1352 1.5251-1.8054L95 54.7276Z"/><path fill="url(#a)" d="m7.53809 41.9566-6.53851-6.49 6.49007-6.5386 6.53855 6.4901-6.49011 6.5385Z"/><path fill="url(#b)" d="m25.3301 39.1863-3.8352-3.8067 3.8068-3.8352 3.8351 3.8068-3.8067 3.8351Z"/><path fill="#244b5a" d="M7.77596 31.5034 3.8457 35.4631l3.95949 3.9303 3.34981-.0125-3.51277-3.4845 17.34547-.0643-1.5202 1.5305 1.6749-.0061 1.9653-1.9799-1.9799-1.965-1.6749.0061 1.5317 1.5195-17.34553.0643 3.48643-3.5105-3.34954.0124Z"/><defs><linearGradient id="a" x1="-646.313" x2="656.545" y1="-607.051" y2="-611.894" gradientUnits="userSpaceOnUse"><stop stop-color="#72c9c9"/><stop offset="1" stop-color="#02b0ad"/></linearGradient><linearGradient id="b" x1="-358.188" x2="406.007" y1="-341.49" y2="-344.331" gradientUnits="userSpaceOnUse"><stop stop-color="#03b6b4"/><stop offset="1" stop-color="#74cbca"/></linearGradient></defs></svg>`,
   'AWS RDS': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="48" width="48"><path fill="#252f3e" d="M6.872425 10.077275c0 0.289175 0.03125 0.52365 0.085975 0.6956 0.062525 0.17195 0.140675 0.359525 0.2501 0.56275 0.039075 0.062525 0.0547 0.12505 0.0547 0.17975 0 0.078175 -0.046875 0.156325 -0.1485 0.234475l-0.4924 0.328275c-0.070325 0.0469 -0.140675 0.07035 -0.2032 0.07035 -0.07815 0 -0.156325 -0.0391 -0.234475 -0.109425 -0.109425 -0.11725 -0.203225 -0.2423 -0.281375 -0.36735 -0.07815 -0.132875 -0.156325 -0.281375 -0.2423 -0.46115 -0.609625 0.719075 -1.375575 1.0786 -2.29785 1.0786 -0.656525 0 -1.1801925 -0.187575 -1.56317 -0.56275 -0.382975 -0.37515 -0.5783725 -0.875375 -0.5783725 -1.500625 0 -0.66435 0.234475 -1.20365 0.7112425 -1.610075 0.4767675 -0.406425 1.10985 -0.60965 1.914875 -0.60965 0.26575 0 0.5393 0.02345 0.8285 0.06255 0.289175 0.039075 0.586175 0.1016 0.898825 0.17195v-0.570575c0 -0.594 -0.125075 -1.00825 -0.36735 -1.250525 -0.250125 -0.2423 -0.672175 -0.359525 -1.274 -0.359525 -0.27355 0 -0.554925 0.03125 -0.8441 0.1016 -0.2892 0.07035 -0.57055 0.156325 -0.844115 0.265725 -0.125055 0.054725 -0.218845 0.085975 -0.273555 0.101625 -0.0547125 0.015625 -0.09379 0.02345 -0.125055 0.02345 -0.10942 0 -0.1641325 -0.078175 -0.1641325 -0.2423v-0.382975c0 -0.12505 0.0156325 -0.21885 0.0547125 -0.27355 0.0390775 -0.054725 0.10942 -0.109425 0.2188425 -0.16415 0.273555 -0.140675 0.6018275 -0.257925 0.9848025 -0.3517 0.382975 -0.1016 0.7894 -0.1485 1.219275 -0.1485 0.930075 0 1.61005 0.211025 2.04775 0.633075 0.429875 0.42205 0.648725 1.06295 0.648725 1.9227v2.53235h0.015625Zm-3.17325 1.188c0.257925 0 0.523675 -0.0469 0.80505 -0.1407 0.28135 -0.093775 0.531475 -0.265725 0.7425 -0.5002 0.12505 -0.1485 0.21885 -0.312625 0.265725 -0.500225 0.0469 -0.187575 0.078175 -0.414225 0.078175 -0.679975v-0.32825c-0.226675 -0.054725 -0.46895 -0.101625 -0.719075 -0.132875 -0.2501 -0.031275 -0.4924 -0.0469 -0.734675 -0.0469 -0.523675 0 -0.90665 0.1016 -1.164575 0.312625 -0.257925 0.211025 -0.382975 0.50805 -0.382975 0.898825 0 0.36735 0.0938 0.6409 0.2892 0.828475 0.187575 0.1954 0.461125 0.2892 0.82065 0.2892Zm6.27615 0.8441c-0.1407 0 -0.2345 -0.02345 -0.297025 -0.07815 -0.062525 -0.0469 -0.117225 -0.156325 -0.164125 -0.304825L7.67745 5.68475c-0.0469 -0.156325 -0.07035 -0.257925 -0.07035 -0.312625 0 -0.12505 0.062525 -0.1954 0.1876 -0.1954h0.76595c0.1485 0 0.2501 0.02345 0.3048 0.07815 0.06255 0.0469 0.109425 0.156325 0.156325 0.304825l1.313075 5.1741 1.219275 -5.1741c0.039075 -0.156325 0.085975 -0.257925 0.1485 -0.304825s0.17195 -0.07815 0.312625 -0.07815h0.625275c0.1485 0 0.2501 0.02345 0.312625 0.07815 0.062525 0.0469 0.11725 0.156325 0.1485 0.304825l1.2349 5.236625 1.35215 -5.236625c0.0469 -0.156325 0.1016 -0.257925 0.156325 -0.304825 0.062525 -0.0469 0.164125 -0.07815 0.3048 -0.07815h0.726875c0.125075 0 0.1954 0.062525 0.1954 0.1954 0 0.039075 -0.0078 0.07815 -0.015625 0.12505s-0.02345 0.109425 -0.0547 0.1954l-1.883625 6.04165c-0.0469 0.156325 -0.1016 0.257925 -0.16415 0.304825 -0.062525 0.046875 -0.164125 0.07815 -0.297 0.07815h-0.67215c-0.1485 0 -0.2501 -0.02345 -0.31265 -0.07815 -0.062525 -0.054725 -0.117225 -0.156325 -0.1485 -0.31265L12.31225 6.685175l-1.20365 5.033425c-0.039075 0.1563 -0.085975 0.257925 -0.1485 0.312625 -0.062525 0.0547 -0.17195 0.07815 -0.312625 0.07815h-0.67215Zm10.04335 0.21105c-0.406425 0 -0.81285 -0.0469 -1.203625 -0.1407 -0.3908 -0.0938 -0.695625 -0.1954 -0.898825 -0.312625 -0.12505 -0.07035 -0.211025 -0.1485 -0.2423 -0.21885 -0.03125 -0.07035 -0.0469 -0.1485 -0.0469 -0.21885v-0.3986c0 -0.164125 0.062525 -0.2423 0.179775 -0.2423 0.0469 0 0.0938 0.007825 0.140675 0.02345 0.0469 0.015625 0.11725 0.0469 0.1954 0.07815 0.26575 0.11725 0.554925 0.21105 0.85975 0.273575 0.312625 0.062525 0.61745 0.093775 0.930075 0.093775 0.4924 0 0.875375 -0.085975 1.141125 -0.257925 0.26575 -0.17195 0.406425 -0.42205 0.406425 -0.7425 0 -0.21885 -0.07035 -0.3986 -0.211025 -0.5471 -0.1407 -0.1485 -0.406425 -0.281375 -0.7894 -0.406425l-1.1333 -0.351725c-0.57055 -0.17975 -0.992625 -0.4455 -1.25055 -0.7972 -0.257925 -0.3439 -0.390775 -0.726875 -0.390775 -1.1333 0 -0.328275 0.070325 -0.617475 0.211025 -0.867575 0.140675 -0.2501 0.32825 -0.46895 0.562725 -0.6409 0.234475 -0.17975 0.500225 -0.312625 0.81285 -0.406425 0.31265 -0.093775 0.6409 -0.132875 0.9848 -0.132875 0.17195 0 0.351725 0.007825 0.523675 0.031275 0.17975 0.02345 0.3439 0.0547 0.508025 0.085975 0.156325 0.039075 0.304825 0.07815 0.4455 0.12505 0.1407 0.0469 0.2501 0.0938 0.328275 0.1407 0.109425 0.062525 0.187575 0.12505 0.234475 0.195375 0.0469 0.062525 0.07035 0.1485 0.07035 0.257925v0.36735c0 0.164125 -0.06255 0.2501 -0.179775 0.2501 -0.062525 0 -0.164125 -0.03125 -0.297 -0.093775 -0.4455 -0.203225 -0.945725 -0.304825 -1.50065 -0.304825 -0.4455 0 -0.797225 0.07035 -1.0395 0.21885 -0.2423 0.1485 -0.36735 0.37515 -0.36735 0.6956 0 0.21885 0.07815 0.406425 0.234475 0.554925 0.156325 0.1485 0.4455 0.297 0.85975 0.429875l1.10985 0.351725c0.562725 0.17975 0.96915 0.429875 1.21145 0.750325 0.2423 0.32045 0.359525 0.687775 0.359525 1.0942 0 0.3361 -0.070325 0.6409 -0.2032 0.90665 -0.1407 0.265725 -0.328275 0.5002 -0.570575 0.6878 -0.242275 0.1954 -0.531475 0.336075 -0.86755 0.437675 -0.3517 0.109425 -0.71905 0.16415 -1.117675 0.16415Z" stroke-width="0.25"/><path fill="#FF9900" d="M21.496 16.118825c-2.571425 1.89925 -6.3074 2.9075 -9.519725 2.9075 -4.501925 0 -8.55835 -1.6648 -11.6221675 -4.4316 -0.2422905 -0.21885 -0.0234475 -0.51585 0.26574 -0.3439C3.933775 16.173525 8.02145 17.3381 12.24985 17.3381c2.852775 0 5.986925 -0.594025 8.870975 -1.8133 0.429875 -0.195375 0.797225 0.281375 0.375175 0.594025Zm1.070775 -1.219275c-0.328275 -0.422075 -2.172825 -0.203225 -3.009125 -0.101625 -0.2501 0.031275 -0.289175 -0.187575 -0.062525 -0.3517 1.4694 -1.0317 3.8845 -0.7347 4.16585 -0.3908 0.281375 0.351725 -0.07815 2.766825 -1.45375 3.923575 -0.211025 0.17975 -0.414225 0.085975 -0.32045 -0.148525 0.31265 -0.77375 1.00825 -2.5167 0.68 -2.930925Z" stroke-width="0.25"/></svg>`,
   'Tableau': `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="48" width="48"><path fill="#7099a6" d="M11.626475 1.553125v1.068575h-1.911275v0.695h1.911275v2.128475h0.74715v-2.128475h1.95905v-0.695h-1.95905V0.4888925h-0.74715V1.553125Z" stroke-width="0.25"/><path fill="#eb912c" d="M5.380025 4.263625v1.55075H2.48706v0.973H5.380025v3.149275h1.072925V6.787375h2.936425v-0.973H6.45295V2.7129h-1.072925v1.550725Z" stroke-width="0.25"/><path fill="#59879b" d="M17.50345 4.263625v1.55075H14.610475v1.0208h2.892975v3.101475h1.11635V6.835175h2.892975v-1.0208H18.6198V2.7129h-1.11635v1.550725Z" stroke-width="0.25"/><path fill="#e8762c" d="M11.348275 9.54575v1.737525h-3.21875v1.29445h3.21875v3.47505h1.30315V12.577725h3.21875v-1.29445h-3.21875V7.808225h-1.30315v1.737525Z" stroke-width="0.25"/><path fill="#5b6591" d="M20.813675 10.4231v1.0903h-1.95905v0.8818h1.95905v2.17625h0.97735v-2.17625h1.95905v-0.8818h-1.95905v-2.17625h-0.97735v1.08595Z" stroke-width="0.25"/><path fill="#7099a6" d="M2.161275 10.518825v1.042525H0.25v0.73845h1.911275v2.085025h0.747125v-2.085025l1.959075 -0.0695v-0.66895h-1.959075v-2.085025H2.161275v1.0425Z" stroke-width="0.25"/><path fill="#c72035" d="M5.380025 15.4272v1.55075H2.48706v1.020775H5.380025v3.1015h1.116375v-3.1015h2.892975v-1.020775H6.4964V13.876475h-1.116375v1.550725Z" stroke-width="0.25"/><path fill="#1f447e" d="M17.50345 15.4272v1.55075H14.610475v0.973h2.892975v3.149275h1.11635V17.95095h2.892975v-0.973H18.6198V13.876475h-1.11635v1.550725Z" stroke-width="0.25"/><path fill="#5b6591" d="M11.5351 19.3669v1.08595h-1.95905v0.8818h1.95905v2.17625h0.977375v-2.17625h1.95905v-0.8818h-1.95905v-2.17625h-0.977375v1.0903Z" stroke-width="0.25"/></svg>`,
   'Google Antigravity': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" height="48" width="48"><defs><linearGradient id="antigravity-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4285F4;stop-opacity:1" /><stop offset="25%" style="stop-color:#EA4335;stop-opacity:1" /><stop offset="50%" style="stop-color:#FBBC04;stop-opacity:1" /><stop offset="75%" style="stop-color:#34A853;stop-opacity:1" /><stop offset="100%" style="stop-color:#4285F4;stop-opacity:1" /></linearGradient></defs><circle cx="24" cy="24" r="20" fill="url(#antigravity-gradient)" opacity="0.9"/><path d="M24 8 L20 16 L28 16 Z" fill="white" opacity="0.95"/><path d="M24 40 L20 32 L28 32 Z" fill="white" opacity="0.95"/><circle cx="24" cy="24" r="6" fill="white" opacity="0.8"/><path d="M18 24 L24 18 L30 24 L24 30 Z" fill="#4285F4" opacity="0.7"/></svg>`
 };
+
+// Simple Icons removed these brands (cdn.simpleicons.org returns 404); 11.15.0 still has them
+const REMOVED_ICONS = new Set(['openai', 'amazonaws']);
+const pinnedIcon = (name) => `https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/${name}.svg`;
 
 // Tech Stack Logo Mapping
 const techLogos = {
@@ -1806,6 +1823,9 @@ const techLogos = {
   'Notion': 'notion',
   'Linux Basics': 'linux',
   'Microsoft Office': 'microsoft',
+  'Microsoft 365': 'microsoft',
+  'Microsoft Excel': 'microsoftexcel',
+  'Microsoft PowerPoint': 'microsoftpowerpoint',
   'Google Antigravity': 'googleantigravity',
   'Interior Design': 'sketchup',
   'SketchUp / 5D Planner': 'sketchup',
@@ -1839,7 +1859,8 @@ function populateTechStack() {
     // Tools
     'Git', 'GitHub', 'Docker', 'Firebase', 'Tableau',
     'Cursor IDE', 'VS Code', 'Replit', 'Framer',
-    'Notion', 'Linux Basics', 'Microsoft Office', 'Google Antigravity',
+    'Notion', 'Linux Basics', 'Microsoft Office', 'Microsoft 365',
+    'Microsoft Excel', 'Microsoft PowerPoint', 'Google Antigravity',
     // Other Domains
     'Interior Design', 'SketchUp / 5D Planner',
     'Modern Farming', 'Canva Pro', 'AutoCAD',
@@ -1885,7 +1906,8 @@ function populateTechStack() {
         logoTooltip.classList.add('tech-logo-tooltip-multiple');
         logoName.forEach((logo, index) => {
           const logoImg = document.createElement('img');
-          logoImg.src = `https://cdn.simpleicons.org/${logo}/3b82f6`;
+          // Brands removed from the latest Simple Icons → pinned older copy (no 404)
+          logoImg.src = REMOVED_ICONS.has(logo) ? pinnedIcon(logo) : `https://cdn.simpleicons.org/${logo}/3b82f6`;
           logoImg.alt = `${tech} logo ${index + 1}`;
           logoImg.loading = 'lazy';
           logoImg.onerror = function () {
@@ -1903,22 +1925,10 @@ function populateTechStack() {
         techItem.setAttribute('data-logo', logoName);
         const logoImg = document.createElement('img');
 
-        // For Cloud Services (AWS), try multiple formats
-        if (logoName === 'amazonaws' && tech === 'Cloud Services') {
-          // Try AWS logo with default color (orange)
-          logoImg.src = `https://cdn.simpleicons.org/amazonaws`;
-          logoImg.onerror = function () {
-            // Try with orange color explicitly
-            this.src = `https://cdn.simpleicons.org/amazonaws/FF9900`;
-            this.onerror = function () {
-              // Try with white color
-              this.src = `https://cdn.simpleicons.org/amazonaws/ffffff`;
-              this.onerror = function () {
-                // If all fail, hide the tooltip
-                logoTooltip.style.display = 'none';
-              };
-            };
-          };
+        if (REMOVED_ICONS.has(logoName)) {
+          // e.g. AWS: removed from cdn.simpleicons.org, served from a pinned Simple Icons release
+          logoImg.src = pinnedIcon(logoName);
+          logoImg.onerror = function () { logoTooltip.style.display = 'none'; };
         } else {
           // Use jsdelivr CDN which is more reliable for SVG icons
           // Try icon name first, then fallbacks
@@ -2765,6 +2775,9 @@ function populateSkills() {
           'Notion',
           'Linux Basics',
           'Microsoft Office',
+          'Microsoft 365',
+          'Microsoft Excel',
+          'Microsoft PowerPoint',
           'Google Antigravity'
         ]
       },
@@ -3910,6 +3923,30 @@ function initAuth() {
   };
   const authMsg = (msg) => (currentLanguage === 'ar' && AUTH_ERRORS_AR[msg]) || msg;
   const readJson = async (res) => { try { return await res.json(); } catch { return {}; } };
+  // Visible busy state for the auth buttons: spinner + "Signing in…" (the theme hides the old bar)
+  const BUSY_LABELS = {
+    login: { en: 'Signing in…', ar: 'جارٍ تسجيل الدخول…' },
+    register: { en: 'Creating account…', ar: 'جارٍ إنشاء الحساب…' }
+  };
+  const setBusy = (btn, busy, kind) => {
+    if (!btn) return;
+    if (busy) {
+      if (btn.classList.contains('is-busy')) return;
+      btn.dataset.idleHtml = btn.innerHTML;
+      const label = BUSY_LABELS[kind][currentLanguage === 'ar' ? 'ar' : 'en'];
+      btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span></span>';
+      btn.lastElementChild.textContent = label;
+      btn.classList.add('is-busy');
+      btn.setAttribute('aria-busy', 'true');
+      btn.disabled = true;
+    } else {
+      if (btn.dataset.idleHtml !== undefined) btn.innerHTML = btn.dataset.idleHtml;
+      delete btn.dataset.idleHtml;
+      btn.classList.remove('is-busy');
+      btn.removeAttribute('aria-busy');
+      btn.disabled = false;
+    }
+  };
 
   // Form Submit Login
   if (formLogin) {
@@ -3921,7 +3958,7 @@ function initAuth() {
       const submitBtn = formLogin.querySelector('button[type="submit"]');
       
       errorEl.textContent = '';
-      submitBtn.classList.add('btn-loading');
+      setBusy(submitBtn, true, 'login');
       
       try {
         const res = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -3948,7 +3985,7 @@ function initAuth() {
       } catch (err) {
         errorEl.textContent = authMsg('Server error. Please try again.');
       } finally {
-        submitBtn.classList.remove('btn-loading');
+        setBusy(submitBtn, false);
       }
     });
   }
@@ -3988,7 +4025,7 @@ function initAuth() {
       
       const submitBtn = formRegister.querySelector('button[type="submit"]');
       errorEl.textContent = '';
-      submitBtn.classList.add('btn-loading');
+      setBusy(submitBtn, true, 'register');
       
       try {
         const res = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -4015,7 +4052,7 @@ function initAuth() {
       } catch (err) {
         errorEl.textContent = authMsg('Server error. Please try again.');
       } finally {
-        submitBtn.classList.remove('btn-loading');
+        setBusy(submitBtn, false);
       }
     });
   }

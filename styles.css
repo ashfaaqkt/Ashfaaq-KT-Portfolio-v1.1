@@ -11911,3 +11911,27 @@ html.menu-open,
 html.menu-open body {
   overflow: hidden !important;
 }
+
+/* Auth buttons: busy state (spinner + label), works with the notebook theme */
+.btn.is-busy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: progress;
+  pointer-events: none;
+  opacity: 0.92;
+}
+.btn-spinner {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btnSpin 0.7s linear infinite;
+}
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner { animation-duration: 1.6s; }
+}

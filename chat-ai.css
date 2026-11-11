@@ -189,5 +189,8 @@ html[dir="rtl"] .chatbot-container.cb-chatting .cb-chips {
   .cb-typing span { opacity: 0.6; }
 }
 
-/* The timed "sign in" promo toast would cover the chat input — hide it while the chat is open */
-body:has(.chatbot-container.open) .toast.toast-hint { display: none; }
+/* The timed "sign in" promo toast would cover buttons in these windows (chat input,
+   the sign-in / sign-up submit button, the document preview) — hide it while they're open */
+body:has(.chatbot-container.open) .toast.toast-hint,
+body:has(#auth-modal[aria-hidden="false"]) .toast.toast-hint,
+body:has(.pdfv-overlay:not([hidden])) .toast.toast-hint { display: none; }
