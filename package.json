@@ -22,5 +22,8 @@
     "multer": "^2.1.1",
     "pdf-lib": "1.17.1",
     "puppeteer-core": "25.14.0"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
