@@ -13,6 +13,8 @@ const Timeline = require('./models/Timeline');
 const Project = require('./models/Project');
 const connectDB = require('./lib/db');
 const { rateLimit, normalizeEmail, validateRegistration } = require('./lib/security');
+const { getProfileSnapshot } = require('./lib/profile');
+const gemini = require('./lib/gemini');
 
 /* ── Multer storage configs ── */
 const pdfStorage = multer.diskStorage({
@@ -358,6 +360,25 @@ app.delete('/api/admin/users/:id', verifyAdmin, async (req, res) => {
   } catch (err) {
     console.error('[DELETE /api/admin/users/:id]', err);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ─── AI Routes (admin) ──────────────────────────────────────────────────────
+
+// Status: is Gemini configured, which models are pinned (never exposes the key)
+app.get('/api/admin/ai/status', verifyAdmin, (req, res) => {
+  let snapshotOk = true, snapshotError = null;
+  try { getProfileSnapshot(); } catch (err) { snapshotOk = false; snapshotError = err.message; }
+  res.json({ geminiConfigured: gemini.isConfigured(), models: gemini.MODELS, snapshotOk, snapshotError });
+});
+
+// The exact profile data the AI features are allowed to use — for review
+app.get('/api/admin/ai/profile-snapshot', verifyAdmin, (req, res) => {
+  try {
+    res.json(getProfileSnapshot({ fresh: req.query.fresh === '1' }));
+  } catch (err) {
+    console.error('[GET /api/admin/ai/profile-snapshot]', err.message);
+    res.status(500).json({ message: 'Could not build profile snapshot' });
   }
 });
 

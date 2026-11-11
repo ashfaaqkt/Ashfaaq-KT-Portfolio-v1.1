@@ -314,7 +314,7 @@ const translations = {
           <ul>
             <li>🏢 <strong>Founder & CTO</strong> — AshTech Software Solutions (2024–Present)</li>
             <li>🌱 <strong>Co-Founder & Director</strong> — Growly Farms, Kerala (2022–Present)</li>
-            <li>🎓 <strong>MERN Full-Stack</strong> — Entri Elevate AI Program (2025–Present)</li>
+            <li>🎓 <strong>MERN Full-Stack</strong> — Entri Elevate AI Program (2025–2026) · Completed · A+ Grade</li>
             <li>🌍 Comfortable working in <strong>India & GCC</strong> time zones</li>
             <li>🗣️ Fluent in <strong>Arabic, English & Malayalam</strong></li>
           </ul>
