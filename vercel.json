@@ -23,8 +23,8 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{script.js,index.html}",
-      "maxDuration": 30
+      "includeFiles": "{script.js,index.html,lib/cv-fonts/**}",
+      "maxDuration": 60
     }
   }
 }

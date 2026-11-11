@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Gaegu:wght@400;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="notebook-theme.css">
+  <link rel="stylesheet" href="cv-generator.css">
 </head>
 
 <body>
@@ -1646,6 +1647,24 @@
 
       </div><!-- /cv-modal-grid -->
 
+      <!-- AI tailored CV generator entry (opens cv-generator.js dialog) -->
+      <button type="button" class="cvgen-entry" id="cvgen-open" aria-haspopup="dialog">
+        <span class="cvgen-entry-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11l1 2.2 2.2 1-2.2 1L12 17.4l-1-2.2-2.2-1 2.2-1z"/></svg>
+        </span>
+        <span class="cvgen-entry-text">
+          <span class="cvgen-entry-badges">
+            <span class="cvgen-chip cvgen-chip-beta" data-en="BETA" data-ar="تجريبي">BETA</span>
+            <span class="cvgen-chip">EN · AR</span>
+          </span>
+          <span class="cvgen-entry-title" data-en="Generate a tailored ATS CV" data-ar="أنشئ سيرة ذاتية مخصصة متوافقة مع ATS">Generate a tailored ATS CV</span>
+          <span class="cvgen-entry-desc" data-en="Paste your job description — get Ashfaaq's CV matched to the role as a 1–2 page PDF. Verified facts only." data-ar="الصق وصف الوظيفة — واحصل على سيرة أشفاق الذاتية مطابقة للدور كملف PDF من صفحة أو صفحتين. حقائق موثقة فقط.">Paste your job description — get Ashfaaq's CV matched to the role as a 1–2 page PDF. Verified facts only.</span>
+        </span>
+        <span class="cvgen-entry-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </button>
+
       <p class="cv-modal-note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
         <span data-en="All files are access-protected — you'll be prompted to sign in." data-ar="جميع الملفات محمية بكلمة مرور — سيُطلب منك تسجيل الدخول.">All files are access-protected — you'll be prompted to sign in.</span>
@@ -1916,6 +1935,7 @@
   </div><!-- /fyp-modal-overlay -->
 
   <script src="./script.js"></script>
+  <script src="./cv-generator.js" defer></script>
 </body>
 
 </html>

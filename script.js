@@ -3933,6 +3933,7 @@ function initAuth() {
           localStorage.setItem('portfolio_token', data.token);
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
+          document.dispatchEvent(new CustomEvent('portfolio:signed-in'));
           hideModal(authModal);
           const firstName = (data.user?.name || '').split(' ')[0];
           if (firstName) showWelcomeToast(firstName, false);
@@ -3999,6 +4000,7 @@ function initAuth() {
           localStorage.setItem('portfolio_token', data.token);
           localStorage.setItem('portfolio_user', JSON.stringify(data.user));
           updateAuthState();
+          document.dispatchEvent(new CustomEvent('portfolio:signed-in'));
           hideModal(authModal);
           const firstName = (data.user?.name || '').split(' ')[0];
           if (firstName) showWelcomeToast(firstName, true);

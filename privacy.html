@@ -296,8 +296,8 @@
         <span class="prv-ar">توضح هذه السياسة البيانات التي يتم جمعها عند التسجيل وكيفية استخدامها وحمايتها.</span>
       </p>
       <p class="prv-updated">
-        <span class="prv-en">Last updated: May 2026</span>
-        <span class="prv-ar">آخر تحديث: مايو ٢٠٢٦</span>
+        <span class="prv-en">Last updated: November 2026</span>
+        <span class="prv-ar">آخر تحديث: نوفمبر ٢٠٢٦</span>
       </p>
       <div class="prv-divider"></div>
     </div>
@@ -316,8 +316,8 @@
       <div class="prv-body">
         <p class="prv-en">This is the personal portfolio website of <strong>Ashfaaq KT</strong>, a software developer. This site is operated solely by Ashfaaq KT and is not affiliated with any company or organization. The purpose of this website is to showcase skills, projects, and professional experience.</p>
         <p class="prv-ar">هذا الموقع هو المحفظة الشخصية لـ <strong>أشفاق كي تي</strong>، مطور برمجيات. يُدار هذا الموقع بشكل فردي ولا ينتمي إلى أي شركة أو مؤسسة. الغرض من الموقع هو عرض المهارات والمشاريع والخبرة المهنية.</p>
-        <div class="prv-highlight prv-en">This is a personal portfolio — not a commercial platform. Your data is never sold, rented, or shared with third parties.</div>
-        <div class="prv-highlight prv-ar">هذا موقع محفظة شخصية وليس منصة تجارية. لن تُباع بياناتك أو تُؤجَر أو تُشارك مع أطراف خارجية.</div>
+        <div class="prv-highlight prv-en">This is a personal portfolio — not a commercial platform. Your data is never sold or rented. It is shared only with the service providers that run this site's features (for example, Google's Gemini API for the AI CV generator), and only for that purpose.</div>
+        <div class="prv-highlight prv-ar">هذا موقع محفظة شخصية وليس منصة تجارية. لن تُباع بياناتك أو تُؤجَر أبدًا. تُشارك فقط مع مزودي الخدمات الذين يشغّلون ميزات الموقع (مثل واجهة Gemini من Google لمولّد السيرة الذاتية بالذكاء الاصطناعي)، ولهذا الغرض فقط.</div>
       </div>
     </div>
 
@@ -447,6 +447,41 @@
       </div>
     </div>
 
+    <!-- AI Tailored CV Generator -->
+    <div class="prv-section" id="cv-generator">
+      <div class="prv-section-head">
+        <div class="prv-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11l1 2.2 2.2 1-2.2 1L12 17.4l-1-2.2-2.2-1 2.2-1z"/></svg>
+        </div>
+        <h2 class="prv-section-title">
+          <span class="prv-en">AI Tailored CV Generator (Beta)</span>
+          <span class="prv-ar">مولّد السيرة الذاتية المخصصة بالذكاء الاصطناعي (تجريبي)</span>
+        </h2>
+      </div>
+      <div class="prv-body">
+        <p class="prv-en">Signed-in visitors can generate a version of my CV tailored to a specific job. When you use it, the following is stored:</p>
+        <p class="prv-ar">يمكن للزوار المسجلين إنشاء نسخة من سيرتي الذاتية مخصصة لوظيفة معينة. عند استخدامه، يتم حفظ ما يلي:</p>
+        <ul class="prv-en">
+          <li><strong>The job details you enter</strong> — job title, company, job description, must-have skills, seniority, work mode, CV language and length.</li>
+          <li><strong>Your account name and email</strong>, the date and time, and your IP address (to prevent abuse).</li>
+          <li><strong>The generated CV content</strong> and its match results (requirements met / not met), with a unique reference number that is printed on the PDF.</li>
+        </ul>
+        <ul class="prv-ar">
+          <li><strong>بيانات الوظيفة التي تُدخلها</strong> — المسمى الوظيفي، الشركة، الوصف الوظيفي، المهارات الأساسية، المستوى، نمط العمل، لغة السيرة وطولها.</li>
+          <li><strong>اسم حسابك وبريدك الإلكتروني</strong>، والتاريخ والوقت، وعنوان IP الخاص بك (لمنع إساءة الاستخدام).</li>
+          <li><strong>محتوى السيرة الذاتية المُنشأة</strong> ونتائج المطابقة (المتطلبات المستوفاة / غير المستوفاة)، مع رقم مرجعي فريد مطبوع على ملف PDF.</li>
+        </ul>
+        <p class="prv-en"><strong>Processing by Google:</strong> to write the CV, your job details and my public portfolio information are sent to <strong>Google's Gemini API</strong> (paid tier), which processes them on my behalf. Under Google's terms for the paid Gemini API, this content is not used to improve Google's products. Please do not paste other people's personal data into the job description.</p>
+        <p class="prv-ar"><strong>المعالجة بواسطة Google:</strong> لكتابة السيرة الذاتية، تُرسل بيانات الوظيفة ومعلومات محفظتي العامة إلى <strong>واجهة Gemini من Google</strong> (الفئة المدفوعة)، التي تعالجها نيابةً عني. وفقًا لشروط Google لواجهة Gemini المدفوعة، لا يُستخدم هذا المحتوى لتحسين منتجات Google. يرجى عدم لصق بيانات شخصية لأشخاص آخرين في الوصف الوظيفي.</p>
+        <p class="prv-en"><strong>Why:</strong> to generate the CV, to enforce the limit of 3 CVs per account per month, and to keep a record of every CV issued so its reference number can be verified.</p>
+        <p class="prv-ar"><strong>الغرض:</strong> إنشاء السيرة الذاتية، وتطبيق حد 3 سير ذاتية لكل حساب شهريًا، والاحتفاظ بسجل لكل سيرة صادرة للتحقق من رقمها المرجعي.</p>
+        <p class="prv-en"><strong>Accuracy:</strong> generated CVs use only verified facts from this portfolio. Skills or experience I do not have are never added — they are shown to you as gaps instead. Editing a generated CV to add claims, or presenting it as anything other than what it is, falls under the Prohibited Use terms below.</p>
+        <p class="prv-ar"><strong>الدقة:</strong> تستخدم السير الذاتية المُنشأة الحقائق الموثقة من هذه المحفظة فقط. لا تُضاف أي مهارات أو خبرات لا أملكها — بل تُعرض لك كفجوات. يندرج تعديل سيرة مُنشأة لإضافة ادعاءات، أو تقديمها على غير حقيقتها، ضمن شروط الاستخدام المحظور أدناه.</p>
+        <div class="prv-highlight prv-en">Generation records are kept for <strong>12 months</strong> and then deleted automatically. They are visible only to me via the admin dashboard. You can ask for earlier deletion at any time (see "Your Rights").</div>
+        <div class="prv-highlight prv-ar">تُحفظ سجلات الإنشاء لمدة <strong>12 شهرًا</strong> ثم تُحذف تلقائيًا، ولا يطّلع عليها أحد سواي عبر لوحة الإدارة. يمكنك طلب حذفها مبكرًا في أي وقت (راجع "حقوقك").</div>
+      </div>
+    </div>
+
     <!-- 6. Data Security -->
     <div class="prv-section">
       <div class="prv-section-head">
@@ -466,12 +501,16 @@
           <li>All sessions are protected using <strong>JWT tokens</strong> with expiry.</li>
           <li>Protected files are only served after token verification on every request.</li>
           <li>Your data is stored on a secure MongoDB database and is not exposed to the public.</li>
+          <li>Sign-in and sign-up are rate-limited, and accounts are temporarily locked after repeated failed sign-in attempts.</li>
+          <li>AI service keys stay on the server and are never sent to your browser.</li>
         </ul>
         <ul class="prv-ar">
           <li>كلمات المرور مُجزَّأة باستخدام <strong>bcrypt</strong> — لا تُخزَّن أبدًا كنص قابل للقراءة.</li>
           <li>جميع الجلسات محمية باستخدام <strong>رموز JWT</strong> منتهية الصلاحية.</li>
           <li>الملفات المحمية لا تُقدَّم إلا بعد التحقق من الرمز في كل طلب.</li>
           <li>تُخزَّن بياناتك في قاعدة بيانات MongoDB آمنة ولا تُكشَف للعموم.</li>
+          <li>يخضع تسجيل الدخول وإنشاء الحساب لحدود على عدد المحاولات، ويُقفل الحساب مؤقتًا بعد محاولات دخول فاشلة متكررة.</li>
+          <li>تبقى مفاتيح خدمات الذكاء الاصطناعي على الخادم ولا تُرسل أبدًا إلى متصفحك.</li>
         </ul>
       </div>
     </div>

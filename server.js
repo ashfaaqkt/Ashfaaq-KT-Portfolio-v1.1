@@ -15,6 +15,10 @@ const connectDB = require('./lib/db');
 const { rateLimit, normalizeEmail, validateRegistration } = require('./lib/security');
 const { getProfileSnapshot } = require('./lib/profile');
 const gemini = require('./lib/gemini');
+const { generateCv, renderCvPdf, newRef, CvError } = require('./lib/cv');
+const { validateCvRequest } = require('./lib/cvRequest');
+const { getClientIp } = require('./lib/security');
+const CvGeneration = require('./models/CvGeneration');
 
 /* ── Multer storage configs ── */
 const pdfStorage = multer.diskStorage({
@@ -379,6 +383,172 @@ app.get('/api/admin/ai/profile-snapshot', verifyAdmin, (req, res) => {
   } catch (err) {
     console.error('[GET /api/admin/ai/profile-snapshot]', err.message);
     res.status(500).json({ message: 'Could not build profile snapshot' });
+  }
+});
+
+// ─── Tailored CV Generator ──────────────────────────────────────────────────
+
+const CV_MONTHLY_LIMIT = 3;
+const CV_DAILY_CAP = Math.max(1, Number(process.env.CV_DAILY_CAP) || 60);   // site-wide safety cap
+const cvEnabled = () => process.env.CV_GENERATOR_ENABLED !== 'false' && gemini.isConfigured();
+
+const monthStartUtc = (d = new Date()) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+const nextMonthUtc = (d = new Date()) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
+const dayStartUtc = (d = new Date()) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+
+const COUNTED = { status: { $in: ['pending', 'ready', 'downloaded'] }, countsTowardQuota: { $ne: false } };
+
+async function cvQuota(userId) {
+  const used = await CvGeneration.countDocuments({ user: userId, createdAt: { $gte: monthStartUtc() }, ...COUNTED });
+  return { used, limit: CV_MONTHLY_LIMIT, remaining: Math.max(0, CV_MONTHLY_LIMIT - used), resetsAt: nextMonthUtc().toISOString() };
+}
+
+const isObjectId = (v) => typeof v === 'string' && /^[a-f0-9]{24}$/i.test(v);
+
+// Quota + availability for the signed-in user
+app.get('/api/cv/quota', verifyToken, async (req, res) => {
+  try {
+    if (!isObjectId(req.user?.id)) return res.status(401).json({ code: 'AUTH', message: 'Please sign in.' });
+    res.json({ enabled: cvEnabled(), ...(await cvQuota(req.user.id)) });
+  } catch (err) {
+    console.error('[GET /api/cv/quota]', err.message);
+    res.status(500).json({ code: 'SERVER', message: 'Server error' });
+  }
+});
+
+// Generate a tailored CV → returns the PDF (base64) for preview + download
+app.post('/api/cv/generate',
+  verifyToken,
+  rateLimit({ name: 'cv-generate', max: 8, windowMs: 60 * 60 * 1000, message: 'Too many requests. Please try again later.' }),
+  async (req, res) => {
+  const started = Date.now();
+  let record = null;
+  try {
+    if (!cvEnabled()) return res.status(503).json({ code: 'DISABLED', message: 'The CV generator is temporarily unavailable.' });
+    if (!isObjectId(req.user?.id)) return res.status(401).json({ code: 'AUTH', message: 'Please sign in.' });
+
+    const { error, job } = validateCvRequest(req.body);
+    if (error) return res.status(400).json({ code: error, message: 'Please check the form and try again.' });
+
+    const user = await User.findById(req.user.id).select('name email');
+    if (!user) return res.status(401).json({ code: 'AUTH', message: 'Please sign in again.' });
+
+    // One generation at a time per user
+    const busy = await CvGeneration.exists({ user: user._id, status: 'pending', createdAt: { $gte: new Date(Date.now() - 3 * 60 * 1000) } });
+    if (busy) return res.status(409).json({ code: 'BUSY', message: 'A CV is already being generated. Please wait.' });
+
+    // Site-wide daily cap (protects the API budget)
+    const today = await CvGeneration.countDocuments({ createdAt: { $gte: dayStartUtc() }, status: { $ne: 'failed' } });
+    if (today >= CV_DAILY_CAP) return res.status(503).json({ code: 'DAILY_CAP', message: 'Daily limit reached for the CV generator. Please try again tomorrow.' });
+
+    // Reserve a slot first, then count (so parallel requests can't exceed the quota)
+    record = await CvGeneration.create({
+      ref: newRef(), user: user._id, userName: user.name, userEmail: user.email, job, ip: getClientIp(req), model: gemini.MODELS.cv
+    });
+    const quota = await cvQuota(user._id);
+    if (quota.used > CV_MONTHLY_LIMIT) {
+      await CvGeneration.deleteOne({ _id: record._id });
+      record = null;
+      const q = await cvQuota(user._id);
+      return res.status(429).json({ code: 'QUOTA', message: 'You have used all CV generations for this month.', quota: q });
+    }
+
+    const out = await generateCv(job, { ref: record.ref });
+    await CvGeneration.updateOne({ _id: record._id }, { $set: {
+      status: 'ready', cv: out.cv, meta: out.meta, match: out.cv.match, validator: out.cv.report,
+      pages: out.pages, fileName: out.fileName, durationMs: Date.now() - started
+    } });
+
+    res.json({
+      ref: record.ref,
+      fileName: out.fileName,
+      pages: out.pages,
+      requestedPages: job.pages,
+      language: job.language,
+      match: out.cv.match,
+      pdfBase64: out.pdf.toString('base64'),
+      quota: await cvQuota(user._id)
+    });
+  } catch (err) {
+    const code = err instanceof gemini.GeminiError ? `AI_${err.code}` : (err instanceof CvError ? err.code : 'SERVER');
+    console.error('[POST /api/cv/generate]', code, err instanceof gemini.GeminiError || err instanceof CvError ? '' : err.message);
+    if (record) {
+      // Failed generations never count toward the quota
+      await CvGeneration.updateOne({ _id: record._id }, { $set: { status: 'failed', failure: code, durationMs: Date.now() - started } }).catch(() => {});
+    }
+    const status = code === 'AI_RATE_LIMITED' ? 503 : code === 'AI_TIMEOUT' ? 504 : 500;
+    res.status(status).json({ code, message: 'We could not generate the CV right now. This attempt was not counted. Please try again.' });
+  }
+});
+
+// Mark a generation as downloaded (for the admin list)
+app.post('/api/cv/:ref/downloaded', verifyToken, async (req, res) => {
+  try {
+    if (!isObjectId(req.user?.id) || !/^CV-[A-Z0-9]{8}$/.test(req.params.ref)) return res.status(400).json({ code: 'INVALID' });
+    await CvGeneration.updateOne({ ref: req.params.ref, user: req.user.id, status: { $in: ['ready', 'downloaded'] } },
+      { $set: { status: 'downloaded', downloadedAt: new Date() } });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[POST /api/cv/:ref/downloaded]', err.message);
+    res.status(500).json({ code: 'SERVER' });
+  }
+});
+
+// ── Admin: CV generations ──
+app.get('/api/admin/cv-generations', verifyAdmin, async (req, res) => {
+  try {
+    const items = await CvGeneration.find()
+      .select('ref userName userEmail status failure job.jobTitle job.company job.language job.pages job.seniority job.workMode job.mustHaveSkills match pages durationMs countsTowardQuota downloadedAt createdAt')
+      .sort({ createdAt: -1 }).limit(500).lean();
+    res.json(items);
+  } catch (err) {
+    console.error('[GET /api/admin/cv-generations]', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.get('/api/admin/cv-generations/:ref', verifyAdmin, async (req, res) => {
+  try {
+    const item = await CvGeneration.findOne({ ref: String(req.params.ref) }).lean();
+    if (!item) return res.status(404).json({ message: 'Not found' });
+    res.json(item);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Re-download: re-renders the stored CV deterministically (no AI call, no quota)
+app.get('/api/admin/cv-generations/:ref/pdf', verifyAdmin, async (req, res) => {
+  try {
+    const item = await CvGeneration.findOne({ ref: String(req.params.ref), status: { $in: ['ready', 'downloaded'] } }).lean();
+    if (!item || !item.cv) return res.status(404).json({ message: 'Not found' });
+    const { buffer } = await renderCvPdf(item.cv, item.meta, item.job.pages);
+    res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="${item.fileName || item.ref + '.pdf'}"`, 'Cache-Control': 'no-store' });
+    res.send(buffer);
+  } catch (err) {
+    console.error('[GET /api/admin/cv-generations/:ref/pdf]', err.message);
+    res.status(500).json({ message: 'Could not render PDF' });
+  }
+});
+
+app.delete('/api/admin/cv-generations/:ref', verifyAdmin, async (req, res) => {
+  try {
+    const r = await CvGeneration.deleteOne({ ref: String(req.params.ref) });
+    if (!r.deletedCount) return res.status(404).json({ message: 'Not found' });
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset a user's quota for the current month (their past CVs stay in the list)
+app.post('/api/admin/cv-quota/:userId/reset', verifyAdmin, async (req, res) => {
+  try {
+    if (!isObjectId(req.params.userId)) return res.status(400).json({ message: 'Invalid user' });
+    const r = await CvGeneration.updateMany({ user: req.params.userId, createdAt: { $gte: monthStartUtc() } }, { $set: { countsTowardQuota: false } });
+    res.json({ message: 'Quota reset', updated: r.modifiedCount });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

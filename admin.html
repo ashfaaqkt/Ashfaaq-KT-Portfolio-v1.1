@@ -53,6 +53,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
             <span>Projects</span>
           </button>
+          <button class="adm-tab" data-tab="cvgens" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h4"/></svg>
+            <span>CV Generations</span>
+          </button>
           <button class="adm-tab" data-tab="settings" role="tab">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Settings</span>
@@ -105,6 +109,56 @@
               </tbody>
             </table>
           </div>
+        </section>
+
+        <!-- ════════ CV GENERATIONS PANEL (admin-cv.js) ════════ -->
+        <section id="panel-cvgens" class="adm-panel" role="tabpanel" hidden>
+          <div class="adm-panel-head">
+            <h2>CV Generations <span id="cg-count" class="adm-badge"></span></h2>
+            <div class="adm-controls">
+              <div class="adm-search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="cg-search" placeholder="Search recruiter, company, role or ref…" class="adm-input" />
+              </div>
+              <button type="button" id="cg-refresh" class="adm-btn-ghost">Refresh</button>
+            </div>
+          </div>
+          <p class="cg-note">Every tailored CV generated on the site. Records auto-delete after 12 months. “PDF” re-renders the stored CV (no AI call, no quota).</p>
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr><th>Date</th><th>Ref</th><th>Requested by</th><th>Company · Role</th><th>CV</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="cg-tbody"><tr><td colspan="7" class="adm-loading">Loading…</td></tr></tbody>
+            </table>
+          </div>
+          <dialog id="cg-dialog" class="cg-dialog" aria-labelledby="cg-dialog-title">
+            <div class="cg-dialog-head">
+              <h3 id="cg-dialog-title">Generation</h3>
+              <button type="button" class="adm-btn-ghost" id="cg-dialog-close">Close</button>
+            </div>
+            <div id="cg-dialog-body" class="cg-dialog-body"></div>
+          </dialog>
+          <style>
+            .cg-note { margin: 0 0 14px; font-size: 0.85rem; opacity: 0.75; }
+            .cg-status { display: inline-block; padding: 2px 8px; font-size: 0.75rem; font-weight: 600; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap; }
+            .cg-status--ready { color: #2b8a3e; } .cg-status--downloaded { color: #1c7ed6; }
+            .cg-status--failed { color: #e03131; } .cg-status--pending { color: #e8590c; }
+            .cg-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+            .cg-actions button { padding: 4px 10px; font-size: 0.8rem; cursor: pointer; }
+            .cg-sub { display: block; font-size: 0.78rem; opacity: 0.7; }
+            .cg-mono { font-family: ui-monospace, monospace; font-size: 0.8rem; }
+            .cg-dialog { margin: auto; inset: 0; position: fixed; width: min(760px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: 1px solid currentColor; color: inherit; background: var(--color-bg-primary, #fff); }
+            .cg-dialog::backdrop { background: rgba(0,0,0,0.5); }
+            .cg-dialog-head { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; background: inherit; border-bottom: 1px solid rgba(127,127,127,0.3); }
+            .cg-dialog-head h3 { margin: 0; font-size: 1.05rem; }
+            .cg-dialog-body { padding: 16px 18px 20px; overflow-y: auto; font-size: 0.9rem; line-height: 1.55; }
+            .cg-dialog-body h4 { margin: 16px 0 6px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.75; }
+            .cg-dialog-body pre { white-space: pre-wrap; word-break: break-word; margin: 0; padding: 10px; max-height: 260px; overflow: auto; border: 1px dashed rgba(127,127,127,0.5); font: inherit; }
+            .cg-kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; }
+            .cg-kv dt { opacity: 0.7; } .cg-kv dd { margin: 0; }
+            @media (max-width: 640px) { .cg-kv { grid-template-columns: 1fr; } .cg-kv dd { margin-bottom: 6px; } }
+          </style>
         </section>
 
         <!-- ════════ TIMELINE PANEL ════════ -->
@@ -278,5 +332,6 @@
   </footer>
 
   <script src="admin.js"></script>
+  <script src="admin-cv.js"></script>
 </body>
 </html>
