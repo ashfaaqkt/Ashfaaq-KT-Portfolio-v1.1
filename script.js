@@ -235,7 +235,7 @@ const translations = {
             'Vision: HiTech Farm Tourism · Hydroponics · AI & ML Integration'
           ],
           links: [
-            { text: 'Follow on Instagram @growly.kl', href: 'https://www.instagram.com/growly.kl' }
+            { text: 'Visit Growly Farms', href: 'https://www.growly.farm/' }
           ]
         }
       ]
@@ -518,7 +518,7 @@ const translations = {
             'الرؤية: سياحة زراعية تكنولوجية · زراعة مائية · تكامل الذكاء الاصطناعي'
           ],
           links: [
-            { text: 'تابعنا على Instagram @growly.kl', href: 'https://www.instagram.com/growly.kl' }
+            { text: 'زيارة Growly Farms', href: 'https://www.growly.farm/' }
           ]
         }
       ]
