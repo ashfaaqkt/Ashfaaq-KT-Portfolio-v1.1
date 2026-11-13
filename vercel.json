@@ -23,7 +23,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{script.js,index.html,lib/cv-fonts/**}",
+      "includeFiles": "{script.js,index.html,lib/cv-fonts/**,node_modules/@sparticuz/chromium/**}",
       "maxDuration": 60
     }
   }
