@@ -148,12 +148,14 @@ app.get('/:folder/:filename', (req, res, next) => {
   });
 });
 
-// --- Protected OCC sub-folder: Entri & NSDC certificates ---
+// --- Protected OCC sub-folders: Entri & NSDC certificates ---
+const PROTECTED_OCC = ['/occ/entri'];
 // Must be before express.static so direct URL access is intercepted first.
 app.use((req, res, next) => {
   const decodedPath = decodeURIComponent(req.path);
-  // Only protect the Entri & NSDC subfolder inside OCC
-  if (!decodedPath.toLowerCase().startsWith('/occ/entri')) return next();
+  // Only protect the listed subfolders inside OCC
+  const lower = decodedPath.toLowerCase();
+  if (!PROTECTED_OCC.some((p) => lower.startsWith(p))) return next();
 
   verifyToken(req, res, () => {
     const relativePath = decodedPath.replace(/^\//, '');

@@ -14,6 +14,10 @@
       "dest": "/api/index.js"
     },
     {
+      "src": "/OCC/Entri(.*)",
+      "dest": "/api/index.js"
+    },
+    {
       "src": "/api/(.+)",
       "dest": "/api/index.js"
     },
@@ -23,7 +27,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{script.js,index.html,lib/cv-fonts/**,node_modules/@sparticuz/chromium/**}",
+      "includeFiles": "{script.js,index.html,lib/cv-fonts/**,BITS/**,CV/**,HSCertificate/**,OCC/Entri*/**,node_modules/@sparticuz/chromium/**}",
       "maxDuration": 60
     }
   }
